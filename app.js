@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
-    width: 1500,
-    height: 840,
+    //width: 1500,
+    //height: 840,
     physics: {
         default: 'arcade',
         arcade: {
@@ -15,9 +15,10 @@ var config = {
         update: update,
     },
     scale: {
-        mode: Phaser.Scale.FIT,
+        //mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        fullscreenTarget: 'game-container'
+        //fullscreenTarget: 'game-container'
     }
 };
 
@@ -36,24 +37,20 @@ function preload ()
     this.load.image('ground', 'assets/platform.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 57.26, frameHeight: 42 });
     this.load.image('mountains', 'assets/background2.png');
+    this.load.image('mountains2', 'assets/background.png');
 }
 
 
 function create ()
 {
     //  A simple background for our game
-    this.add.image(0, 300, 'sky');
-    this.add.image(1024, 300, 'sky');
-    this.add.image(2048, 300, 'sky');
+    for (var i = 0; i < 3; i++) {
+        this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1);
+    }
     mountains = this.physics.add.staticGroup();
-    mountains.create(-320, 320, 'mountains').setScale(2).refreshBody();
-    mountains.create(0, 320, 'mountains').setScale(2).refreshBody();
-    mountains.create(320, 320, 'mountains').setScale(2).refreshBody();
-    mountains.create(640, 320, 'mountains').setScale(2).refreshBody();
-    mountains.create(960, 320, 'mountains').setScale(2).refreshBody();
-    mountains.create(1280, 320, 'mountains').setScale(2).refreshBody();
-    mountains.create(1600, 320, 'mountains').setScale(2).refreshBody();
-    mountains.create(1920, 320, 'mountains').setScale(2).refreshBody();
+    for (var i = -2; i <= 22; i++) {
+        mountains.create(i * 320, 320, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
+    }
 
             // Set up fullscreen button
             const fullscreenButton = document.getElementById('fullscreenButton');
@@ -72,6 +69,8 @@ function create ()
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     platforms.create(400, 668, 'ground').setScale(2).refreshBody();
     platforms.create(1200, 668, 'ground').setScale(2).refreshBody();
+    platforms.create(400, 718, 'ground').setScale(2).refreshBody();
+    platforms.create(1200, 718, 'ground').setScale(2).refreshBody();
 
     //  Now let's create some ledges
     platforms.create(-750, 500, 'ground').setScale(3.8).refreshBody();
@@ -91,7 +90,7 @@ function create ()
     platforms.create(1000, 630, 'ground').setScale(0.8).refreshBody();
 
     // The player and its settings
-    player = this.physics.add.sprite(100, 0, 'dude');
+    player = this.physics.add.sprite(100, 0, 'dude'); // Set initial frame to face right
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -103,12 +102,6 @@ function create ()
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
         frameRate: 10,
         repeat: -1
-    });
-
-    this.anims.create({
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
     });
 
     this.anims.create({
@@ -130,7 +123,10 @@ function create ()
     camera.scrollX = game.config.width * 2;
     camera.scrollY = 0;
 
-
+    mountains2 = this.physics.add.staticGroup();
+    for (var i = -2; i <= 22; i++) {
+        mountains2.create(i * 320, 630, 'mountains').setScale(2).refreshBody().setScrollFactor(0.7);
+    }
     
 
 }
@@ -143,18 +139,25 @@ function update ()
 
     if (cursors.left.isDown)
     {
-        player.setVelocityX(-160);
+        player.setVelocityX(-250);
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown)
     {
-        player.setVelocityX(160);
+        player.setVelocityX(250);
         player.anims.play('right', true);
     }
     else
     {
+        // set the player's horizontal velocity to 0 to stop movement
         player.setVelocityX(0);
-        player.anims.play('turn');
+
+        // check the current animation to determine which frame to display
+        if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
+            player.setFrame(4);
+        } else if (player.anims.currentAnim.key === 'left') {
+            player.setFrame(0);
+        }
     }
 
     const didPressJump = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP));
