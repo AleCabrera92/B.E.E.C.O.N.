@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
-    width: 1900,
-    height: 1200,
+    width: 1500,
+    height: 840,
     physics: {
         default: 'arcade',
         arcade: {
@@ -12,7 +12,12 @@ var config = {
     scene: {
         preload: preload,
         create: create,
-        update: update
+        update: update,
+    },
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        fullscreenTarget: 'game-container'
     }
 };
 
@@ -49,6 +54,16 @@ function create ()
     mountains.create(1280, 320, 'mountains').setScale(2).refreshBody();
     mountains.create(1600, 320, 'mountains').setScale(2).refreshBody();
     mountains.create(1920, 320, 'mountains').setScale(2).refreshBody();
+
+            // Set up fullscreen button
+            const fullscreenButton = document.getElementById('fullscreenButton');
+            fullscreenButton.addEventListener('click', () => {
+                if (this.scale.isFullscreen) {
+                    this.scale.stopFullscreen();
+                } else {
+                    this.scale.startFullscreen();
+                }
+            });
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
