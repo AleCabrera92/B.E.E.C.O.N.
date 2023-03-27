@@ -36,6 +36,7 @@ function preload ()
 {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
+    this.load.image('wall', 'assets/wall.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 57.26, frameHeight: 42 });
     this.load.image('mountains', 'assets/background2.png');
     this.load.image('mountains2', 'assets/background.png');
@@ -68,27 +69,18 @@ function create ()
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    platforms.create(400, 668, 'ground').setScale(2).refreshBody();
-    platforms.create(1200, 668, 'ground').setScale(2).refreshBody();
-    platforms.create(400, 718, 'ground').setScale(2).refreshBody();
-    platforms.create(1200, 718, 'ground').setScale(2).refreshBody();
+    for (var i = 0; i < 5; i++) {
+        platforms.create(i * 300, 780, 'ground').setScale(2).refreshBody();
+    }
 
     //  Now let's create some ledges
-    platforms.create(-750, 500, 'ground').setScale(3.8).refreshBody();
-    platforms.create(-750, 600, 'ground').setScale(3.8).refreshBody();
-    platforms.create(-750, 700, 'ground').setScale(3.8).refreshBody();
-    platforms.create(-750, 800, 'ground').setScale(3.8).refreshBody();
-    platforms.create(-750, 900, 'ground').setScale(3.8).refreshBody();
-    platforms.create(500, 610, 'ground').setScale(0.8).refreshBody();
-    platforms.create(500, 630, 'ground').setScale(0.8).refreshBody();
-    platforms.create(950, 530, 'ground').setScale(0.8).refreshBody();
-    platforms.create(950, 550, 'ground').setScale(0.8).refreshBody();
-    platforms.create(950, 570, 'ground').setScale(0.8).refreshBody();
-    platforms.create(950, 590, 'ground').setScale(0.8).refreshBody();
-    platforms.create(950, 610, 'ground').setScale(0.8).refreshBody();
-    platforms.create(950, 630, 'ground').setScale(0.8).refreshBody();
-    platforms.create(1000, 610, 'ground').setScale(0.8).refreshBody();
-    platforms.create(1000, 630, 'ground').setScale(0.8).refreshBody();
+    platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody();
+    platforms.create(500, 650, 'ground').setScale(0.8).refreshBody();
+    platforms.create(800, 570, 'ground').setScale(0.8).refreshBody();
+    platforms.create(800, 650, 'ground').setScale(0.8).refreshBody();
+    platforms.create(880, 650, 'ground').setScale(0.8).refreshBody();
+    platforms.create(1530, 650, 'ground').setScale(0.8).refreshBody();
+    platforms.create(1930, 650, 'ground').setScale(0.8).refreshBody();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 0, 'dude'); // Set initial frame to face right
