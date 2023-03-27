@@ -28,6 +28,7 @@ var cursors;
 var scoreText;
 var canDoubleJump = true;
 var jumps = 0;
+var keyW, keyA, keyS, keyD;
 
 var game = new Phaser.Game(config);
 
@@ -96,7 +97,7 @@ function create ()
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
-    //  Our player animations, turning, walking left and walking right.
+    //  Our player animation, walking left and walking right.
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -110,6 +111,11 @@ function create ()
         frameRate: 10,
         repeat: -1
     });
+
+    //keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    //keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
@@ -137,12 +143,12 @@ function update ()
     // Update the camera position based on the player's position
     camera.scrollX = player.x - game.config.width / 4;
 
-    if (cursors.left.isDown)
+    if (cursors.left.isDown || keyA.isDown)
     {
         player.setVelocityX(-250);
         player.anims.play('left', true);
     }
-    else if (cursors.right.isDown)
+    else if (cursors.right.isDown || keyD.isDown)
     {
         player.setVelocityX(250);
         player.anims.play('right', true);
@@ -160,10 +166,12 @@ function update ()
         }
     }
 
-    const didPressJump = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP));
+    const didPressUp = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP));
+    const didPressW = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W));
+    const didPressSpace = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
 
     // player can only double jump if the player just jumped
-    if (didPressJump) {
+    if (didPressUp || didPressW || didPressSpace) {
         if (player.body.onFloor()) {
             // player can only double jump if it is on the floor
             canDoubleJump = true;
