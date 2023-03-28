@@ -25,10 +25,11 @@ var config = {
 var player;
 var platforms;
 var cursors;
-var scoreText;
+//var scoreText;
 var canDoubleJump = true;
 var jumps = 0;
-var keyW, keyA, keyS, keyD;
+var keyA, keyD;
+//var keyW, keyA, keyS, keyD;
 
 var game = new Phaser.Game(config);
 
@@ -38,6 +39,7 @@ function preload ()
     this.load.image('ground', 'assets/platform.png');
     this.load.image('wall', 'assets/wall.png');
     this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
+    this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
     this.load.image('mountains', 'assets/background2.png');
     this.load.image('mountains2', 'assets/background.png');
 }
@@ -106,6 +108,20 @@ function create ()
         repeat: -1
     });
 
+    this.anims.create({
+        key: 'idle',
+        frames: this.anims.generateFrameNumbers('beecon_idle', { start: 2, end: 3 }),
+        frameRate: 10,
+        repeat: -1       
+      });
+
+    this.anims.create({
+        key: 'idleBack',
+        frames: this.anims.generateFrameNumbers('beecon_idle', { start: 1, end: 0 }),
+        frameRate: 10,
+        repeat: -1       
+    });
+
     //keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     //keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -155,9 +171,9 @@ function update ()
 
         // check the current animation to determine which frame to display
         if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
-            player.setFrame(4);
+            player.anims.play('idle', true);
         } else if (player.anims.currentAnim.key === 'left') {
-            player.setFrame(0);
+            player.anims.play('idleBack', true);
         }
     }
 
