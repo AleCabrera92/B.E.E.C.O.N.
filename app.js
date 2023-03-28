@@ -37,7 +37,7 @@ function preload ()
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
     this.load.image('wall', 'assets/wall.png');
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 57.26, frameHeight: 42 });
+    this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
     this.load.image('mountains', 'assets/background2.png');
     this.load.image('mountains2', 'assets/background.png');
 }
@@ -50,8 +50,9 @@ function create ()
         this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1);
     }
     mountains = this.physics.add.staticGroup();
-    for (var i = -2; i <= 22; i++) {
-        mountains.create(i * 320, 320, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
+    for (var i = 0; i <= 1; i++) {
+        mountains.create(i * 320, 330, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
+        mountains.create(i * 320, 600, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
     }
 
             // Set up fullscreen button
@@ -67,12 +68,6 @@ function create ()
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
-    //  Here we create the ground.
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    for (var i = 0; i < 5; i++) {
-        platforms.create(i * 300, 780, 'ground').setScale(2).refreshBody();
-    }
-
     //  Now let's create some ledges
     platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody();
     platforms.create(500, 650, 'ground').setScale(0.8).refreshBody();
@@ -82,8 +77,15 @@ function create ()
     platforms.create(1530, 650, 'ground').setScale(0.8).refreshBody();
     platforms.create(1930, 650, 'ground').setScale(0.8).refreshBody();
 
+    //  Here we create the ground.
+    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+    for (var i = -1; i < 6; i++) {
+        platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody(); //300
+        platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody(); //300
+    }
+
     // The player and its settings
-    player = this.physics.add.sprite(100, 0, 'dude'); // Set initial frame to face right
+    player = this.physics.add.sprite(100, 0, 'beecon').setScale(0.28); // Set initial frame to face right
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -92,14 +94,14 @@ function create ()
     //  Our player animation, walking left and walking right.
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('beecon', { start: 0, end: 1 }),
         frameRate: 10,
         repeat: -1
     });
 
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        frames: this.anims.generateFrameNumbers('beecon', { start: 3, end: 4 }),
         frameRate: 10,
         repeat: -1
     });
@@ -120,11 +122,12 @@ function create ()
     // Set the initial camera position to the center of the world
     camera.scrollX = game.config.width * 2;
     camera.scrollY = 0;
-
+    /*
     mountains2 = this.physics.add.staticGroup();
-    for (var i = -2; i <= 22; i++) {
-        mountains2.create(i * 320, 630, 'mountains').setScale(2).refreshBody().setScrollFactor(0.7);
+    for (var i = 0; i <= 1; i++) {
+        mountains2.create(i * 320, 730, 'mountains').setScale(1.2).refreshBody().setScrollFactor(0.7);
     }
+    */
     
 
 }
