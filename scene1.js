@@ -3,10 +3,25 @@ var platforms;
 var cursors;
 var canDoubleJump = true;
 var jumps = 0;
-var keyA, keyD;
+var keyA, keyD, keyJ;
 var mountains;
 var camera;
 var triggerPlatform;
+var lasers;
+
+function shootLaser() {
+    let laser = lasers.create(player.x + 30, player.y + 4, 'laser');
+    laser.setVelocityX(1000);
+    laser.setAcceleration(0);
+}
+
+function shootBigLaser() {
+    // Check if the "J" key has been held down for more than 2 seconds
+        let laser = lasers.create(player.x + 30, player.y + 4, 'laser').setScale(2);
+        laser.setVelocityX(1000);
+        laser.setAcceleration(0);
+
+}
 
 class Scene1 extends Phaser.Scene {
 
@@ -22,6 +37,7 @@ class Scene1 extends Phaser.Scene {
         this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
         this.load.image('mountains', 'assets/background2.png');
         this.load.image('mountains2', 'assets/background.png');
+        this.load.image('laser', 'assets/laser.png');
     }
 
     create() {
@@ -46,6 +62,10 @@ class Scene1 extends Phaser.Scene {
                 }
             });
 
+
+
+
+
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
@@ -55,6 +75,11 @@ class Scene1 extends Phaser.Scene {
     platforms.create(800, 570, 'ground').setScale(0.8).refreshBody();
     platforms.create(800, 650, 'ground').setScale(0.8).refreshBody();
     platforms.create(880, 650, 'ground').setScale(0.8).refreshBody();
+
+    lasers = this.physics.add.group({
+        allowGravity: false
+    });
+    this.physics.add.collider(lasers, platforms);
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -89,6 +114,8 @@ class Scene1 extends Phaser.Scene {
         this.scene.start('Scene2');
     }, null, this);
 
+
+
     //  Our player animation, walking left and walking right.
     this.anims.create({
         key: 'left',
@@ -122,6 +149,8 @@ class Scene1 extends Phaser.Scene {
     keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     //keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+    keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
@@ -170,7 +199,18 @@ class Scene1 extends Phaser.Scene {
                 player.anims.play('idleBack', true);
             }
         }
-    
+
+        //const didPressJ = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J));
+
+        if (Phaser.Input.Keyboard.JustUp(keyJ)) {
+            if (keyJ.duration > 2000) {
+                // Check if the "J" key has been held down for more than 2 seconds
+                shootBigLaser();
+            } else {
+                shootLaser();
+            }
+        }
+   
         const didPressUp = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP));
         const didPressW = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W));
         const didPressSpace = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
