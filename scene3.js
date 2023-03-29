@@ -8,10 +8,10 @@ var mountains;
 var camera;
 var triggerPlatform;
 
-class Scene1 extends Phaser.Scene {
+class Scene3 extends Phaser.Scene {
 
     constructor() {
-      super({ key: 'Scene1' });
+      super({ key: 'Scene3' });
     }
 
     preload() {
@@ -32,6 +32,8 @@ class Scene1 extends Phaser.Scene {
     }
     mountains = this.physics.add.staticGroup();
     for (var i = 0; i <= 1; i++) {
+        mountains.create(i * 320, -320, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
+        mountains.create(i * 320, 0, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
         mountains.create(i * 320, 330, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
         mountains.create(i * 320, 600, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
     }
@@ -50,11 +52,14 @@ class Scene1 extends Phaser.Scene {
     platforms = this.physics.add.staticGroup();
 
     //  Now let's create some ledges
+    platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody();
     platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody();
+    platforms.create(600, 0, 'wall').setScale(1.5).refreshBody();
+    platforms.create(900, 0, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody();
     platforms.create(500, 650, 'ground').setScale(0.8).refreshBody();
-    platforms.create(800, 570, 'ground').setScale(0.8).refreshBody();
     platforms.create(800, 650, 'ground').setScale(0.8).refreshBody();
-    platforms.create(880, 650, 'ground').setScale(0.8).refreshBody();
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -77,6 +82,7 @@ class Scene1 extends Phaser.Scene {
     // The player and its settings
     player = this.physics.add.sprite(100, 0, 'beecon').setScale(0.3); // Set initial frame to face right
     player.body.setSize(120, 0);
+    //player.body.setVelocityY(2000);
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -140,6 +146,16 @@ class Scene1 extends Phaser.Scene {
         mountains2.create(i * 320, 730, 'mountains').setScale(1.2).refreshBody().setScrollFactor(0.7);
     }
     */
+       // Create a black rectangle to serve as the overlay
+       const overlay = this.add.rectangle(
+        this.cameras.main.centerX,
+        this.cameras.main.centerY,
+        this.cameras.main.width*2,
+        this.cameras.main.height*2,
+        0x000000, // black color
+        0.5 // alpha value, where 0 is fully transparent and 1 is fully opaque
+      );
+      overlay.setDepth(1); // set overlay to a higher depth than other game objects
     }
 
     update ()

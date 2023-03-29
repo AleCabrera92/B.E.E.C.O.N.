@@ -8,15 +8,13 @@ var mountains;
 var camera;
 var triggerPlatform;
 
-class Scene1 extends Phaser.Scene {
+class Scene2 extends Phaser.Scene {
 
     constructor() {
-      super({ key: 'Scene1' });
+      super({ key: 'Scene2' });
     }
 
     preload() {
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
         this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
@@ -26,12 +24,10 @@ class Scene1 extends Phaser.Scene {
 
     create() {
         console.log(this.image);
-    //  A simple background for our game
-    for (var i = 0; i < 3; i++) {
-        this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1);
-    }
     mountains = this.physics.add.staticGroup();
     for (var i = 0; i <= 1; i++) {
+        mountains.create(i * 320, -320, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
+        mountains.create(i * 320, 0, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
         mountains.create(i * 320, 330, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
         mountains.create(i * 320, 600, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
     }
@@ -50,21 +46,23 @@ class Scene1 extends Phaser.Scene {
     platforms = this.physics.add.staticGroup();
 
     //  Now let's create some ledges
+    platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody();
     platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody();
-    platforms.create(500, 650, 'ground').setScale(0.8).refreshBody();
-    platforms.create(800, 570, 'ground').setScale(0.8).refreshBody();
-    platforms.create(800, 650, 'ground').setScale(0.8).refreshBody();
-    platforms.create(880, 650, 'ground').setScale(0.8).refreshBody();
+    platforms.create(-300, 800, 'wall').setScale(1.5).refreshBody();
+    platforms.create(600, 0, 'wall').setScale(1.5).refreshBody();
+    platforms.create(600, 400, 'wall').setScale(1.5).refreshBody();
+    platforms.create(600, 800, 'wall').setScale(1.5).refreshBody();
+    platforms.create(900, 0, 'wall').setScale(1.5).refreshBody();
+    platforms.create(900, 400, 'wall').setScale(1.5).refreshBody();
+    platforms.create(900, 800, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1200, 400, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1200, 800, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1500, 400, 'wall').setScale(1.5).refreshBody();
+    platforms.create(1500, 800, 'wall').setScale(1.5).refreshBody();
 
-    //  Here we create the ground.
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    for (var i = -1; i < 6; i++) {
-        platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody(); //300
-        platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody(); //300
-    }
-
-
-    triggerPlatform = this.physics.add.sprite(1700, 1303, 'ground').setScale(5);
+    triggerPlatform = this.physics.add.sprite(0, 1303, 'ground').setScale(5);
 
     // Enable physics for the trigger platform, but don't make it collide with the player or the other platforms
     triggerPlatform.setImmovable(true);
@@ -77,6 +75,7 @@ class Scene1 extends Phaser.Scene {
     // The player and its settings
     player = this.physics.add.sprite(100, 0, 'beecon').setScale(0.3); // Set initial frame to face right
     player.body.setSize(120, 0);
+    //player.body.setVelocityY(1000);
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -86,7 +85,7 @@ class Scene1 extends Phaser.Scene {
     // Add an overlap event between the player and the trigger platform
     this.physics.add.overlap(player, triggerPlatform, function() {
         // Start the new scene
-        this.scene.start('Scene2');
+        this.scene.start('Scene3');
     }, null, this);
 
     //  Our player animation, walking left and walking right.
@@ -140,6 +139,16 @@ class Scene1 extends Phaser.Scene {
         mountains2.create(i * 320, 730, 'mountains').setScale(1.2).refreshBody().setScrollFactor(0.7);
     }
     */
+          // Create a black rectangle to serve as the overlay
+          const overlay = this.add.rectangle(
+            this.cameras.main.centerX,
+            this.cameras.main.centerY,
+            this.cameras.main.width*2,
+            this.cameras.main.height*2,
+            0x000000, // black color
+            0.25 // alpha value, where 0 is fully transparent and 1 is fully opaque
+          );
+          overlay.setDepth(1); // set overlay to a higher depth than other game objects
     }
 
     update ()
