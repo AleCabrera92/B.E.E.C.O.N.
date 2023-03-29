@@ -1,52 +1,31 @@
-var config = {
-    type: Phaser.AUTO,
-    //width: 1500,
-    //height: 840,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 1200 },
-            debug: false
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update,
-    },
-    scale: {
-        //mode: Phaser.Scale.FIT,
-        mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        //fullscreenTarget: 'game-container'
-    }
-};
-
 var player;
 var platforms;
 var cursors;
-//var scoreText;
 var canDoubleJump = true;
 var jumps = 0;
 var keyA, keyD;
-//var keyW, keyA, keyS, keyD;
+var mountains;
+var camera;
+var triggerPlatform;
 
-var game = new Phaser.Game(config);
+class Scene1 extends Phaser.Scene {
 
-function preload ()
-{
-    this.load.image('sky', 'assets/sky.png');
-    this.load.image('ground', 'assets/platform.png');
-    this.load.image('wall', 'assets/wall.png');
-    this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
-    this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
-    this.load.image('mountains', 'assets/background2.png');
-    this.load.image('mountains2', 'assets/background.png');
-}
+    constructor() {
+      super({ key: 'Scene1' });
+    }
 
+    preload() {
+        this.load.image('sky', 'assets/sky.png');
+        this.load.image('ground', 'assets/platform.png');
+        this.load.image('wall', 'assets/wall.png');
+        this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.image('mountains', 'assets/background2.png');
+        this.load.image('mountains2', 'assets/background.png');
+    }
 
-function create ()
-{
+    create() {
+        console.log(this.image);
     //  A simple background for our game
     for (var i = 0; i < 3; i++) {
         this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1);
@@ -76,8 +55,6 @@ function create ()
     platforms.create(800, 570, 'ground').setScale(0.8).refreshBody();
     platforms.create(800, 650, 'ground').setScale(0.8).refreshBody();
     platforms.create(880, 650, 'ground').setScale(0.8).refreshBody();
-    platforms.create(1530, 650, 'ground').setScale(0.8).refreshBody();
-    platforms.create(1930, 650, 'ground').setScale(0.8).refreshBody();
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -86,12 +63,31 @@ function create ()
         platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody(); //300
     }
 
+
+    triggerPlatform = this.physics.add.sprite(1700, 1303, 'ground').setScale(5);
+
+    // Enable physics for the trigger platform, but don't make it collide with the player or the other platforms
+    triggerPlatform.setImmovable(true);
+    triggerPlatform.body.allowGravity = false;
+    //triggerPlatform.body.checkCollision.up = false;
+    //triggerPlatform.body.checkCollision.left = false;
+    //triggerPlatform.body.checkCollision.right = false;
+
+
     // The player and its settings
-    player = this.physics.add.sprite(100, 0, 'beecon').setScale(0.28); // Set initial frame to face right
+    player = this.physics.add.sprite(100, 0, 'beecon').setScale(0.3); // Set initial frame to face right
+    player.body.setSize(120, 0);
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+
+    
+    // Add an overlap event between the player and the trigger platform
+    this.physics.add.overlap(player, triggerPlatform, function() {
+        // Start the new scene
+        this.scene.start('Opening');
+    }, null, this);
 
     //  Our player animation, walking left and walking right.
     this.anims.create({
@@ -144,53 +140,52 @@ function create ()
         mountains2.create(i * 320, 730, 'mountains').setScale(1.2).refreshBody().setScrollFactor(0.7);
     }
     */
+    }
+
+    update ()
+    {
     
-
-}
-
-function update ()
-{
-
-    // Update the camera position based on the player's position
-    camera.scrollX = player.x - game.config.width / 4;
-
-    if (cursors.left.isDown || keyA.isDown)
-    {
-        player.setVelocityX(-250);
-        player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown || keyD.isDown)
-    {
-        player.setVelocityX(250);
-        player.anims.play('right', true);
-    }
-    else
-    {
-        // set the player's horizontal velocity to 0 to stop movement
-        player.setVelocityX(0);
-
-        // check the current animation to determine which frame to display
-        if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
-            player.anims.play('idle', true);
-        } else if (player.anims.currentAnim.key === 'left') {
-            player.anims.play('idleBack', true);
+        // Update the camera position based on the player's position
+        camera.scrollX = player.x - game.config.width / 4;
+    
+        if (cursors.left.isDown || keyA.isDown)
+        {
+            player.setVelocityX(-250);
+            player.anims.play('left', true);
         }
-    }
-
-    const didPressUp = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP));
-    const didPressW = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W));
-    const didPressSpace = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
-
-    // player can only double jump if the player just jumped
-    if (didPressUp || didPressW || didPressSpace) {
-        if (player.body.onFloor()) {
-            // player can only double jump if it is on the floor
-            canDoubleJump = true;
-            player.setVelocityY(-380);
-        } else if (canDoubleJump) {
-            // player can only jump 2x (double jump)
-            canDoubleJump = false;
-            player.setVelocityY(-350);
+        else if (cursors.right.isDown || keyD.isDown)
+        {
+            player.setVelocityX(250);
+            player.anims.play('right', true);
+        }
+        else
+        {
+            // set the player's horizontal velocity to 0 to stop movement
+            player.setVelocityX(0);
+    
+            // check the current animation to determine which frame to display
+            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
+                player.anims.play('idle', true);
+            } else if (player.anims.currentAnim.key === 'left') {
+                player.anims.play('idleBack', true);
+            }
+        }
+    
+        const didPressUp = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP));
+        const didPressW = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W));
+        const didPressSpace = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
+    
+        // player can only double jump if the player just jumped
+        if (didPressUp || didPressW || didPressSpace) {
+            if (player.body.onFloor()) {
+                // player can only double jump if it is on the floor
+                canDoubleJump = true;
+                player.setVelocityY(-380);
+            } else if (canDoubleJump) {
+                // player can only jump 2x (double jump)
+                canDoubleJump = false;
+                player.setVelocityY(-350);
+            }
         }
     }
 }

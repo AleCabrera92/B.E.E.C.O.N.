@@ -8,6 +8,39 @@
     </head>
     <body>
         <button id="fullscreenButton">Fullscreen</button>
-        <script src="app.js"></script>
+        <script src="opening.js"></script>
+        <script src="scene1.js"></script>
+        <!--<div id="game-container"></div>-->
+        <script>
+            const config = {
+                type: Phaser.AUTO,
+                //width: 1500,
+                //height: 840,
+                physics: {
+                    default: 'arcade',
+                    arcade: {
+                        gravity: { y: 1200 },
+                        debug: false
+                    }
+                },
+                scale: {
+                    //mode: Phaser.Scale.FIT,
+                    mode: Phaser.Scale.RESIZE,
+                    autoCenter: Phaser.Scale.CENTER_BOTH,
+                    //fullscreenTarget: 'game-container'
+                },
+                //parent: 'game-container',
+                //scene: [Opening, Scene1],
+                scene: [Scene1, Opening],
+            };
+
+            //var player;
+            //var platforms;
+            //var cursors;
+            //var canDoubleJump = true;
+            //var jumps = 0;
+            //var keyA, keyD;
+            const game = new Phaser.Game(config);
+        </script>
     </body>
 </html>
