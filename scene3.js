@@ -150,7 +150,7 @@ class Scene3 extends Phaser.Scene {
        const overlay = this.add.rectangle(
         this.cameras.main.centerX,
         this.cameras.main.centerY,
-        this.cameras.main.width*2,
+        this.cameras.main.width*3,
         this.cameras.main.height*2,
         0x000000, // black color
         0.5 // alpha value, where 0 is fully transparent and 1 is fully opaque
