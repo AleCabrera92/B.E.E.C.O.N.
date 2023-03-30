@@ -16,8 +16,9 @@
         <script>
             const config = {
                 type: Phaser.AUTO,
-                //width: 1500,
-                //height: 840,
+                //type: Phaser.CANVAS,
+                //width: 1080,
+                //height: 720,
                 physics: {
                     default: 'arcade',
                     arcade: {
@@ -34,6 +35,15 @@
                 //parent: 'game-container',
                 //scene: [Opening, Scene1],
                 scene: [Scene1, Scene2, Scene3, Opening],
+                // render: {
+                //     //antialias: false,
+                //     //pixelArt: true,
+                //     //roundPixels: true,
+                // }
+                // fps: {
+                //     min: 30,
+                //     target: 60
+                // }
             };
 
             //var player;

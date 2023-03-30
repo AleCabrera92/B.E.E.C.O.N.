@@ -8,19 +8,36 @@ var mountains;
 var camera;
 var triggerPlatform;
 var lasers;
+var bigLasers;
 
 function shootLaser() {
-    let laser = lasers.create(player.x + 30, player.y + 4, 'laser');
-    laser.setVelocityX(1000);
-    laser.setAcceleration(0);
+    
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left") {
+        // idle animation is playing, shoot laser to the left
+        let laser = lasers.create(player.x - 30, player.y + 4, 'laser');
+        laser.setVelocityX(-1000);
+        laser.setAcceleration(0);
+    } else {
+        // other animation is playing, shoot laser to the right
+        let laser = lasers.create(player.x + 30, player.y + 4, 'laser');
+        laser.setVelocityX(1000);
+        laser.setAcceleration(0);
+    }
 }
 
 function shootBigLaser() {
     // Check if the "J" key has been held down for more than 2 seconds
-        let laser = lasers.create(player.x + 30, player.y + 4, 'laser').setScale(2);
-        laser.setVelocityX(1000);
-        laser.setAcceleration(0);
-
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left") {
+        // idle animation is playing, shoot laser to the left
+        let bigLaser = bigLasers.create(player.x - 30, player.y + 4, 'bigLaser');
+        bigLaser.setVelocityX(-1000);
+        bigLaser.setAcceleration(0);
+    } else {
+        // other animation is playing, shoot laser to the right
+        let bigLaser = bigLasers.create(player.x + 30, player.y + 4, 'bigLaser');
+        bigLaser.setVelocityX(1000);
+        bigLaser.setAcceleration(0);
+    }
 }
 
 class Scene1 extends Phaser.Scene {
@@ -38,6 +55,7 @@ class Scene1 extends Phaser.Scene {
         this.load.image('mountains', 'assets/background2.png');
         this.load.image('mountains2', 'assets/background.png');
         this.load.image('laser', 'assets/laser.png');
+        this.load.image('bigLaser', 'assets/bigLaser.png');
     }
 
     create() {
@@ -81,6 +99,17 @@ class Scene1 extends Phaser.Scene {
     });
     this.physics.add.collider(lasers, platforms);
 
+    bigLasers = this.physics.add.group({
+        immovable: true,
+        allowGravity: false
+    });
+    this.physics.add.collider(bigLasers, platforms, function(bigLaser) {
+        bigLaser.setVelocityX(0);
+        bigLaser.setAcceleration(0);
+    });
+
+    this.physics.add.collider(bigLasers, platforms);
+
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     for (var i = -1; i < 6; i++) {
@@ -103,6 +132,20 @@ class Scene1 extends Phaser.Scene {
     player = this.physics.add.sprite(100, 0, 'beecon').setScale(0.3); // Set initial frame to face right
     player.body.setSize(120, 0);
 
+    this.physics.add.collider(bigLasers, player, function() {
+        // Do something when the bigLaser collides with the beecon
+    });
+    
+    
+    // this.physics.add.collider(player, bigLasers, function(player, bigLaser) {
+    //     if (player.body.touching.down && bigLaser.body.touching.up) {
+    //         // make the big laser behave as a platform
+    //         player.body.touching.down = false;
+    //         player.body.blocked.down = false;
+    //         player.body.velocity.y = -600;
+    //     }
+    // });
+
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -113,8 +156,6 @@ class Scene1 extends Phaser.Scene {
         // Start the new scene
         this.scene.start('Scene2');
     }, null, this);
-
-
 
     //  Our player animation, walking left and walking right.
     this.anims.create({
@@ -169,6 +210,7 @@ class Scene1 extends Phaser.Scene {
         mountains2.create(i * 320, 730, 'mountains').setScale(1.2).refreshBody().setScrollFactor(0.7);
     }
     */
+    
     }
 
     update ()
@@ -176,6 +218,12 @@ class Scene1 extends Phaser.Scene {
     
         // Update the camera position based on the player's position
         camera.scrollX = player.x - game.config.width / 4;
+
+        lasers.getChildren().forEach(laser => {
+            if (laser.body.velocity.x === 0) {
+                laser.destroy();
+            }
+        });
     
         if (cursors.left.isDown || keyA.isDown)
         {
@@ -203,7 +251,7 @@ class Scene1 extends Phaser.Scene {
         //const didPressJ = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J));
 
         if (Phaser.Input.Keyboard.JustUp(keyJ)) {
-            if (keyJ.duration > 2000) {
+            if (keyJ.duration > 1500) {
                 // Check if the "J" key has been held down for more than 2 seconds
                 shootBigLaser();
             } else {
