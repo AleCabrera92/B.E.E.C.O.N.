@@ -1,24 +1,27 @@
-<!doctype html> 
+<!DOCTYPE html>
+
 <html lang="en"> 
+
     <head> 
+        
         <meta charset="UTF-8" />
         <title>B.E.E.C.O.N. - Biome Exploration and Extraterrestrial Colonization Operating Network</title>
         <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
         <link rel="stylesheet" type="text/css" href="styles.css">
+
     </head>
+
     <body>
+
         <button id="fullscreenButton">Fullscreen</button>
+        <script src="common.js"></script>
+        <script src="opening.js"></script>
         <script src="scene1.js"></script>
         <script src="scene2.js"></script>
         <script src="scene3.js"></script>
-        <script src="opening.js"></script>
-        <!--<div id="game-container"></div>-->
         <script>
             const config = {
                 type: Phaser.AUTO,
-                //type: Phaser.CANVAS,
-                //width: 1080,
-                //height: 720,
                 physics: {
                     default: 'arcade',
                     arcade: {
@@ -27,24 +30,14 @@
                     }
                 },
                 scale: {
-                    //mode: Phaser.Scale.FIT,
                     mode: Phaser.Scale.RESIZE,
                     autoCenter: Phaser.Scale.CENTER_BOTH,
-                    //fullscreenTarget: 'game-container'
                 },
-                //parent: 'game-container',
                 scene: [Opening, Scene1, Scene2, Scene3],
-                // render: {
-                //     //antialias: false,
-                //     //pixelArt: true,
-                //     //roundPixels: true,
-                // }
-                // fps: {
-                //     min: 30,
-                //     target: 60
-                // }
             };
             const game = new Phaser.Game(config);
         </script>
+
     </body>
+
 </html>

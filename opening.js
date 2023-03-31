@@ -14,6 +14,14 @@ class Opening extends Phaser.Scene {
 
   create() {
 
+    fullscreenButton.addEventListener('click', () => {
+      if (this.scale.isFullscreen) {
+          this.scale.stopFullscreen();
+      } else {
+          this.scale.startFullscreen();
+      }
+    });
+
     const randomText = this.add.text(
       0,
       0,
@@ -23,16 +31,6 @@ class Opening extends Phaser.Scene {
     randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
     this.input.keyboard.on('keydown-ENTER', () => {
       this.scene.start('Scene1');
-    });
-
-    // Set up fullscreen button
-    const fullscreenButton = document.getElementById('fullscreenButton');
-    fullscreenButton.addEventListener('click', () => {
-        if (this.scale.isFullscreen) {
-            this.scale.stopFullscreen();
-        } else {
-            this.scale.startFullscreen();
-        }
     });
 
     platforms = this.physics.add.staticGroup();
