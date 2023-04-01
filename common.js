@@ -16,24 +16,24 @@ var chargeReady;
 var jKeyDownTime = 0;
 
 function shootLaser() {
-    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left") {
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
         let laser = lasers.create(player.x - 30, player.y + 4, 'laser');
         laser.setVelocityX(-1000);
         laser.setAcceleration(0);
     } else {
-        let laser = lasers.create(player.x + 30, player.y + 4, 'laser');
+        let laser = lasers.create(player.x + 30, player.y + 4, 'laser' || player.anims.currentAnim.key === "jump");
         laser.setVelocityX(1000);
         laser.setAcceleration(0);
     }
 }
 
 function shootBigLaser() {
-    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left") {
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
         let bigLaser = bigLasers.create(player.x - 30, player.y + 4, 'bigLaser');
         bigLaser.setVelocityX(-1000);
         bigLaser.setAcceleration(0);
     } else {
-        let bigLaser = bigLasers.create(player.x + 30, player.y + 4, 'bigLaser');
+        let bigLaser = bigLasers.create(player.x + 30, player.y + 4, 'bigLaser' || player.anims.currentAnim.key === "jump");
         bigLaser.setVelocityX(1000);
         bigLaser.setAcceleration(0);
     }

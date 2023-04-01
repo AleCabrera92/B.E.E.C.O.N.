@@ -8,6 +8,7 @@ class Scene1 extends Phaser.Scene {
 
         this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
         this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.spritesheet('jump', 'assets/jump.png', { frameWidth: 250, frameHeight: 210 });
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('wall', 'assets/wall.png');
@@ -115,6 +116,20 @@ class Scene1 extends Phaser.Scene {
             repeat: -1       
         });
 
+        this.anims.create({
+            key: 'jump',
+            frames: this.anims.generateFrameNumbers('jump', { start: 2, end: 3 }),
+            frameRate: 10,
+            repeat: 0   
+        });
+
+        this.anims.create({
+            key: 'jumpBack',
+            frames: this.anims.generateFrameNumbers('jump', { start: 1, end: 0 }),
+            frameRate: 10,
+            repeat: 0 
+        });
+
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
@@ -142,11 +157,11 @@ class Scene1 extends Phaser.Scene {
             jKeyDownTime = this.time.now;
         }
 
-        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 1500)) {
+        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 1000)) {
 
             let holdTime = this.time.now - jKeyDownTime;
 
-            if (holdTime > 1500) {
+            if (holdTime > 1000) {
                 chargeReady.setVisible(true);
             }
         }
@@ -161,10 +176,18 @@ class Scene1 extends Phaser.Scene {
     
         if (cursors.left.isDown || keyA.isDown) {
             player.setVelocityX(-250);
-            player.anims.play('left', true);
+            if (player.anims.currentAnim.key === 'jumpBack') {
+                player.anims.play('jumpBack', true); //player.flipX = true;
+            } else {
+                player.anims.play('left', true);   
+            }    
         } else if (cursors.right.isDown || keyD.isDown) {
             player.setVelocityX(250);
-            player.anims.play('right', true);
+            if (player.anims.currentAnim.key === 'jump') {
+                player.anims.play('jump', true); //player.flipX = true;
+            } else {
+                player.anims.play('right', true);   
+            }    
         } else {
             player.setVelocityX(0);
             if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
@@ -175,7 +198,7 @@ class Scene1 extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustUp(keyJ)) {
-            if (keyJ.duration > 1500) {
+            if (keyJ.duration > 1000) {
                 chargeReady.setVisible(false);
                 shootBigLaser();
             } else {
@@ -189,11 +212,36 @@ class Scene1 extends Phaser.Scene {
 
         if (didPressUp || didPressW || didPressSpace) {
             if (player.body.onFloor()) {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle') {
+                    player.anims.play('jump', true);
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack') {
+                    player.anims.play('jumpBack', true);
+                }          
                 canDoubleJump = true;
                 player.setVelocityY(-380);
             } else if (canDoubleJump) {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                    player.anims.play('jump', true);
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                    player.anims.play('jumpBack', true);
+                }   
                 canDoubleJump = false;
                 player.setVelocityY(-350);
+            }
+        }
+
+        player.on('animationcomplete-jump', function() {
+            player.anims.play('idle', true);
+        });
+
+        player.on('animationcomplete-jumpBack', function() {
+            player.anims.play('idleBack', true);
+        });
+
+        if (bigLasers.children.size > 3) {
+            const bigLaserToDelete = bigLasers.getFirstAlive();
+            if (bigLaserToDelete) {
+                bigLaserToDelete.destroy();
             }
         }
 
