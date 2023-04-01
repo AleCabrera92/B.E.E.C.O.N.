@@ -140,6 +140,8 @@ class Scene1 extends Phaser.Scene {
 
         this.physics.add.collider(bigLasers, bigLasers);
 
+        this.physics.add.collider(bigLasers, lasers);
+
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {
             bigLaser.setVelocityX(0);
             bigLaser.setAcceleration(0);
