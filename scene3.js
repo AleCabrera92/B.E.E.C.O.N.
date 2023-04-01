@@ -144,6 +144,13 @@ class Scene3 extends Phaser.Scene {
 
         this.physics.add.collider(player, platforms);
 
+        this.physics.add.collider(bigLasers, bigLasers);
+
+        this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {
+            bigLaser.setVelocityX(0);
+            bigLaser.setAcceleration(0);
+        });
+
         camera = this.cameras.main;
         camera.scrollX = game.config.width * 2;
         camera.scrollY = 0;
@@ -254,7 +261,7 @@ class Scene3 extends Phaser.Scene {
             player.anims.play('idleBack', true);
         });
 
-        if (bigLasers.children.size > 3) {
+        if (bigLasers.children.size > 4) {
             const bigLaserToDelete = bigLasers.getFirstAlive();
             if (bigLaserToDelete) {
                 bigLaserToDelete.destroy();
