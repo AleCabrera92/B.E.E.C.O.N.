@@ -13,6 +13,7 @@ class Scene2 extends Phaser.Scene {
         this.load.image('mountains2', 'assets/background.png');
         this.load.image('laser', 'assets/laser.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
+        this.load.image('chargeReady', 'assets/chargeReady.png');
 
     }
 
@@ -138,11 +139,31 @@ class Scene2 extends Phaser.Scene {
         );
         overlay.setDepth(1);
 
+        chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5);
+        chargeReady.setVisible(false);
+        chargeReady.setDepth(1);
+        chargeReady.setAlpha(0.5);
+
     }
 
     update() {
 
         camera.scrollX = player.x - game.config.width / 4;
+
+        if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J))) {
+            jKeyDownTime = this.time.now;
+        }
+
+        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 1500)) {
+
+            let holdTime = this.time.now - jKeyDownTime;
+
+            if (holdTime > 1500) {
+                chargeReady.setVisible(true);
+            }
+        }
+
+        chargeReady.setPosition(player.x, player.y-50);
 
         lasers.getChildren().forEach(laser => {
             if (laser.body.velocity.x === 0) {
@@ -167,6 +188,7 @@ class Scene2 extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustUp(keyJ)) {
             if (keyJ.duration > 1500) {
+                chargeReady.setVisible(false);
                 shootBigLaser();
             } else {
                 shootLaser();

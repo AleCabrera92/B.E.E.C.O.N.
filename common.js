@@ -12,6 +12,8 @@ var bigLasers;
 var fullscreenButton = document.getElementById('fullscreenButton');
 var overlay;
 var didPressUp, didPressW, didPressSpace;
+var chargeReady;
+var jKeyDownTime = 0;
 
 function shootLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left") {
