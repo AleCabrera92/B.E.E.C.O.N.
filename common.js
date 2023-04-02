@@ -2,7 +2,6 @@ let player;
 let platforms;
 let cursors;
 let canDoubleJump = true;
-let jumps = 0;
 let keyA, keyD, keyJ, keyF;
 let mountains;
 let camera;

@@ -24,108 +24,55 @@ class Scene2 extends Phaser.Scene {
 
         this.cameras.main.fadeIn(500);
 
-        mountains = this.physics.add.staticGroup();
-
-        for (let i = 0; i <= 1; i++) {
-            mountains.create(i * 320, -320, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
-            mountains.create(i * 320, 0, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
-            mountains.create(i * 320, 330, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
-            mountains.create(i * 320, 600, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
-        }
-
         platforms = this.physics.add.staticGroup();
-
-        platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody();
-        platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(600, 0, 'wall').setScale(1.5).refreshBody();
-        platforms.create(600, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(900, 0, 'wall').setScale(1.5).refreshBody();
-        platforms.create(900, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody();
-        platforms.create(1200, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody();
-        platforms.create(1500, 400, 'wall').setScale(1.5).refreshBody();
-
-        triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-
-        for (let i = 0; i < 10; i++) {
-            triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.3);
-        }
-
-        lasers = this.physics.add.group({
-            allowGravity: false
-        });
-
+        lasers = this.physics.add.group({allowGravity: false});
         this.physics.add.collider(lasers, platforms);
-
-        bigLasers = this.physics.add.group({
-            immovable: true,
-            allowGravity: false
-        });
-
-        this.physics.add.collider(bigLasers, platforms, function(bigLaser) {
-            bigLaser.setVelocityX(0);
-            bigLaser.setAcceleration(0);
-        });
-
+        bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
+        this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
-
-        player = this.physics.add.sprite(100, 0, 'beecon_idle').setScale(0.3);
+        this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
+        triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
+        player = this.physics.add.sprite(100, 0, 'beecon_idle').setScale(0.3).setDepth(0.2);
         player.body.setSize(120, 0);
-
         this.physics.add.collider(bigLasers, player);
-
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
-
         this.physics.add.overlap(player, triggerPlatform, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
                 this.scene.start('Scene3');
             });
         });
+        this.physics.add.collider(player, platforms);
+        this.physics.add.collider(bigLasers, bigLasers);
+        this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('beecon_walk', { start: 0, end: 1 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        for (let i = 0; i <= 1; i++) {
+            this.add.image(i * 320, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 320, 0, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 320, 300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 320, 600, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+        }
 
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('beecon_walk', { start: 3, end: 4 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(600, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(600, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(900, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(900, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(1200, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(1500, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
 
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('beecon_idle', { start: 2, end: 3 }),
-            frameRate: 10,
-            repeat: -1       
-        });
+        for (let i = 0; i < 10; i++) {triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.3)};
 
-        this.anims.create({
-            key: 'idleBack',
-            frames: this.anims.generateFrameNumbers('beecon_idle', { start: 1, end: 0 }),
-            frameRate: 10,
-            repeat: -1       
-        });
-
-        this.anims.create({
-            key: 'jump',
-            frames: this.anims.generateFrameNumbers('beecon_jump', { start: 2, end: 3 }),
-            frameRate: 10,
-            repeat: 0   
-        });
-
-        this.anims.create({
-            key: 'jumpBack',
-            frames: this.anims.generateFrameNumbers('beecon_jump', { start: 1, end: 0 }),
-            frameRate: 10,
-            repeat: 0 
-        });
+        this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_walk', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'right', frames: this.anims.generateFrameNumbers('beecon_walk', { start: 3, end: 4 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_idle', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'idleBack', frames: this.anims.generateFrameNumbers('beecon_idle', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_jump', { start: 2, end: 3 }), frameRate: 10, repeat: 0});
+        this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_jump', { start: 1, end: 0 }), frameRate: 10, repeat: 0});
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -134,35 +81,16 @@ class Scene2 extends Phaser.Scene {
 
         cursors = this.input.keyboard.createCursorKeys();
 
-        this.physics.add.collider(player, platforms);
-
-        this.physics.add.collider(bigLasers, bigLasers);
-
-        this.physics.add.collider(bigLasers, lasers);
-
-        this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {
-            bigLaser.setVelocityX(0);
-            bigLaser.setAcceleration(0);
-        });
-
         camera = this.cameras.main;
         camera.scrollX = game.config.width * 2;
         camera.scrollY = 0;
-
-        overlay = this.add.rectangle(
-            this.cameras.main.centerX,
-            this.cameras.main.centerY,
-            this.cameras.main.width*2,
-            this.cameras.main.height*2,
-            0x000000,
-            0.25
-        );
-        overlay.setDepth(1);
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5);
         chargeReady.setVisible(false);
         chargeReady.setDepth(1);
         chargeReady.setAlpha(0.5);
+
+        overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
 
     }
 
