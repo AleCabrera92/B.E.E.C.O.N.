@@ -95,10 +95,7 @@ class Scene1 extends Phaser.Scene {
         camera.scrollX = game.config.width * 2;
         camera.scrollY = 0;
 
-        chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5);
-        chargeReady.setVisible(false);
-        chargeReady.setDepth(1);
-        chargeReady.setAlpha(0.5);
+        chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
     
     }
 

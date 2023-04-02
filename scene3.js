@@ -56,7 +56,7 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        this.physics.add.collider(player, triggerPlatformBack, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
+        this.physics.add.collider(player, triggerPlatformBack, function(player) {player.setAlpha(0)});
 
         for (let i = 0; i <= 1; i++) {
             this.add.image(i * 320, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
@@ -105,10 +105,7 @@ class Scene3 extends Phaser.Scene {
         camera.scrollX = game.config.width * 2;
         camera.scrollY = 0;
 
-        chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5);
-        chargeReady.setVisible(false);
-        chargeReady.setDepth(1);
-        chargeReady.setAlpha(0.5);
+        chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
         overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.5).setDepth(1);
 
