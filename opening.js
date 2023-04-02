@@ -10,17 +10,10 @@ class Opening extends Phaser.Scene {
     this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
     this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
     this.load.image('title', 'assets/title.png');
+
   }
 
   create() {
-
-    fullscreenButton.addEventListener('click', () => {
-      if (this.scale.isFullscreen) {
-          this.scale.stopFullscreen();
-      } else {
-          this.scale.startFullscreen();
-      }
-    });
 
     const randomText = this.add.text(
       0,
@@ -35,7 +28,7 @@ class Opening extends Phaser.Scene {
 
     platforms = this.physics.add.staticGroup();
 
-    platforms.create(this.game.canvas.width/2, this.game.canvas.height/4, 'title').setScale(1.5).refreshBody(); //300
+    platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(1).refreshBody(); //300
 
     for (var i = -1; i < 9; i++) {
       platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody(); //300
@@ -55,13 +48,32 @@ class Opening extends Phaser.Scene {
 
     this.physics.add.collider(player, platforms);
 
+    keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+
+    // Set up timer to toggle visibility of text
+    this.timer = this.time.addEvent({
+      delay: 500, // 0.5 seconds
+      loop: true,
+      callback: () => {
+        randomText.visible = !randomText.visible;
+      }
+    });
   }
 
   update() {
+
+    if (Phaser.Input.Keyboard.JustDown(keyF)) {
+      toggleFullscreen();
+    }
 
     if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
       player.anims.play('idle', true);
     }
 
+  }
+
+  // Clean up the timer
+  shutdown() {
+    this.timer.remove();
   }
 }

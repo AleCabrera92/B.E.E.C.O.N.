@@ -20,13 +20,7 @@ class Scene2 extends Phaser.Scene {
 
     create() {
 
-        fullscreenButton.addEventListener('click', () => {
-            if (this.scale.isFullscreen) {
-                this.scale.stopFullscreen();
-            } else {
-                this.scale.startFullscreen();
-            }
-        });
+        this.scale.refresh();
 
         mountains = this.physics.add.staticGroup();
 
@@ -41,19 +35,14 @@ class Scene2 extends Phaser.Scene {
 
         platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody();
         platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(-300, 800, 'wall').setScale(1.5).refreshBody();
         platforms.create(600, 0, 'wall').setScale(1.5).refreshBody();
         platforms.create(600, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(600, 800, 'wall').setScale(1.5).refreshBody();
         platforms.create(900, 0, 'wall').setScale(1.5).refreshBody();
         platforms.create(900, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(900, 800, 'wall').setScale(1.5).refreshBody();
         platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody();
         platforms.create(1200, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(1200, 800, 'wall').setScale(1.5).refreshBody();
         platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody();
         platforms.create(1500, 400, 'wall').setScale(1.5).refreshBody();
-        platforms.create(1500, 800, 'wall').setScale(1.5).refreshBody();
 
         triggerPlatform = this.physics.add.sprite(0, 1303, 'ground').setScale(5);
 
@@ -84,7 +73,7 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, player);
 
         player.setBounce(0.2);
-        player.setCollideWorldBounds(true);
+        player.setCollideWorldBounds(false);
 
         this.physics.add.overlap(player, triggerPlatform, function() {
             this.scene.start('Scene3');
@@ -135,6 +124,7 @@ class Scene2 extends Phaser.Scene {
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -174,15 +164,19 @@ class Scene2 extends Phaser.Scene {
 
         camera.scrollX = player.x - game.config.width / 4;
 
+        if (Phaser.Input.Keyboard.JustDown(keyF)) {
+            toggleFullscreen();
+        }
+
         if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J))) {
             jKeyDownTime = this.time.now;
         }
 
-        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 1000)) {
+        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 750)) {
 
             let holdTime = this.time.now - jKeyDownTime;
 
-            if (holdTime > 1000) {
+            if (holdTime > 750) {
                 chargeReady.setVisible(true);
             }
         }
@@ -219,7 +213,7 @@ class Scene2 extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustUp(keyJ)) {
-            if (keyJ.duration > 1000) {
+            if (keyJ.duration > 750) {
                 chargeReady.setVisible(false);
                 shootBigLaser();
             } else {

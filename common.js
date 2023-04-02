@@ -3,7 +3,7 @@ var platforms;
 var cursors;
 var canDoubleJump = true;
 var jumps = 0;
-var keyA, keyD, keyJ;
+var keyA, keyD, keyJ, keyF;
 var mountains;
 var camera;
 var triggerPlatform;
@@ -14,6 +14,15 @@ var overlay;
 var didPressUp, didPressW, didPressSpace;
 var chargeReady;
 var jKeyDownTime = 0;
+
+function toggleFullscreen() {
+    if (game.scale.isFullscreen) {
+      game.scale.stopFullscreen();
+      game.scale.setGameSize(1280, 720);
+    } else {
+      game.scale.startFullscreen();
+    }
+}
 
 function shootLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {

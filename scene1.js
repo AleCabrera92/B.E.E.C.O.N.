@@ -22,13 +22,7 @@ class Scene1 extends Phaser.Scene {
 
     create() {
 
-        fullscreenButton.addEventListener('click', () => {
-            if (this.scale.isFullscreen) {
-                this.scale.stopFullscreen();
-            } else {
-                this.scale.startFullscreen();
-            }
-        });
+        this.scale.refresh();   
 
         for (var i = 0; i < 3; i++) {
             this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1);
@@ -68,7 +62,6 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
 
         for (var i = -1; i < 6; i++) {
-            platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody(); //300
             platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody(); //300
         }
 
@@ -82,7 +75,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, player);
 
         player.setBounce(0.2);
-        player.setCollideWorldBounds(true);
+        player.setCollideWorldBounds(false);
 
         this.physics.add.overlap(player, triggerPlatform, function() {
             this.scene.start('Scene2');
@@ -133,6 +126,7 @@ class Scene1 extends Phaser.Scene {
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -162,15 +156,19 @@ class Scene1 extends Phaser.Scene {
 
         camera.scrollX = player.x - game.config.width / 4;
 
+        if (Phaser.Input.Keyboard.JustDown(keyF)) {
+            toggleFullscreen();
+        }
+
         if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J))) {
             jKeyDownTime = this.time.now;
         }
 
-        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 1000)) {
+        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 750)) {
 
             let holdTime = this.time.now - jKeyDownTime;
 
-            if (holdTime > 1000) {
+            if (holdTime > 750) {
                 chargeReady.setVisible(true);
             }
         }
@@ -207,7 +205,7 @@ class Scene1 extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustUp(keyJ)) {
-            if (keyJ.duration > 1000) {
+            if (keyJ.duration > 750) {
                 chargeReady.setVisible(false);
                 shootBigLaser();
             } else {
