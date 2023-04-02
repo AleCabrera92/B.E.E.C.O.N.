@@ -6,6 +6,7 @@ let keyA, keyD, keyJ, keyF;
 let mountains;
 let camera;
 let triggerPlatform;
+let triggerPlatformBack;
 let lasers;
 let bigLasers;
 let overlay;

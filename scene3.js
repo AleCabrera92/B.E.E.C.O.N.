@@ -34,6 +34,7 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
+        triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         player = this.physics.add.sprite(100, 0, 'beecon_idle').setScale(0.3).setDepth(0.2);
         player.body.setSize(120, 0);
         this.physics.add.collider(bigLasers, player);
@@ -45,9 +46,17 @@ class Scene3 extends Phaser.Scene {
                 this.scene.start('Scene2');
             });
         });
+        this.physics.add.overlap(player, triggerPlatformBack, () => {
+            this.cameras.main.fadeOut(500);
+            this.cameras.main.once('camerafadeoutcomplete', () => {
+                this.scene.start('Scene1');
+            });
+        });
         this.physics.add.collider(player, platforms);
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
+
+        this.physics.add.collider(player, triggerPlatformBack, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
         for (let i = 0; i <= 1; i++) {
             this.add.image(i * 320, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
@@ -68,6 +77,10 @@ class Scene3 extends Phaser.Scene {
         for (let i = -1; i < 6; i++) {
             platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody().setDepth(0.1);
             platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1);
+        }
+
+        for (let i = 0; i < 10; i++) {
+            triggerPlatformBack.create(i * 150, -150, 'ground').setScale(1).setAlpha(1).setDepth(0.3);
         }
 
         for (let i = 9.5; i < 15; i++) {
