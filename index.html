@@ -13,29 +13,15 @@
 
     <body>
 
-        <script src="common.js"></script>
-        <script src="opening.js"></script>
-        <script src="scene1.js"></script>
-        <script src="scene2.js"></script>
-        <script src="scene3.js"></script>
+        <script src="common.js"></script><script src="opening.js">
+        </script><script src="scene1.js"></script><script src="scene2.js"></script><script src="scene3.js"></script>
         <script>
             const config = {
-                type: Phaser.AUTO,
-                width: 1280,
-                height: 720,
-                physics: {
-                    default: 'arcade',
-                    arcade: {
-                        fixedStep: false,
-                        gravity: { y: 1200 },
-                        debug: false
-                    }
-                },
-                scale: {
-                    mode: Phaser.Scale.FIT,
-                    autoCenter: Phaser.Scale.CENTER_BOTH,
-                },
-                scene: [Opening, Scene1, Scene2, Scene3],
+                type: Phaser.AUTO, width: 1280, height: 720,
+                physics: {default: 'arcade', 
+                arcade: {fixedStep: false, gravity: { y: 1200 }, debug: false}},
+                scale: {mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH},
+                scene: [Opening, Scene1, Scene2, Scene3]
             };
             const game = new Phaser.Game(config);
         </script>
