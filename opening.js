@@ -7,7 +7,6 @@ class Opening extends Phaser.Scene {
   preload() {
 
     this.load.image('ground', 'assets/platform.png');
-    this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
     this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
     this.load.image('title', 'assets/title.png');
 
@@ -30,12 +29,12 @@ class Opening extends Phaser.Scene {
 
     platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(1).refreshBody(); //300
 
-    for (var i = -1; i < 9; i++) {
+    for (let i = -1; i < 9; i++) {
       platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody(); //300
       platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody(); //300
     }
 
-    player = this.physics.add.sprite(100, 600, 'beecon').setScale(0.3); // Set initial frame to face right
+    player = this.physics.add.sprite(100, 600, 'beecon_idle').setScale(0.3); // Set initial frame to face right
     player.body.setSize(120, 0);
     player.setCollideWorldBounds(true);
 

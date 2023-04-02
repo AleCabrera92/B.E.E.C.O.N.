@@ -1,19 +1,18 @@
-var player;
-var platforms;
-var cursors;
-var canDoubleJump = true;
-var jumps = 0;
-var keyA, keyD, keyJ, keyF;
-var mountains;
-var camera;
-var triggerPlatform;
-var lasers;
-var bigLasers;
-var fullscreenButton = document.getElementById('fullscreenButton');
-var overlay;
-var didPressUp, didPressW, didPressSpace;
-var chargeReady;
-var jKeyDownTime = 0;
+let player;
+let platforms;
+let cursors;
+let canDoubleJump = true;
+let jumps = 0;
+let keyA, keyD, keyJ, keyF;
+let mountains;
+let camera;
+let triggerPlatform;
+let lasers;
+let bigLasers;
+let overlay;
+let didPressUp, didPressW, didPressSpace;
+let chargeReady;
+let jKeyDownTime = 0;
 
 function toggleFullscreen() {
     if (game.scale.isFullscreen) {
@@ -26,11 +25,11 @@ function toggleFullscreen() {
 
 function shootLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
-        let laser = lasers.create(player.x - 30, player.y + 4, 'laser');
+        let laser = lasers.create(player.x - 30, player.y + 4, 'laser').setDepth(0.2);
         laser.setVelocityX(-1000);
         laser.setAcceleration(0);
     } else {
-        let laser = lasers.create(player.x + 30, player.y + 4, 'laser' || player.anims.currentAnim.key === "jump");
+        let laser = lasers.create(player.x + 30, player.y + 4, 'laser').setDepth(0.2);
         laser.setVelocityX(1000);
         laser.setAcceleration(0);
     }
@@ -38,11 +37,11 @@ function shootLaser() {
 
 function shootBigLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
-        let bigLaser = bigLasers.create(player.x - 30, player.y + 4, 'bigLaser');
+        let bigLaser = bigLasers.create(player.x - 30, player.y + 4, 'bigLaser').setDepth(0.2);
         bigLaser.setVelocityX(-1000);
         bigLaser.setAcceleration(0);
     } else {
-        let bigLaser = bigLasers.create(player.x + 30, player.y + 4, 'bigLaser' || player.anims.currentAnim.key === "jump");
+        let bigLaser = bigLasers.create(player.x + 30, player.y + 4, 'bigLaser').setDepth(0.2);
         bigLaser.setVelocityX(1000);
         bigLaser.setAcceleration(0);
     }

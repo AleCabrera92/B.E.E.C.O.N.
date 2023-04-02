@@ -6,9 +6,9 @@ class Scene2 extends Phaser.Scene {
 
     preload() {
 
-        this.load.spritesheet('beecon', 'assets/beecon.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.spritesheet('beecon_walk', 'assets/beecon_walk.png', { frameWidth: 250, frameHeight: 210 });
         this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
-        this.load.spritesheet('jump', 'assets/jump.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.spritesheet('beecon_jump', 'assets/beecon_jump.png', { frameWidth: 250, frameHeight: 210 });
         this.load.image('wall', 'assets/wall.png');
         this.load.image('mountains', 'assets/background2.png');
         this.load.image('mountains2', 'assets/background.png');
@@ -22,9 +22,11 @@ class Scene2 extends Phaser.Scene {
 
         this.scale.refresh();
 
+        this.cameras.main.fadeIn(500);
+
         mountains = this.physics.add.staticGroup();
 
-        for (var i = 0; i <= 1; i++) {
+        for (let i = 0; i <= 1; i++) {
             mountains.create(i * 320, -320, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
             mountains.create(i * 320, 0, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
             mountains.create(i * 320, 330, 'mountains').setScale(2).refreshBody().setScrollFactor(0.2);
@@ -44,10 +46,11 @@ class Scene2 extends Phaser.Scene {
         platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody();
         platforms.create(1500, 400, 'wall').setScale(1.5).refreshBody();
 
-        triggerPlatform = this.physics.add.sprite(0, 1303, 'ground').setScale(5);
+        triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
 
-        triggerPlatform.setImmovable(true);
-        triggerPlatform.body.allowGravity = false;
+        for (let i = 0; i < 10; i++) {
+            triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.3);
+        }
 
         lasers = this.physics.add.group({
             allowGravity: false
@@ -67,7 +70,7 @@ class Scene2 extends Phaser.Scene {
 
         this.physics.add.collider(bigLasers, platforms);
 
-        player = this.physics.add.sprite(100, 0, 'beecon').setScale(0.3);
+        player = this.physics.add.sprite(100, 0, 'beecon_idle').setScale(0.3);
         player.body.setSize(120, 0);
 
         this.physics.add.collider(bigLasers, player);
@@ -75,20 +78,23 @@ class Scene2 extends Phaser.Scene {
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
 
-        this.physics.add.overlap(player, triggerPlatform, function() {
-            this.scene.start('Scene3');
-        }, null, this);
+        this.physics.add.overlap(player, triggerPlatform, () => {
+            this.cameras.main.fadeOut(500);
+            this.cameras.main.once('camerafadeoutcomplete', () => {
+                this.scene.start('Scene3');
+            });
+        });
 
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('beecon', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('beecon_walk', { start: 0, end: 1 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('beecon', { start: 3, end: 4 }),
+            frames: this.anims.generateFrameNumbers('beecon_walk', { start: 3, end: 4 }),
             frameRate: 10,
             repeat: -1
         });
@@ -109,14 +115,14 @@ class Scene2 extends Phaser.Scene {
 
         this.anims.create({
             key: 'jump',
-            frames: this.anims.generateFrameNumbers('jump', { start: 2, end: 3 }),
+            frames: this.anims.generateFrameNumbers('beecon_jump', { start: 2, end: 3 }),
             frameRate: 10,
             repeat: 0   
         });
 
         this.anims.create({
             key: 'jumpBack',
-            frames: this.anims.generateFrameNumbers('jump', { start: 1, end: 0 }),
+            frames: this.anims.generateFrameNumbers('beecon_jump', { start: 1, end: 0 }),
             frameRate: 10,
             repeat: 0 
         });
