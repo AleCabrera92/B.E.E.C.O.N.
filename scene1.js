@@ -14,8 +14,7 @@ class Scene1 extends Phaser.Scene {
         this.load.image('ground', 'assets/platform.png');
         this.load.image('breakableGround', 'assets/breakablePlatform.png');
         this.load.image('wall', 'assets/wall.png');
-        this.load.image('mountains', 'assets/background2.png');
-        this.load.image('mountains2', 'assets/background.png');
+        this.load.image('mountains', 'assets/mountains.png');
         this.load.image('laser', 'assets/laser.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
@@ -49,7 +48,7 @@ class Scene1 extends Phaser.Scene {
                 this.scene.start('Scene2');
             });
         });
-        const self = this; // store reference to Scene1 instance
+        const self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 let timer = 0;
@@ -80,15 +79,15 @@ class Scene1 extends Phaser.Scene {
         }
 
         for (let i = 0; i < 3; i++) {
-            this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(0);
+            this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.3);
         }
 
         for (let i = 0; i <= 1; i++) {
-            this.add.image(i * 320, 330, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 320, 330, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(-0.2);
         }
 
         for (let i = -1; i < 6; i++) {
-            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1); //300
+            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1);
         }
 
         for (let i = 0; i < 4; i++) {

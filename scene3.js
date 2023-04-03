@@ -12,8 +12,7 @@ class Scene3 extends Phaser.Scene {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('wall', 'assets/wall.png');
-        this.load.image('mountains', 'assets/background2.png');
-        this.load.image('mountains2', 'assets/background.png');
+        this.load.image('mountains', 'assets/mountains.png');
         this.load.image('laser', 'assets/laser.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');

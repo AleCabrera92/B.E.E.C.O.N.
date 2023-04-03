@@ -10,8 +10,7 @@ class Scene2 extends Phaser.Scene {
         this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
         this.load.spritesheet('beecon_jump', 'assets/beecon_jump.png', { frameWidth: 250, frameHeight: 210 });
         this.load.image('wall', 'assets/wall.png');
-        this.load.image('mountains', 'assets/background2.png');
-        this.load.image('mountains2', 'assets/background.png');
+        this.load.image('mountains', 'assets/mountains.png');
         this.load.image('laser', 'assets/laser.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
