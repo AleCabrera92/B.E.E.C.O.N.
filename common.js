@@ -2,7 +2,7 @@ let player;
 let platforms;
 let cursors;
 let canDoubleJump = true;
-let keyA, keyD, keyJ, keyF;
+let keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace;
 let mountains;
 let camera;
 let triggerPlatform;
@@ -13,6 +13,16 @@ let overlay;
 let didPressUp, didPressW, didPressSpace;
 let chargeReady;
 let jKeyDownTime = 0;
+let isDrilling = false;
+let timer = 0;
+
+function enableKeys() {
+    keyJ.enabled = true;
+    keyW.enabled = true;
+    keyUP.enabled = true;
+    keySpace.enabled = true;
+    keysDisabled = false;
+}
 
 function toggleFullscreen() {
     if (game.scale.isFullscreen) {

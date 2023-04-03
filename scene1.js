@@ -9,8 +9,10 @@ class Scene1 extends Phaser.Scene {
         this.load.spritesheet('beecon_walk', 'assets/beecon_walk.png', { frameWidth: 250, frameHeight: 210 });
         this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
         this.load.spritesheet('beecon_jump', 'assets/beecon_jump.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.spritesheet('beecon_drill', 'assets/beecon_drill.png', { frameWidth: 250, frameHeight: 210 });
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
+        this.load.image('breakableGround', 'assets/breakablePlatform.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('mountains', 'assets/background2.png');
         this.load.image('mountains2', 'assets/background.png');
@@ -47,7 +49,29 @@ class Scene1 extends Phaser.Scene {
                 this.scene.start('Scene2');
             });
         });
-        this.physics.add.collider(player, platforms);
+        const self = this; // store reference to Scene1 instance
+        this.physics.add.collider(player, platforms, function(player, platform) {
+            if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
+                let timer = 0;
+                let timerEvent = self.time.addEvent({
+                    delay: 500,
+                    callback: () => {
+                        timer++;
+                        if (timer >= 1 && player.anims.currentAnim.key === 'drill') {
+                            platform.destroy();
+                            timerEvent.remove();
+                        }
+                    },
+                    loop: true,
+                    callbackScope: self
+                });
+                player.once('animationcomplete', (animation) => {
+                    if (animation.key === 'drill') {
+                        timerEvent.remove();
+                    }
+                });
+            }
+        });
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
@@ -67,6 +91,21 @@ class Scene1 extends Phaser.Scene {
             platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1); //300
         }
 
+        for (let i = 0; i < 4; i++) {
+            platforms.create(1760, 390 + i * 100, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.1);
+        }
+
+        platforms.create(1400, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1400, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1520, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1520, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1520, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1640, 390, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1640, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1640, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(1640, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(2122, 300, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+
         platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
         platforms.create(500, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
         platforms.create(800, 570, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
@@ -83,11 +122,16 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({key: 'idleBack', frames: this.anims.generateFrameNumbers('beecon_idle', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_jump', { start: 2, end: 3 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_jump', { start: 1, end: 0 }), frameRate: 10, repeat: 0});
+        this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_drill', { start: 0, end: 1 }), frameRate: 30, repeat: -1});
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -102,6 +146,19 @@ class Scene1 extends Phaser.Scene {
     update() {
 
         camera.scrollX = player.x - game.config.width / 4;
+
+        keyA.on('down', enableKeys);
+        keyD.on('down', enableKeys);
+        cursors.left.on('down', enableKeys);
+        cursors.right.on('down', enableKeys);
+
+        if (Phaser.Input.Keyboard.JustDown(keyK)) {
+            player.anims.play('drill', true);
+            keyJ.enabled = false;
+            keyW.enabled = false;
+            keyUP.enabled = false;
+            keySpace.enabled = false;
+        }
 
         if (Phaser.Input.Keyboard.JustDown(keyF)) {
             toggleFullscreen();
