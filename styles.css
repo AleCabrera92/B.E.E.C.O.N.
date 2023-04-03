@@ -2,5 +2,12 @@ html, body {
   margin: 0!important;
   padding: 0!important;
   overflow: hidden!important;
-  background: #000!important;
+  background: #000;
 }
+
+/* body {
+  background-image: url("/assets/BeeG.jpg")!important;
+  background-size: contain!important;
+  background-repeat: repeat!important;
+  background-position: center!important;
+} */
