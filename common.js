@@ -16,6 +16,7 @@ let jKeyDownTime = 0;
 let isDrilling = false;
 let timer = 0;
 let clouds, clouds2, clouds3;
+let enemy;
 
 function enableKeys() {
     keyJ.enabled = true;
