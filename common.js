@@ -15,6 +15,7 @@ let chargeReady;
 let jKeyDownTime = 0;
 let isDrilling = false;
 let timer = 0;
+let clouds, clouds2, clouds3;
 
 function enableKeys() {
     keyJ.enabled = true;

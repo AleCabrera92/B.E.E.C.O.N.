@@ -18,6 +18,7 @@ class Scene1 extends Phaser.Scene {
         this.load.image('laser', 'assets/laser.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
+        this.load.image('clouds', 'assets/cloud.png');
 
     }
 
@@ -79,8 +80,26 @@ class Scene1 extends Phaser.Scene {
         }
 
         for (let i = 0; i < 3; i++) {
-            this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.3);
+            this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.4);
         }
+
+        clouds = this.physics.add.staticGroup();
+        clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.1).setDepth(-0.3).setGravity(false); // enable physics on the image
+        clouds.body.allowGravity = false;
+        clouds.body.setVelocityX(-51);
+        clouds.body.setCollideWorldBounds(false);
+
+        clouds2 = this.physics.add.staticGroup();
+        clouds2 = this.physics.add.image(1500, 271, 'clouds').setScrollFactor(0.1).setDepth(-0.3).setGravity(false); // enable physics on the image
+        clouds2.body.allowGravity = false;
+        clouds2.body.setVelocityX(-33);
+        clouds2.body.setCollideWorldBounds(false);
+
+        clouds3 = this.physics.add.staticGroup();
+        clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.1).setDepth(-0.3).setGravity(false); // enable physics on the image
+        clouds3.body.allowGravity = false;
+        clouds3.body.setVelocityX(-22);
+        clouds3.body.setCollideWorldBounds(false);
 
         for (let i = 0; i <= 1; i++) {
             this.add.image(i * 320, 330, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(-0.2);
@@ -145,6 +164,16 @@ class Scene1 extends Phaser.Scene {
     update() {
 
         camera.scrollX = player.x - game.config.width / 4;
+
+        if (clouds) {
+            this.physics.world.wrap(clouds.body, clouds.width, true); // wrap the body of the image back to its starting position when it goes off-screen
+        }
+        if (clouds2) {
+            this.physics.world.wrap(clouds2.body, clouds2.width, true); // wrap the body of the image back to its starting position when it goes off-screen
+        }
+        if (clouds3) {
+            this.physics.world.wrap(clouds3.body, clouds3.width, true); // wrap the body of the image back to its starting position when it goes off-screen
+        }
 
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);
