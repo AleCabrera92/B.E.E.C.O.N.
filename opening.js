@@ -14,7 +14,11 @@ class Opening extends Phaser.Scene {
 
   create() {
 
-    const randomText = this.add.text(0, 0, 'PRESS ENTER', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+    this.scale.refresh();
+
+    this.cameras.main.fadeIn(1000);
+
+    const randomText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
     randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
     this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
     platforms = this.physics.add.staticGroup();

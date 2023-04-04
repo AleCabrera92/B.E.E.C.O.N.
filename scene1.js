@@ -50,12 +50,13 @@ class Scene1 extends Phaser.Scene {
             player.disableBody(true, true);
             let gameOverImage = this.add.image(player.x+320, game.config.height / 4, 'gameOver');
             gameOverImage.setOrigin(0.5).setAlpha(0.75).setDepth(3);
-            let randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+            let randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, ESPACE TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
             randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
             randomText.setPosition(player.x+320, game.config.height / 2);
             this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
             let j = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J); this.input.keyboard.removeKey(j);
-            this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')}); }, null, this);
+            this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
+            this.input.keyboard.on('keydown-ESC', () => {this.scene.start('Opening')}); }, null, this);
         this.physics.add.overlap(lasers, enemy, function(enemy) {enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
