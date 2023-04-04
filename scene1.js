@@ -84,19 +84,19 @@ class Scene1 extends Phaser.Scene {
         }
 
         clouds = this.physics.add.staticGroup();
-        clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.1).setDepth(-0.3).setGravity(false); // enable physics on the image
+        clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.3).setGravity(false); // enable physics on the image
         clouds.body.allowGravity = false;
         clouds.body.setVelocityX(-51);
         clouds.body.setCollideWorldBounds(false);
 
         clouds2 = this.physics.add.staticGroup();
-        clouds2 = this.physics.add.image(1500, 271, 'clouds').setScrollFactor(0.1).setDepth(-0.3).setGravity(false); // enable physics on the image
+        clouds2 = this.physics.add.image(1500, 271, 'clouds').setScrollFactor(0.15).setDepth(-0.3).setGravity(false); // enable physics on the image
         clouds2.body.allowGravity = false;
         clouds2.body.setVelocityX(-33);
         clouds2.body.setCollideWorldBounds(false);
 
         clouds3 = this.physics.add.staticGroup();
-        clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.1).setDepth(-0.3).setGravity(false); // enable physics on the image
+        clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.3).setGravity(false); // enable physics on the image
         clouds3.body.allowGravity = false;
         clouds3.body.setVelocityX(-22);
         clouds3.body.setCollideWorldBounds(false);
