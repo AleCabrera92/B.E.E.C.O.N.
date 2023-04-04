@@ -6,7 +6,7 @@ class Scene3 extends Phaser.Scene {
 
     preload() {
 
-        this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('wall', 'assets/wall.png');
@@ -33,7 +33,8 @@ class Scene3 extends Phaser.Scene {
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.2);
-        player.body.setSize(120, 0);
+        player.body.setSize(120, 120);
+        player.body.setOffset(65, 110);
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
