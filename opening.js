@@ -6,7 +6,7 @@ class Opening extends Phaser.Scene {
 
   preload() {
     
-    this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
+    this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 210 });
     this.load.image('ground', 'assets/platform.png');
     this.load.image('title', 'assets/title.png');
 
@@ -18,7 +18,7 @@ class Opening extends Phaser.Scene {
     randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
     this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
     platforms = this.physics.add.staticGroup();
-    player = this.physics.add.sprite(100, 600, 'beecon_idle').setScale(0.3);
+    player = this.physics.add.sprite(100, 600, 'beecon_full').setScale(0.3);
     player.body.setSize(120, 0);
     player.setCollideWorldBounds(true);
     platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(1).refreshBody();
@@ -28,7 +28,7 @@ class Opening extends Phaser.Scene {
       platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody();
     }
 
-    this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_idle', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
+    this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_full', { start: 8, end: 9 }), frameRate: 10, repeat: -1});
     this.physics.add.collider(player, platforms);
     this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
   

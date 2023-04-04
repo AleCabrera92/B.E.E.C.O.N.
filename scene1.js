@@ -6,10 +6,7 @@ class Scene1 extends Phaser.Scene {
 
     preload() {
 
-        this.load.spritesheet('beecon_walk', 'assets/beecon_walk.png', { frameWidth: 250, frameHeight: 210 });
-        this.load.spritesheet('beecon_idle', 'assets/beecon_idle.png', { frameWidth: 250, frameHeight: 210 });
-        this.load.spritesheet('beecon_jump', 'assets/beecon_jump.png', { frameWidth: 250, frameHeight: 210 });
-        this.load.spritesheet('beecon_drill', 'assets/beecon_drill.png', { frameWidth: 250, frameHeight: 210 });
+        this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 210 });
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('breakableGround', 'assets/breakablePlatform.png');
@@ -38,7 +35,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(100, 0, 'beecon_idle').setScale(0.3).setDepth(0.2);
+        player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.2);
         player.body.setSize(120, 0);
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
@@ -134,13 +131,13 @@ class Scene1 extends Phaser.Scene {
             platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1); //300
         }
 
-        this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_walk', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
-        this.anims.create({key: 'right', frames: this.anims.generateFrameNumbers('beecon_walk', { start: 3, end: 4 }), frameRate: 10, repeat: -1});
-        this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_idle', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
-        this.anims.create({key: 'idleBack', frames: this.anims.generateFrameNumbers('beecon_idle', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
-        this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_jump', { start: 2, end: 3 }), frameRate: 10, repeat: 0});
-        this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_jump', { start: 1, end: 0 }), frameRate: 10, repeat: 0});
-        this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_drill', { start: 0, end: 1 }), frameRate: 30, repeat: -1});
+        this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'right', frames: this.anims.generateFrameNumbers('beecon_full', { start: 4, end: 5 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_full', { start: 8, end: 9 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'idleBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 7, end: 6 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_full', { start: 14, end: 15 }), frameRate: 10, repeat: 0});
+        this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 13, end: 12 }), frameRate: 10, repeat: 0});
+        this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
