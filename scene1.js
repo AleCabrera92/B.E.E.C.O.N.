@@ -7,7 +7,7 @@ class Scene1 extends Phaser.Scene {
     preload() {
 
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
-        this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 50, frameHeight: 41 });
+        this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 350, frameHeight: 300 });
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('breakableGround', 'assets/breakablePlatform.png');
@@ -18,6 +18,8 @@ class Scene1 extends Phaser.Scene {
         this.load.image('chargeReady', 'assets/chargeReady.png');
         this.load.image('clouds', 'assets/cloud.png');
         this.load.image('gameOver', 'assets/gameOver.png');
+        this.load.image('tree', 'assets/tree.png');
+        this.load.image('grass', 'assets/grass.png');
 
     }
 
@@ -35,13 +37,13 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
+        player = this.physics.add.sprite(0, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         /**************************************************************************************************************************************************************************/
-        enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(1.25).setDepth(0.19);
-        enemy.body.setSize(35, 28);
-        enemy.body.setOffset(8, 13);
+        enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(0.25).setDepth(0.19);
+        enemy.body.setSize(280, 220);
+        enemy.body.setOffset(30, 60);
         enemy.setCollideWorldBounds(false);
         this.physics.add.collider(enemy, platforms);
         this.physics.add.overlap(player, enemy, function(player) {
@@ -101,29 +103,29 @@ class Scene1 extends Phaser.Scene {
         }
 
         for (let i = 0; i < 3; i++) {
-            this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.4);
+            this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);
         }
 
         clouds = this.physics.add.staticGroup();
-        clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+        clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.9).setGravity(false).setAlpha(0.75); // enable physics on the image
         clouds.body.allowGravity = false;
         clouds.body.setVelocityX(-51);
         clouds.body.setCollideWorldBounds(false);
 
         clouds2 = this.physics.add.staticGroup();
-        clouds2 = this.physics.add.image(1500, 271, 'clouds').setScrollFactor(0.15).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+        clouds2 = this.physics.add.image(1500, 271, 'clouds').setScrollFactor(0.15).setDepth(-0.9).setGravity(false).setAlpha(0.75); // enable physics on the image
         clouds2.body.allowGravity = false;
         clouds2.body.setVelocityX(-33);
         clouds2.body.setCollideWorldBounds(false);
 
         clouds3 = this.physics.add.staticGroup();
-        clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+        clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.9).setGravity(false).setAlpha(0.75); // enable physics on the image
         clouds3.body.allowGravity = false;
         clouds3.body.setVelocityX(-22);
         clouds3.body.setCollideWorldBounds(false);
 
         for (let i = 0; i <= 1; i++) {
-            this.add.image(i * 320, 330, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(-0.2);
+            this.add.image(i * 320, 330, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(-0.8);
         }
 
         for (let i = -1; i < 6; i++) {
@@ -145,15 +147,28 @@ class Scene1 extends Phaser.Scene {
         platforms.create(1640, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(2122, 300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
 
-        platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(-400, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(500, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(800, 570, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(800, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(880, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
 
-        for (let i = -1; i < 6; i++) {
+        for (let i = -2; i < 6; i++) {
             platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.2); //300
         }
+        
+        this.add.image(-400, 460, 'tree').setScale(1.3).setDepth(0.31).setScrollFactor(1.1).setAlpha(0.9).setTint(Phaser.Display.Color.GetColor(50, 50, 50));
+        this.add.image(1250, 470, 'tree').setScale(0.65).setDepth(-0.2).setScrollFactor(0.8);
+
+        for (let i = -2; i < 16; i++) {
+            this.add.image(i * 240, 600, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9);
+        }
+
+        for (let i = -2; i < 16; i++) {
+            this.add.image(i * 240, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50));
+        }
+
+        this.add.image(340, 420, 'tree').setScale(1).setDepth(0.21);
 
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'right', frames: this.anims.generateFrameNumbers('beecon_full', { start: 4, end: 5 }), frameRate: 10, repeat: -1});
