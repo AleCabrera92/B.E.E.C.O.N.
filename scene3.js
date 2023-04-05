@@ -95,8 +95,8 @@ class Scene3 extends Phaser.Scene {
         platforms.create(800, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
 
         for (let i = -1; i < 6; i++) {
-            platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody().setDepth(0.1);
-            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1);
+            platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody().setDepth(0.2);
+            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.2);
         }
 
         for (let i = 0; i < 10; i++) {
