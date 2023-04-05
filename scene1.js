@@ -35,11 +35,11 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.2);
+        player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         /**************************************************************************************************************************************************************************/
-        enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(1.25).setDepth(0.2);
+        enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(1.25).setDepth(0.19);
         enemy.body.setSize(35, 28);
         enemy.body.setOffset(8, 13);
         enemy.setCollideWorldBounds(false);
@@ -97,7 +97,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
         for (let i = 9.5; i < 15; i++) {
-            triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.3);
+            triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.2);
         }
 
         for (let i = 0; i < 3; i++) {
@@ -134,25 +134,25 @@ class Scene1 extends Phaser.Scene {
             platforms.create(1760, 390 + i * 100, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);
         }
 
-        platforms.create(1400, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1400, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1520, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1520, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1520, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1640, 390, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1640, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1640, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(1640, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(2122, 300, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
+        platforms.create(1400, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1400, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1520, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1520, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1520, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 390, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2122, 300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
 
-        platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.1);
-        platforms.create(500, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(800, 570, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(800, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
-        platforms.create(880, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.1);
+        platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(500, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(800, 570, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(800, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(880, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
 
         for (let i = -1; i < 6; i++) {
-            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1); //300
+            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.2); //300
         }
 
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
