@@ -9,6 +9,8 @@ class Opening extends Phaser.Scene {
     this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
     this.load.image('ground', 'assets/platform.png');
     this.load.image('title', 'assets/title.png');
+    this.load.image('sky', 'assets/sky.png');
+    this.load.image('clouds', 'assets/cloud.png');
 
   }
 
@@ -20,13 +22,36 @@ class Opening extends Phaser.Scene {
 
     const randomText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
     randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
+    randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
     this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
     platforms = this.physics.add.staticGroup();
     player = this.physics.add.sprite(0, 600, 'beecon_full').setScale(0.3);
     player.body.setSize(120, 120);
     player.body.setOffset(65, 110);
     player.setCollideWorldBounds(true);
-    platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(1).refreshBody();
+    platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(0.518).refreshBody();
+
+    for (let i = 0; i < 3; i++) {
+      this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.4);
+    }
+
+    clouds = this.physics.add.staticGroup();
+    clouds = this.physics.add.image(576, 100, 'clouds').setScrollFactor(0.13).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+    clouds.body.allowGravity = false;
+    clouds.body.setVelocityX(-51);
+    clouds.body.setCollideWorldBounds(false);
+
+    clouds2 = this.physics.add.staticGroup();
+    clouds2 = this.physics.add.image(1500, 300, 'clouds').setScrollFactor(0.15).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+    clouds2.body.allowGravity = false;
+    clouds2.body.setVelocityX(-33);
+    clouds2.body.setCollideWorldBounds(false);
+
+    clouds3 = this.physics.add.staticGroup();
+    clouds3 = this.physics.add.image(803, 500, 'clouds').setScrollFactor(0.17).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+    clouds3.body.allowGravity = false;
+    clouds3.body.setVelocityX(-22);
+    clouds3.body.setCollideWorldBounds(false);
 
     for (let i = -1; i < 9; i++) {
       platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody();
@@ -52,6 +77,16 @@ class Opening extends Phaser.Scene {
   }
 
   update() {
+
+    if (clouds) {
+      this.physics.world.wrap(clouds.body, clouds.width, true); // wrap the body of the image back to its starting position when it goes off-screen
+    }
+    if (clouds2) {
+        this.physics.world.wrap(clouds2.body, clouds2.width, true); // wrap the body of the image back to its starting position when it goes off-screen
+    }
+    if (clouds3) {
+        this.physics.world.wrap(clouds3.body, clouds3.width, true); // wrap the body of the image back to its starting position when it goes off-screen
+    }
 
     if (player.body.blocked.right) {
       player.anims.play('left', true);
