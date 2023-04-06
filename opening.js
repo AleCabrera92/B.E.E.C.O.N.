@@ -14,6 +14,7 @@ class Opening extends Phaser.Scene {
     this.load.image('rain', 'assets/rain.png');
     this.load.image('ground', 'assets/ground.png');
     this.load.image('skyOverlay', 'assets/skyOverlay.png');
+    this.load.audio('titleTheme', 'assets/titleTheme.mp3');
 
   }
 
@@ -21,18 +22,60 @@ class Opening extends Phaser.Scene {
 
     this.scale.refresh();
 
-    this.cameras.main.fadeIn(1000);
+    overlay = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1002);
+
+    this.time.delayedCall(1000, function() {
+      this.tweens.add({
+        targets: overlay,
+        alpha: 0,
+        duration: 1000,
+        onComplete: function() {
+          overlay.destroy();
+        }
+      });
+    }, [], this);
+
+    overlay2 = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1000);
+
+    this.time.delayedCall(3000, function() {
+      this.tweens.add({
+        targets: overlay2,
+        alpha: 0,
+        duration: 1000,
+        onComplete: function() {
+          overlay2.destroy();
+        }
+      });
+    }, [], this);
+  
+    bgm = this.sound.add('titleTheme', { loop: true });
+
+    this.sound.pauseOnBlur = false;
+    this.sound.on('blur', function () {
+      bgm.setMute(true);
+    });
+  
+    // Unmute the audio when the tab regains focus
+    this.sound.on('focus', function () {
+      bgm.setMute(false);
+    });
+  
+    // Play the audio after a delay of 3 seconds
+    this.time.delayedCall(850, function() {
+      bgm.play();
+    }, [], this);
 
     const randomText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
     randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
     randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
+    //this.input.keyboard.on('keydown-ENTER', () => {this.cameras.main.fadeOut(1000); this.scene.start('Scene1')});
     this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
     platforms = this.physics.add.staticGroup();
     player = this.physics.add.sprite(0, 600, 'beecon_full').setScale(0.3);
     player.body.setSize(120, 120);
     player.body.setOffset(65, 110);
     player.setCollideWorldBounds(true);
-    platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(0.518).refreshBody();
+    platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(0.518).refreshBody().setDepth(1001).setAlpha(1);
 
     for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.4)};
 

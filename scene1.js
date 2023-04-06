@@ -23,6 +23,7 @@ class Scene1 extends Phaser.Scene {
         this.load.image('rain', 'assets/rain.png');
         this.load.image('ground', 'assets/ground.png');
         this.load.image('skyOverlay', 'assets/skyOverlay.png');
+        this.load.audio('titleTheme', 'assets/titleTheme.mp3');
 
     }
 
@@ -30,7 +31,32 @@ class Scene1 extends Phaser.Scene {
 
         this.scale.refresh();
 
-        this.cameras.main.fadeIn(1000);
+        overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
+
+        this.time.delayedCall(1000, function() {
+          this.tweens.add({
+            targets: overlay,
+            alpha: 0,
+            duration: 1000,
+            onComplete: function() {
+              overlay.destroy();
+            }
+          });
+        }, [], this);
+
+        //this.cameras.main.fadeIn(1000);
+
+        isMusicPlaying = false;
+        this.sound.sounds.forEach(function(sound) {
+            if (sound.key === 'titleTheme' && sound.isPlaying) {
+                isMusicPlaying = true;
+            }
+        });
+        
+        // Play background music if it's not already playing
+        if (!isMusicPlaying) {
+            this.sound.play('titleTheme', { loop: true });
+        }
 
         livesText = this.add.text(player.x, 10, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#ffffff' }).setDepth(10);
 
@@ -42,7 +68,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(0, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
+        player = this.physics.add.sprite(0, -500, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         /**************************************************************************************************************************************************************************/
@@ -54,6 +80,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.overlap(player, enemy, function(player) {
             decreaseLives();
             if (lives === 0) {
+                this.sound.stopAll();
                 player.alpha = 0;
                 player.anims.stop();
                 player.disableBody(true, true);

@@ -9,7 +9,7 @@ let triggerPlatform;
 let triggerPlatformBack;
 let lasers;
 let bigLasers;
-let overlay;
+let overlay, overlay2;
 let didPressUp, didPressW, didPressSpace;
 let chargeReady;
 let jKeyDownTime = 0;
@@ -19,6 +19,8 @@ let clouds, clouds2, clouds3;
 let enemy;
 let emitter;
 let lives = 99; // start with 3 lives
+let bgm;
+let isMusicPlaying;
 
 // create a text object to display the lives count
 let livesText;
