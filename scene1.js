@@ -92,7 +92,7 @@ class Scene1 extends Phaser.Scene {
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 let j = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J); this.input.keyboard.removeKey(j);
                 this.input.keyboard.on('keydown-ENTER', () => {lives = 99; this.scene.start('Scene1')});
-                this.input.keyboard.on('keydown-E', () => {lives = 99; this.scene.start('Opening')}); }
+                this.input.keyboard.on('keydown-E', () => {lives = 99; this.scene.start('Title')}); }
             }, null, this);
         this.physics.add.overlap(lasers, enemy, function(enemy) {enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {

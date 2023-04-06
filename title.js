@@ -1,7 +1,7 @@
-class Opening extends Phaser.Scene {
+class Title extends Phaser.Scene {
 
   constructor() {
-    super({ key: 'Opening' });
+    super({ key: 'Title' });
   }
 
   preload() {

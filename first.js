@@ -18,7 +18,7 @@ class First extends Phaser.Scene {
       pressMeButton.setOrigin(0.5, 0.5);
       pressMeButton.setInteractive({ useHandCursor: true });
       pressMeButton.on('pointerdown', () => {
-        this.scene.start('Opening');
+        this.scene.start('Title');
       });
   
       // set the background color to black
