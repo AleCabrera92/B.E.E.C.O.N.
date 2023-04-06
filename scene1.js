@@ -24,12 +24,31 @@ class Scene1 extends Phaser.Scene {
         this.load.image('ground', 'assets/ground.png');
         this.load.image('skyOverlay', 'assets/skyOverlay.png');
         this.load.audio('titleTheme', 'assets/titleTheme.mp3');
+        this.load.audio('beeconWalk', 'assets/beeconWalk.mp3');
+        this.load.audio('beeconJump', 'assets/beeconJump.mp3');
+        this.load.audio('laser', 'assets/laser.mp3');
+        this.load.audio('bigLaser', 'assets/bigLaser.mp3');
+        this.load.audio('drill', 'assets/drill.mp3');
+        this.load.audio('enemyF', 'assets/enemyF.mp3');
+        this.load.audio('beeconF', 'assets/beeconF.mp3');
+        this.load.audio('rain', 'assets/rain.mp3');
+        this.load.audio('laserHit', 'assets/laserHit.mp3');
 
     }
 
     create() {
 
         this.scale.refresh();
+
+        sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);;
+        sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
+        sound_laser = this.sound.add('laser').setVolume(0.25);
+        sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
+        sound_drill = this.sound.add('drill').setVolume(0.25);
+        sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
+        sound_beeconF = this.sound.add('beeconF').setVolume(0.25);
+        sound_rain = this.sound.add('rain').setVolume(0.10);
+        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);
 
         overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
@@ -55,8 +74,11 @@ class Scene1 extends Phaser.Scene {
         
         // Play background music if it's not already playing
         if (!isMusicPlaying) {
-            this.sound.play('titleTheme', { loop: true });
+            bgm.play();
         }
+
+        sound_rain.play();
+        sound_rain.loop = true;
 
         livesText = this.add.text(player.x, 10, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#ffffff' }).setDepth(10);
 
@@ -80,7 +102,8 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.overlap(player, enemy, function(player) {
             decreaseLives();
             if (lives === 0) {
-                this.sound.stopAll();
+                bgm.stop();
+                sound_beeconF.play();
                 player.alpha = 0;
                 player.anims.stop();
                 player.disableBody(true, true);
@@ -91,10 +114,10 @@ class Scene1 extends Phaser.Scene {
                 randomText.setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 let j = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J); this.input.keyboard.removeKey(j);
-                this.input.keyboard.on('keydown-ENTER', () => {lives = 99; this.scene.start('Scene1')});
-                this.input.keyboard.on('keydown-E', () => {lives = 99; this.scene.start('Title')}); }
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene1')});
+                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
-        this.physics.add.overlap(lasers, enemy, function(enemy) {enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});
+        this.physics.add.overlap(lasers, enemy, function(enemy) {sound_enemyF.play(); enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
         /**************************************************************************************************************************************************************************/
@@ -228,6 +251,8 @@ class Scene1 extends Phaser.Scene {
         });
       
         emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
+
+        this.lastWalkSoundTime = 0;
     
     }
 
@@ -260,11 +285,27 @@ class Scene1 extends Phaser.Scene {
         cursors.right.on('down', enableKeys);
 
         if (Phaser.Input.Keyboard.JustDown(keyK)) {
+            sound_drill.play();
+            sound_drill.loop = true;
             player.anims.play('drill', true);
             keyJ.enabled = false;
             keyW.enabled = false;
             keyUP.enabled = false;
             keySpace.enabled = false;
+        }
+
+        if (player.body.velocity.x !==0) {
+            sound_drill.stop();
+        }
+
+        if (player.body.velocity.x !==0 && player.body.onFloor()) {
+            // check if enough time has elapsed since the last sound was played
+            if (this.time.now - this.lastWalkSoundTime > 100) {
+                // play the sound with a 500ms delay between each play
+                sound_beeconWalk.play();
+                // update the last sound time
+                this.lastWalkSoundTime = this.time.now;
+            }
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyF)) {
@@ -288,6 +329,7 @@ class Scene1 extends Phaser.Scene {
 
         lasers.getChildren().forEach(laser => {
             if (laser.body.velocity.x === 0) {
+                sound_laserHit.play();
                 laser.destroy();
             }
         });
@@ -331,16 +373,20 @@ class Scene1 extends Phaser.Scene {
         if (didPressUp || didPressW || didPressSpace) {
             if (player.body.onFloor()) {
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle') {
+                    sound_beeconJump.play();
                     player.anims.play('jump', true);
                 } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack') {
+                    sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }          
                 canDoubleJump = true;
                 player.setVelocityY(-380);
             } else if (canDoubleJump) {
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                    sound_beeconJump.play();
                     player.anims.play('jump', true);
                 } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                    sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   
                 canDoubleJump = false;

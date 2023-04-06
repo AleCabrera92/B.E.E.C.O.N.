@@ -15,6 +15,8 @@ class Title extends Phaser.Scene {
     this.load.image('ground', 'assets/ground.png');
     this.load.image('skyOverlay', 'assets/skyOverlay.png');
     this.load.audio('titleTheme', 'assets/titleTheme.mp3');
+    this.load.audio('beeconWalk', 'assets/beeconWalk.mp3');
+    this.load.audio('beeconJump', 'assets/beeconJump.mp3');
 
   }
 
@@ -49,16 +51,17 @@ class Title extends Phaser.Scene {
     }, [], this);
   
     bgm = this.sound.add('titleTheme', { loop: true });
+    bgm.setVolume(0.5);
 
-    this.sound.pauseOnBlur = false;
-    this.sound.on('blur', function () {
-      bgm.setMute(true);
-    });
+    // this.sound.pauseOnBlur = false;
+    // this.sound.on('blur', function () {
+    //   bgm.setMute(true);
+    // });
   
-    // Unmute the audio when the tab regains focus
-    this.sound.on('focus', function () {
-      bgm.setMute(false);
-    });
+    // // Unmute the audio when the tab regains focus
+    // this.sound.on('focus', function () {
+    //   bgm.setMute(false);
+    // });
   
     // Play the audio after a delay of 3 seconds
     this.time.delayedCall(850, function() {

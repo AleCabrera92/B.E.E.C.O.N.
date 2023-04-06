@@ -19,6 +19,8 @@ class Scene2 extends Phaser.Scene {
 
         this.scale.refresh();
 
+        sound_drill.stop();
+
         this.cameras.main.fadeIn(500);
 
         livesText = this.add.text(player.x, 10, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#ffffff' }).setDepth(10);

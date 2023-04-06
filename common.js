@@ -21,6 +21,7 @@ let emitter;
 let lives = 99; // start with 3 lives
 let bgm;
 let isMusicPlaying;
+let sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_rain, sound_laserHit;
 
 // create a text object to display the lives count
 let livesText;
@@ -61,11 +62,13 @@ function toggleFullscreen() {
 
 function shootLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
+        sound_laser.play();
         let laser = lasers.create(player.x - 30, player.y + 4, 'laser').setDepth(0.2);
         laser.setVelocityX(-1000);
         laser.setAcceleration(0);
     } else {
         let laser = lasers.create(player.x + 30, player.y + 4, 'laser').setDepth(0.2);
+        sound_laser.play();
         laser.setVelocityX(1000);
         laser.setAcceleration(0);
     }
@@ -74,10 +77,12 @@ function shootLaser() {
 function shootBigLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
         let bigLaser = bigLasers.create(player.x - 30, player.y + 4, 'bigLaser').setDepth(0.2);
+        sound_bigLaser.play();
         bigLaser.setVelocityX(-1000);
         bigLaser.setAcceleration(0);
     } else {
         let bigLaser = bigLasers.create(player.x + 30, player.y + 4, 'bigLaser').setDepth(0.2);
+        sound_bigLaser.play();
         bigLaser.setVelocityX(1000);
         bigLaser.setAcceleration(0);
     }
