@@ -7,10 +7,13 @@ class Opening extends Phaser.Scene {
   preload() {
     
     this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
-    this.load.image('ground', 'assets/platform.png');
+    this.load.image('platform', 'assets/platform.png');
     this.load.image('title', 'assets/title.png');
     this.load.image('sky', 'assets/sky.png');
     this.load.image('clouds', 'assets/cloud.png');
+    this.load.image('rain', 'assets/rain.png');
+    this.load.image('ground', 'assets/ground.png');
+    this.load.image('skyOverlay', 'assets/skyOverlay.png');
 
   }
 
@@ -31,32 +34,16 @@ class Opening extends Phaser.Scene {
     player.setCollideWorldBounds(true);
     platforms.create(this.game.canvas.width/2, this.game.canvas.height/3.5, 'title').setScale(0.518).refreshBody();
 
-    for (let i = 0; i < 3; i++) {
-      this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.4);
-    }
+    for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.4)};
 
-    clouds = this.physics.add.staticGroup();
     clouds = this.physics.add.image(576, 100, 'clouds').setScrollFactor(0.13).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
-    clouds.body.allowGravity = false;
-    clouds.body.setVelocityX(-51);
-    clouds.body.setCollideWorldBounds(false);
-
-    clouds2 = this.physics.add.staticGroup();
+    clouds.body.setVelocityX(-51); clouds.body.setCollideWorldBounds(false); clouds.body.allowGravity = false;
     clouds2 = this.physics.add.image(1500, 300, 'clouds').setScrollFactor(0.15).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
-    clouds2.body.allowGravity = false;
-    clouds2.body.setVelocityX(-33);
-    clouds2.body.setCollideWorldBounds(false);
-
-    clouds3 = this.physics.add.staticGroup();
+    clouds2.body.setVelocityX(-33); clouds2.body.setCollideWorldBounds(false); clouds2.body.allowGravity = false;
     clouds3 = this.physics.add.image(803, 500, 'clouds').setScrollFactor(0.17).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
-    clouds3.body.allowGravity = false;
-    clouds3.body.setVelocityX(-22);
-    clouds3.body.setCollideWorldBounds(false);
+    clouds3.body.setVelocityX(-22); clouds3.body.setCollideWorldBounds(false); clouds3.body.allowGravity = false;
 
-    for (let i = -1; i < 9; i++) {
-      platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody();
-      platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody();
-    }
+    for (let i = 0; i < 4; i++) {platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody()};
 
     this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_full', { start: 8, end: 9 }), frameRate: 10, repeat: -1});
     this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
@@ -73,20 +60,30 @@ class Opening extends Phaser.Scene {
 
     player.anims.play('right');
     player.setVelocityX(250);
+
+    emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
+      x: 0,
+      y: 0,
+      quantity: 50,
+      lifespan: 1600,
+      speedY: { min: 300, max: 500 },
+      speedX: { min: -5, max: 5 },
+      scale: { start: 0.1, end: 0.5 },
+      rotate: { start: 0, end: 0 },
+      frequency: 5,
+      emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+      on: true
+    });
+
+    emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
     
   }
 
   update() {
 
-    if (clouds) {
-      this.physics.world.wrap(clouds.body, clouds.width, true); // wrap the body of the image back to its starting position when it goes off-screen
-    }
-    if (clouds2) {
-        this.physics.world.wrap(clouds2.body, clouds2.width, true); // wrap the body of the image back to its starting position when it goes off-screen
-    }
-    if (clouds3) {
-        this.physics.world.wrap(clouds3.body, clouds3.width, true); // wrap the body of the image back to its starting position when it goes off-screen
-    }
+    if (clouds) {this.physics.world.wrap(clouds.body, clouds.width, true)};
+    if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width, true)};
+    if (clouds3) {this.physics.world.wrap(clouds3.body, clouds3.width, true)};
 
     if (player.body.blocked.right) {
       player.anims.play('left', true);

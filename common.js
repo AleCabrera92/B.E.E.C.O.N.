@@ -17,6 +17,26 @@ let isDrilling = false;
 let timer = 0;
 let clouds, clouds2, clouds3;
 let enemy;
+let emitter;
+let lives = 99; // start with 3 lives
+
+// create a text object to display the lives count
+let livesText;
+
+function decreaseLives() {
+    lives--;
+    if (lives <= -1) {
+      // game over
+      //gameOver();
+    } else {
+      // update lives UI
+      updateLivesUI();
+    }
+  }
+  
+  function updateLivesUI() {
+    livesText.setText('Energy: ' + lives);
+  }
 
 function enableKeys() {
     keyJ.enabled = true;
@@ -30,8 +50,10 @@ function toggleFullscreen() {
     if (game.scale.isFullscreen) {
       game.scale.stopFullscreen();
       game.scale.setGameSize(1280, 720);
+      //game.canvas.style.cursor = 'default';
     } else {
       game.scale.startFullscreen();
+      //game.canvas.style.cursor = 'none';
     }
 }
 

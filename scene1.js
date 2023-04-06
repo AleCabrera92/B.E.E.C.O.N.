@@ -9,7 +9,7 @@ class Scene1 extends Phaser.Scene {
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
         this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 350, frameHeight: 300 });
         this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
+        this.load.image('platform', 'assets/platform.png');
         this.load.image('breakableGround', 'assets/breakablePlatform.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('mountains', 'assets/mountains.png');
@@ -20,6 +20,9 @@ class Scene1 extends Phaser.Scene {
         this.load.image('gameOver', 'assets/gameOver.png');
         this.load.image('tree', 'assets/tree.png');
         this.load.image('grass', 'assets/grass.png');
+        this.load.image('rain', 'assets/rain.png');
+        this.load.image('ground', 'assets/ground.png');
+        this.load.image('skyOverlay', 'assets/skyOverlay.png');
 
     }
 
@@ -28,6 +31,8 @@ class Scene1 extends Phaser.Scene {
         this.scale.refresh();
 
         this.cameras.main.fadeIn(1000);
+
+        livesText = this.add.text(player.x, 10, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#ffffff' }).setDepth(10);
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -47,18 +52,21 @@ class Scene1 extends Phaser.Scene {
         enemy.setCollideWorldBounds(false);
         this.physics.add.collider(enemy, platforms);
         this.physics.add.overlap(player, enemy, function(player) {
-            player.alpha = 0;
-            player.anims.stop();
-            player.disableBody(true, true);
-            let gameOverImage = this.add.image(player.x+320, game.config.height / 4, 'gameOver');
-            gameOverImage.setOrigin(0.5).setAlpha(0.75).setDepth(3);
-            let randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-            randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
-            randomText.setPosition(player.x+320, game.config.height / 2);
-            this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-            let j = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J); this.input.keyboard.removeKey(j);
-            this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
-            this.input.keyboard.on('keydown-E', () => {this.scene.start('Opening')}); }, null, this);
+            decreaseLives();
+            if (lives === 0) {
+                player.alpha = 0;
+                player.anims.stop();
+                player.disableBody(true, true);
+                let gameOverImage = this.add.image(player.x+320, game.config.height / 4, 'gameOver');
+                gameOverImage.setOrigin(0.5).setAlpha(0.75).setDepth(3);
+                let randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
+                randomText.setPosition(player.x+320, game.config.height / 2);
+                this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
+                let j = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J); this.input.keyboard.removeKey(j);
+                this.input.keyboard.on('keydown-ENTER', () => {lives = 99; this.scene.start('Scene1')});
+                this.input.keyboard.on('keydown-E', () => {lives = 99; this.scene.start('Opening')}); }
+            }, null, this);
         this.physics.add.overlap(lasers, enemy, function(enemy) {enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
@@ -98,77 +106,54 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        for (let i = 9.5; i < 15; i++) {
-            triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.2);
-        }
+        for (let i = 9.5; i < 15; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
+        for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
+        for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
 
-        for (let i = 0; i < 3; i++) {
-            this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);
-        }
+        clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.9).setGravity(false).setAlpha(0.75);
+        clouds.body.setVelocityX(-51); clouds.body.setCollideWorldBounds(false); clouds.body.allowGravity = false;
+        clouds2 = this.physics.add.image(1500, 271, 'clouds').setScrollFactor(0.15).setDepth(-0.9).setGravity(false).setAlpha(0.75);
+        clouds2.body.setVelocityX(-33); clouds2.body.setCollideWorldBounds(false); clouds2.body.allowGravity = false;
+        clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.9).setGravity(false).setAlpha(0.75);
+        clouds3.body.setVelocityX(-22); clouds3.body.setCollideWorldBounds(false); clouds3.body.allowGravity = false;
 
-        clouds = this.physics.add.staticGroup();
-        clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.9).setGravity(false).setAlpha(0.75); // enable physics on the image
-        clouds.body.allowGravity = false;
-        clouds.body.setVelocityX(-51);
-        clouds.body.setCollideWorldBounds(false);
+        for (let i = 0; i <= 4; i++) {this.add.image(i * 1200, 450, 'mountains').setScale(1.5).setScrollFactor(0.2).setDepth(-0.8).setTint(Phaser.Display.Color.GetColor(125, 100, 150));}
+        for (let i = 0; i < 4; i++) {platforms.create(1880, 390 + i * 100, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);}
 
-        clouds2 = this.physics.add.staticGroup();
-        clouds2 = this.physics.add.image(1500, 271, 'clouds').setScrollFactor(0.15).setDepth(-0.9).setGravity(false).setAlpha(0.75); // enable physics on the image
-        clouds2.body.allowGravity = false;
-        clouds2.body.setVelocityX(-33);
-        clouds2.body.setCollideWorldBounds(false);
+        platforms.create(1400, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1400, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1520, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1520, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1520, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1640, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1760, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1760, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1760, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1760, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2000, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2000, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2000, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2000, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2530, 300, 'wall').setScale(2.4).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
 
-        clouds3 = this.physics.add.staticGroup();
-        clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.9).setGravity(false).setAlpha(0.75); // enable physics on the image
-        clouds3.body.allowGravity = false;
-        clouds3.body.setVelocityX(-22);
-        clouds3.body.setCollideWorldBounds(false);
+        platforms.create(-400, 400, 'wall').setScale(1).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+        platforms.create(500, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(800, 570, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(880, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
-        for (let i = 0; i <= 1; i++) {
-            this.add.image(i * 320, 330, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(-0.8);
-        }
+        for (let i = -2; i < 4; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
 
-        for (let i = -1; i < 6; i++) {
-            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.1);
-        }
+        this.add.image(-270, 185, 'tree').setScale(0.55).setDepth(-0.2).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+        this.add.image(340, 463, 'tree').setScale(0.8).setDepth(0.21).setTint(Phaser.Display.Color.GetColor(230, 230, 230));
+        this.add.image(1250, 470, 'tree').setScale(0.65).setDepth(-0.2).setScrollFactor(0.8).setTint(Phaser.Display.Color.GetColor(180, 180, 180));
 
-        for (let i = 0; i < 4; i++) {
-            platforms.create(1760, 390 + i * 100, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);
-        }
+        for (let i = -2; i < 16; i++) {this.add.image(i * 240, 600, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
 
-        platforms.create(1400, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1400, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1520, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1520, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1520, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 390, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 490, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 590, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 690, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(2122, 300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-
-        platforms.create(-400, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(500, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(800, 570, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(800, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(880, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-
-        for (let i = -2; i < 6; i++) {
-            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.2); //300
-        }
-        
-        this.add.image(-400, 460, 'tree').setScale(1.3).setDepth(0.31).setScrollFactor(1.1).setAlpha(0.9).setTint(Phaser.Display.Color.GetColor(50, 50, 50));
-        this.add.image(1250, 470, 'tree').setScale(0.65).setDepth(-0.2).setScrollFactor(0.8);
-
-        for (let i = -2; i < 16; i++) {
-            this.add.image(i * 240, 600, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9);
-        }
-
-        for (let i = -2; i < 16; i++) {
-            this.add.image(i * 240, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50));
-        }
-
-        this.add.image(340, 420, 'tree').setScale(1).setDepth(0.21);
+        for (let i = -2; i < 16; i++) {this.add.image(i * 240, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50));}
 
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'right', frames: this.anims.generateFrameNumbers('beecon_full', { start: 4, end: 5 }), frameRate: 10, repeat: -1});
@@ -200,6 +185,22 @@ class Scene1 extends Phaser.Scene {
         camera.scrollY = 0;
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
+
+        emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
+            x: 0,
+            y: 0,
+            quantity: 50,
+            lifespan: 1600,
+            speedY: { min: 300, max: 500 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.1, end: 0.5 },
+            rotate: { start: 0, end: 0 },
+            frequency: 5,
+            emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+            on: true
+        });
+      
+        emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
     
     }
 
@@ -207,15 +208,12 @@ class Scene1 extends Phaser.Scene {
 
         camera.scrollX = player.x - game.config.width / 4;
 
-        if (clouds) {
-            this.physics.world.wrap(clouds.body, clouds.width+30, true); // wrap the body of the image back to its starting position when it goes off-screen
-        }
-        if (clouds2) {
-            this.physics.world.wrap(clouds2.body, clouds2.width+30, true); // wrap the body of the image back to its starting position when it goes off-screen
-        }
-        if (clouds3) {
-            this.physics.world.wrap(clouds3.body, clouds3.width+30, true); // wrap the body of the image back to its starting position when it goes off-screen
-        }
+        livesText.x = player.x+10 - game.config.width / 4;
+        livesText.y = 10;
+
+        if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
+        if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
+        if (clouds3) {this.physics.world.wrap(clouds3.body, clouds3.width+50, true);}
 
         /**************************************************************************************************************************************************************************/
         enemy.anims.play('enemyChill', true);
@@ -341,7 +339,7 @@ class Scene1 extends Phaser.Scene {
     }
 
     /**************************************************************************************************************************************************************************/
-    shutdown() {this.timer.remove()};
+    shutdown() {this.timer.remove();}
     /**************************************************************************************************************************************************************************/
 
 }

@@ -21,6 +21,7 @@ class Test extends Phaser.Scene {
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
         this.load.image('clouds', 'assets/cloud.png');
+        this.load.image('rain', 'assets/rain.png');
 
         /**************************************************************************************************************************************************************************/
         this.load.image('gameOver', 'assets/gameOver.png');
@@ -195,6 +196,22 @@ class Test extends Phaser.Scene {
         camera.scrollY = 0;
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
+
+        var emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
+            x: 0,
+            y: 0,
+            quantity: 100,
+            lifespan: 1600,
+            speedY: { min: 300, max: 500 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.1, end: 0.5 },
+            rotate: { start: 0, end: 0 },
+            frequency: 5,
+            emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+            on: true
+        });
+      
+        emitter.setScrollFactor(0).setScale(0.2).setAlpha(0.7);
     
     }
 

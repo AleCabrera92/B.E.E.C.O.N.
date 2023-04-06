@@ -8,12 +8,13 @@ class Scene3 extends Phaser.Scene {
 
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
         this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
+        this.load.image('platform', 'assets/platform.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('mountains', 'assets/mountains.png');
         this.load.image('laser', 'assets/laser.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
+        this.load.image('ground', 'assets/ground.png');
 
     }
 
@@ -22,6 +23,8 @@ class Scene3 extends Phaser.Scene {
         this.scale.refresh();
 
         this.cameras.main.fadeIn(500);
+
+        livesText = this.add.text(player.x, 10, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#ffffff' }).setDepth(10);
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -78,7 +81,7 @@ class Scene3 extends Phaser.Scene {
 
         this.physics.add.collider(player, triggerPlatformBack, function(player) {player.setAlpha(0)});
 
-        for (let i = 0; i <= 1; i++) {
+        for (let i = 0; i <= 3; i++) {
             this.add.image(i * 320, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
             this.add.image(i * 320, 0, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
             this.add.image(i * 320, 300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
@@ -91,20 +94,19 @@ class Scene3 extends Phaser.Scene {
         platforms.create(900, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(500, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(800, 650, 'ground').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(500, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
         for (let i = -1; i < 6; i++) {
-            platforms.create(i * 240, 930, 'ground').setScale(2).refreshBody().setDepth(0.2);
-            platforms.create(i * 240, 780, 'ground').setScale(2).refreshBody().setDepth(0.2);
+            platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
         }
 
         for (let i = 0; i < 10; i++) {
-            triggerPlatformBack.create(i * 150, -150, 'ground').setScale(1).setAlpha(1).setDepth(0.3);
+            triggerPlatformBack.create(i * 150, -150, 'platform').setScale(1).setAlpha(1).setDepth(0.3);
         }
 
         for (let i = 9.5; i < 15; i++) {
-            triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.3);
+            triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
         }
 
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
@@ -132,13 +134,16 @@ class Scene3 extends Phaser.Scene {
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
-        overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.5).setDepth(1);
+        overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*5, this.cameras.main.height*2, 0x000000, 0.5).setDepth(1);
 
     }
 
     update() {
 
         camera.scrollX = player.x - game.config.width / 4;
+
+        livesText.x = player.x+10 - game.config.width / 4;
+        livesText.y = 10;
 
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);
