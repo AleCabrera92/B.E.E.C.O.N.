@@ -75,21 +75,15 @@ class Scene1 extends Phaser.Scene {
         enemy.body.setOffset(30, 60);
         enemy.setCollideWorldBounds(false);
         this.physics.add.collider(enemy, platforms);
+        gameOverImage = this.physics.add.staticGroup();
         this.physics.add.overlap(player, enemy, function(player) {
             decreaseLives();
             if (lives === 0) {
-                bgm.stop();
-                sound_beeconF.play();
-                player.alpha = 0;
-                player.anims.stop();
-                player.disableBody(true, true);
-                let gameOverImage = this.add.image(player.x+320, game.config.height / 4, 'gameOver');
-                gameOverImage.setOrigin(0.5).setAlpha(0.75).setDepth(3);
-                let randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-                randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
-                randomText.setPosition(player.x+320, game.config.height / 2);
+                gameOver();
+                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-                let j = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J); this.input.keyboard.removeKey(j);
+                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene1')});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
