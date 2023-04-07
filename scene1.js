@@ -8,32 +8,20 @@ class Scene1 extends Phaser.Scene {
 
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
         this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 350, frameHeight: 300 });
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('platform', 'assets/platform.png');
-        this.load.image('breakableGround', 'assets/breakablePlatform.png');
-        this.load.image('wall', 'assets/wall.png');
-        this.load.image('mountains', 'assets/mountains.png');
-        this.load.image('laser', 'assets/laser.png');
-        this.load.image('bigLaser', 'assets/bigLaser.png');
-        this.load.image('chargeReady', 'assets/chargeReady.png');
-        this.load.image('clouds', 'assets/cloud.png');
-        this.load.image('gameOver', 'assets/gameOver.png');
-        this.load.image('tree', 'assets/tree.png');
-        this.load.image('grass', 'assets/grass.png');
-        this.load.image('rain', 'assets/rain.png');
-        this.load.image('ground', 'assets/ground.png');
-        this.load.image('skyOverlay', 'assets/skyOverlay.png');
-        this.load.image('lifeBG', 'assets/lifeBG.png');
-        this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
-        this.load.audio('beeconWalk', 'assets/audio/beeconWalk.mp3');
-        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');
-        this.load.audio('laser', 'assets/audio/laser.mp3');
-        this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');
-        this.load.audio('drill', 'assets/audio/drill.mp3');
-        this.load.audio('enemyF', 'assets/audio/enemyF.mp3');
-        this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
-        this.load.audio('rain', 'assets/audio/rain.mp3');
-        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
+
+        this.load.image('sky', 'assets/sky.png');                               this.load.image('platform', 'assets/platform.png');
+        this.load.image('breakableGround', 'assets/breakablePlatform.png');     this.load.image('wall', 'assets/wall.png');
+        this.load.image('mountains', 'assets/mountains.png');                   this.load.image('laser', 'assets/laser.png');
+        this.load.image('bigLaser', 'assets/bigLaser.png');                     this.load.image('chargeReady', 'assets/chargeReady.png');
+        this.load.image('clouds', 'assets/cloud.png');                          this.load.image('gameOver', 'assets/gameOver.png');
+        this.load.image('tree', 'assets/tree.png');                             this.load.image('grass', 'assets/grass.png');
+        this.load.image('rain', 'assets/rain.png');                             this.load.image('ground', 'assets/ground.png');
+        this.load.image('skyOverlay', 'assets/skyOverlay.png');                 this.load.image('lifeBG', 'assets/lifeBG.png');
+        this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');           this.load.audio('beeconWalk', 'assets/audio/beeconWalk.mp3');
+        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');           this.load.audio('laser', 'assets/audio/laser.mp3');
+        this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');               this.load.audio('drill', 'assets/audio/drill.mp3');
+        this.load.audio('enemyF', 'assets/audio/enemyF.mp3');                   this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
+        this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
 
     }
 
@@ -41,15 +29,7 @@ class Scene1 extends Phaser.Scene {
 
         this.scale.refresh();
 
-        sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);;
-        sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
-        sound_laser = this.sound.add('laser').setVolume(0.25);
-        sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
-        sound_drill = this.sound.add('drill').setVolume(0.25);
-        sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
-        sound_beeconF = this.sound.add('beeconF').setVolume(0.25);
-        sound_rain = this.sound.add('rain').setVolume(0.10);
-        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);
+        scene = 2;
 
         overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
@@ -64,25 +44,20 @@ class Scene1 extends Phaser.Scene {
           });
         }, [], this);
 
-        //this.cameras.main.fadeIn(1000);
+        sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);    sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
+        sound_laser = this.sound.add('laser').setVolume(0.25);              sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
+        sound_drill = this.sound.add('drill').setVolume(0.25);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
+        sound_beeconF = this.sound.add('beeconF').setVolume(0.25);          sound_rain = this.sound.add('rain').setVolume(0.10);
+        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);
 
         isMusicPlaying = false;
-        this.sound.sounds.forEach(function(sound) {
-            if (sound.key === 'titleTheme' && sound.isPlaying) {
-                isMusicPlaying = true;
-            }
-        });
-        
-        // Play background music if it's not already playing
-        if (!isMusicPlaying) {
-            bgm.play();
-        }
+        this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
+        if (!isMusicPlaying) { bgm.play(); }
 
-        sound_rain.play();
-        sound_rain.loop = true;
+        sound_rain.play(); sound_rain.loop = true;
 
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -95,7 +70,6 @@ class Scene1 extends Phaser.Scene {
         player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
-        /**************************************************************************************************************************************************************************/
         enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(0.25).setDepth(0.19);
         enemy.body.setSize(280, 220);
         enemy.body.setOffset(30, 60);
@@ -122,7 +96,6 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.overlap(lasers, enemy, function(enemy) {sound_enemyF.play(); enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
-        /**************************************************************************************************************************************************************************/
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
@@ -216,10 +189,8 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
         this.anims.create({key: 'enemyChill', frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
 
-        /**************************************************************************************************************************************************************************/
         enemy.anims.play('enemyChill');
         enemy.setVelocityX(100);
-        /**************************************************************************************************************************************************************************/
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -272,17 +243,13 @@ class Scene1 extends Phaser.Scene {
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
         if (clouds3) {this.physics.world.wrap(clouds3.body, clouds3.width+50, true);}
 
-        /**************************************************************************************************************************************************************************/
         enemy.anims.play('enemyChill', true);
 
         if (enemy.body.touching.right) {
-            // Reverse the enemy's velocity to make it move left
             enemy.setVelocityX(-100);
         } else if (enemy.body.touching.left) {
-            // Reverse the enemy's velocity to make it move right
             enemy.setVelocityX(100);
         }
-        /**************************************************************************************************************************************************************************/
 
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);
@@ -304,11 +271,8 @@ class Scene1 extends Phaser.Scene {
         }
 
         if (player.body.velocity.x !==0 && player.body.onFloor()) {
-            // check if enough time has elapsed since the last sound was played
             if (this.time.now - this.lastWalkSoundTime > 100) {
-                // play the sound with a 500ms delay between each play
                 sound_beeconWalk.play();
-                // update the last sound time
                 this.lastWalkSoundTime = this.time.now;
             }
         }
@@ -342,14 +306,14 @@ class Scene1 extends Phaser.Scene {
         if (cursors.left.isDown || keyA.isDown) {
             player.setVelocityX(-250);
             if (player.anims.currentAnim.key === 'jumpBack') {
-                player.anims.play('jumpBack', true); //player.flipX = true;
+                player.anims.play('jumpBack', true);
             } else {
                 player.anims.play('left', true);   
             }    
         } else if (cursors.right.isDown || keyD.isDown) {
             player.setVelocityX(250);
             if (player.anims.currentAnim.key === 'jump') {
-                player.anims.play('jump', true); //player.flipX = true;
+                player.anims.play('jump', true);
             } else {
                 player.anims.play('right', true);   
             }    
@@ -416,8 +380,6 @@ class Scene1 extends Phaser.Scene {
 
     }
 
-    /**************************************************************************************************************************************************************************/
     shutdown() {this.timer.remove();}
-    /**************************************************************************************************************************************************************************/
 
 }

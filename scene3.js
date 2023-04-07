@@ -7,23 +7,18 @@ class Scene3 extends Phaser.Scene {
     preload() {
 
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('platform', 'assets/platform.png');
-        this.load.image('wall', 'assets/wall.png');
-        this.load.image('mountains', 'assets/mountains.png');
-        this.load.image('laser', 'assets/laser.png');
-        this.load.image('bigLaser', 'assets/bigLaser.png');
-        this.load.image('chargeReady', 'assets/chargeReady.png');
-        this.load.image('ground', 'assets/ground.png');
+
+        this.load.image('sky', 'assets/sky.png');                   this.load.image('platform', 'assets/platform.png');
+        this.load.image('wall', 'assets/wall.png');                 this.load.image('mountains', 'assets/mountains.png');
+        this.load.image('laser', 'assets/laser.png');               this.load.image('bigLaser', 'assets/bigLaser.png');
+        this.load.image('chargeReady', 'assets/chargeReady.png');   this.load.image('ground', 'assets/ground.png');
         this.load.image('lifeBG', 'assets/lifeBG.png');
 
     }
 
     create() {
 
-        this.scale.refresh();
-
-        this.cameras.main.fadeIn(500);
+        this.scale.refresh(); this.cameras.main.fadeIn(500);
 
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
@@ -55,7 +50,7 @@ class Scene3 extends Phaser.Scene {
                 this.scene.start('Scene1');
             });
         });
-        const self = this; // store reference to Scene1 instance
+        const self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 let timer = 0;
@@ -191,14 +186,14 @@ class Scene3 extends Phaser.Scene {
         if (cursors.left.isDown || keyA.isDown) {
             player.setVelocityX(-250);
             if (player.anims.currentAnim.key === 'jumpBack') {
-                player.anims.play('jumpBack', true); //player.flipX = true;
+                player.anims.play('jumpBack', true);
             } else {
                 player.anims.play('left', true);   
             }    
         } else if (cursors.right.isDown || keyD.isDown) {
             player.setVelocityX(250);
             if (player.anims.currentAnim.key === 'jump') {
-                player.anims.play('jump', true); //player.flipX = true;
+                player.anims.play('jump', true);
             } else {
                 player.anims.play('right', true);   
             }  

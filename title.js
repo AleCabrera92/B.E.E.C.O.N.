@@ -7,14 +7,10 @@ class Title extends Phaser.Scene {
   preload() {
     
     this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
-    this.load.image('platform', 'assets/platform.png');
-    this.load.image('title', 'assets/title.png');
-    this.load.image('sky', 'assets/sky.png');
-    this.load.image('clouds', 'assets/cloud.png');
-    this.load.image('rain', 'assets/rain.png');
-    this.load.image('ground', 'assets/ground.png');
-    this.load.image('skyOverlay', 'assets/skyOverlay.png');
-    this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
+
+    this.load.image('platform', 'assets/platform.png');       this.load.image('title', 'assets/title.png'); this.load.image('sky', 'assets/sky.png');
+    this.load.image('clouds', 'assets/cloud.png');            this.load.image('rain', 'assets/rain.png'); this.load.image('ground', 'assets/ground.png');
+    this.load.image('skyOverlay', 'assets/skyOverlay.png');   this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
 
   }
 

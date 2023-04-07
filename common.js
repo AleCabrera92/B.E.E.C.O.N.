@@ -1,65 +1,13 @@
-let player;
-let platforms;
-let cursors;
-let canDoubleJump = true;
-let keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace;
-let mountains;
-let camera;
-let triggerPlatform;
-let triggerPlatformBack;
-let lasers;
-let bigLasers;
-let overlay, overlay2;
-let didPressUp, didPressW, didPressSpace;
-let chargeReady;
-let jKeyDownTime = 0;
-let isDrilling = false;
-let timer = 0;
-let clouds, clouds2, clouds3;
-let enemy;
-let emitter;
-let lives = 99; // start with 3 lives
-let bgm;
-let isMusicPlaying;
-let sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_rain, sound_laserHit;
-let beeIcon, pressMeButton,pressMeButton2;
+let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds, clouds2, clouds3, cursors, didPressUp, didPressW, didPressSpace, enemy, emitter;
+let keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack;
+let isMusicPlaying, bgm, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_rain, sound_laserHit;
+let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0;
+let scene;
 
-// create a text object to display the lives count
-let livesText, liveBG;
-
-function decreaseLives() {
-    lives--;
-    if (lives <= -1) {
-      // game over
-      //gameOver();
-    } else {
-      // update lives UI
-      updateLivesUI();
-    }
-  }
-  
-  function updateLivesUI() {
-    livesText.setText('Energy: ' + lives);
-  }
-
-function enableKeys() {
-    keyJ.enabled = true;
-    keyW.enabled = true;
-    keyUP.enabled = true;
-    keySpace.enabled = true;
-    keysDisabled = false;
-}
-
-function toggleFullscreen() {
-    if (game.scale.isFullscreen) {
-      game.scale.stopFullscreen();
-      game.scale.setGameSize(1280, 720);
-      //game.canvas.style.cursor = 'default';
-    } else {
-      game.scale.startFullscreen();
-      //game.canvas.style.cursor = 'none';
-    }
-}
+function decreaseLives() { lives--; if (lives <= -1) { /*gameOver();*/ } else { updateLivesUI(); } }
+function updateLivesUI() { livesText.setText('Energy: ' + lives); }
+function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled = true; keySpace.enabled = true; keysDisabled = false; }
+function toggleFullscreen() { if (game.scale.isFullscreen) { game.scale.stopFullscreen(); game.scale.setGameSize(1280, 720); } else { game.scale.startFullscreen(); } }
 
 function shootLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
