@@ -22,7 +22,7 @@ let lives = 99; // start with 3 lives
 let bgm;
 let isMusicPlaying;
 let sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_rain, sound_laserHit;
-let beeIcon, pressMeButton;
+let beeIcon, pressMeButton,pressMeButton2;
 
 // create a text object to display the lives count
 let livesText;

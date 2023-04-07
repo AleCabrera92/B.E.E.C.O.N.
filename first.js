@@ -37,15 +37,17 @@ class First extends Phaser.Scene {
       pressMeButton = this.add.text(
         this.game.config.width / 2,
         this.game.config.height / 1.5,
-        //'PRESS ME',
-        'Press me',
+        'Click on             !',
         { fontSize: '32px', fill: '#fff' }
       );
       pressMeButton.setOrigin(0.5, 0.5);
-      // pressMeButton.setInteractive({ useHandCursor: true });
-      // pressMeButton.on('pointerdown', () => {
-      //   this.scene.start('Title');
-      // });
+      pressMeButton2 = this.add.text(
+        this.game.config.width / 2,
+        this.game.config.height / 1.5,
+        '         B.E.E.C.O.N. ',
+        { fontSize: '32px', fill: '#FFBF00' } //fontStyle: 'bold'
+      );
+      pressMeButton2.setOrigin(0.5, 0.5);
   
       // set the background color to black
       this.cameras.main.setBackgroundColor(0x000000);

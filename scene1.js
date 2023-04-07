@@ -90,7 +90,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(0, -500, 'beecon_full').setScale(0.3).setDepth(0.19);
+        player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         /**************************************************************************************************************************************************************************/
