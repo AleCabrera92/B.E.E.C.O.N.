@@ -78,8 +78,18 @@ class Scene1 extends Phaser.Scene {
         enemy.setCollideWorldBounds(false);
         this.physics.add.collider(enemy, platforms);
         gameOverImage = this.physics.add.staticGroup();
-        this.physics.add.overlap(player, enemy, function(player) {
+        this.physics.add.collider(player, enemy, function(player) {
+            if (!sound_enemyF.isPlaying) { sound_enemyF.play(); }
+            damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
+            this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
+                onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
+                onComplete: () => { player.setTint(endColor.color); } });
             decreaseLives();
+
+            knockbackDirection = new Phaser.Math.Vector2(player.x - enemy.x, player.y - enemy.y).normalize().scale(knockbackForce);
+            player.setVelocityY(knockbackDirection.y);
+            player.setVelocityX(knockbackDirection.x);
+
             if (lives === 0) { gameOver();
                 randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);

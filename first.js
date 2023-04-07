@@ -29,7 +29,7 @@ class First extends Phaser.Scene {
     update() {
 
       if (Phaser.Input.Keyboard.JustDown(keyF)) { toggleFullscreen(); }
-      if (Phaser.Input.Keyboard.JustDown(keySpace)) { this.scene.start('Title'); }
+      //if (Phaser.Input.Keyboard.JustDown(keySpace)) { this.scene.start('Title'); }
 
     }
 
