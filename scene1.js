@@ -22,7 +22,7 @@ class Scene1 extends Phaser.Scene {
         this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');               this.load.audio('drill', 'assets/audio/drill.mp3');
         this.load.audio('enemyF', 'assets/audio/enemyF.mp3');                   this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('rain2', 'assets/audio/rain2.mp3');
-        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
+        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');               this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
 
     }
 
@@ -50,6 +50,7 @@ class Scene1 extends Phaser.Scene {
         sound_drill = this.sound.add('drill').setVolume(0.25);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
         sound_beeconF = this.sound.add('beeconF').setVolume(0.25);          sound_rain = this.sound.add('rain').setVolume(0.10);
         sound_laserHit = this.sound.add('laserHit').setVolume(0.15);        sound_rain2 = this.sound.add('rain2').setVolume(0.10);
+        sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);  
 
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
@@ -79,7 +80,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(enemy, platforms);
         gameOverImage = this.physics.add.staticGroup();
         this.physics.add.collider(player, enemy, function(player) {
-            if (!sound_enemyF.isPlaying) { sound_enemyF.play(); }
+            if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
             damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
             this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
                 onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
@@ -98,9 +99,20 @@ class Scene1 extends Phaser.Scene {
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
-        this.physics.add.overlap(lasers, enemy, function(enemy) {sound_enemyF.play(); enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});
+            this.physics.add.collider(lasers, enemy, function(enemy) {
+                enemyLives--;
+                sound_enemyF.play();
+                lasers.setVelocity(0, 0);
+                enemy.setTint(0xff0000);
+                setTimeout(function() { enemy.setTint(0xffffff); }, 200);
+                if (enemyLives <= 0) {
+                  enemy.alpha = 0;
+                  enemy.anims.stop();
+                  enemy.disableBody(true, true);
+                }
+            });
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
-            if (bigLasers.body.velocity.x === 0) {return;} enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
+            if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
