@@ -21,7 +21,8 @@ class Scene1 extends Phaser.Scene {
         this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');           this.load.audio('laser', 'assets/audio/laser.mp3');
         this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');               this.load.audio('drill', 'assets/audio/drill.mp3');
         this.load.audio('enemyF', 'assets/audio/enemyF.mp3');                   this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
-        this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
+        this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('rain2', 'assets/audio/rain2.mp3');
+        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
 
     }
 
@@ -48,13 +49,14 @@ class Scene1 extends Phaser.Scene {
         sound_laser = this.sound.add('laser').setVolume(0.25);              sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
         sound_drill = this.sound.add('drill').setVolume(0.25);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
         sound_beeconF = this.sound.add('beeconF').setVolume(0.25);          sound_rain = this.sound.add('rain').setVolume(0.10);
-        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);
+        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);        sound_rain2 = this.sound.add('rain2').setVolume(0.10);
 
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
         if (!isMusicPlaying) { bgm.play(); }
 
         sound_rain.play(); sound_rain.loop = true;
+        setTimeout(() => { sound_rain2.play(); sound_rain2.loop = true; }, 5000); // Start playing sound_rain2 after a delay of 5000 milliseconds (5 seconds)
 
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
