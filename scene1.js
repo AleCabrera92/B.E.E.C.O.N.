@@ -191,14 +191,17 @@ class Scene1 extends Phaser.Scene {
         emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
             x: 0,
             y: 0,
-            quantity: 50,
+            //quantity: 50,
+            quantity: 20,
             lifespan: 1600,
-            speedY: { min: 300, max: 500 },
+            //speedY: { min: 300, max: 500 },
+            speedY: { min: 700, max: 900 },
             speedX: { min: -5, max: 5 },
             scale: { start: 0.1, end: 0.5 },
             rotate: { start: 0, end: 0 },
             frequency: 5,
-            emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+            //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+            emitZone: { source: new Phaser.Geom.Rectangle(-200, 0, this.game.config.width + 400, 1) },
             on: true
         });
       
@@ -360,6 +363,18 @@ class Scene1 extends Phaser.Scene {
         if ((player.anims.currentAnim.key !== 'drill') || (!player.body.onFloor())) {
             timer = 0;
         }
+
+        if (player.body.velocity.x > 0) {
+            emitter.setAngle(130);
+        } else if (player.body.velocity.x < 0) {
+            emitter.setAngle(-130);
+        } else {
+            emitter.setAngle(0);
+        }
+
+        //emitterSpeedX = player.body.velocity.x * -0.1;
+        emitterSpeedX = player.body.velocity.x * -0.26;
+        emitter.setSpeedX({ min: emitterSpeedX - 0.52, max: emitterSpeedX + 0.52 });
 
     }
 

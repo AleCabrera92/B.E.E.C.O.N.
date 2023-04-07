@@ -101,21 +101,21 @@ class Title extends Phaser.Scene {
     player.anims.play('right');
     player.setVelocityX(250);
 
-    emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
-      x: 0,
-      y: 0,
-      quantity: 50,
-      lifespan: 1600,
-      speedY: { min: 300, max: 500 },
-      speedX: { min: -5, max: 5 },
-      scale: { start: 0.1, end: 0.5 },
-      rotate: { start: 0, end: 0 },
-      frequency: 5,
-      emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
-      on: true
-    });
+    // emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
+    //   x: 0,
+    //   y: 0,
+    //   quantity: 50,
+    //   lifespan: 1600,
+    //   speedY: { min: 300, max: 500 },
+    //   speedX: { min: -5, max: 5 },
+    //   scale: { start: 0.1, end: 0.5 },
+    //   rotate: { start: 0, end: 0 },
+    //   frequency: 5,
+    //   emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+    //   on: true
+    // });
 
-    emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
+    // emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
     
   }
 

@@ -2,7 +2,7 @@ let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds
 let keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack;
 let isMusicPlaying, bgm, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_rain, sound_laserHit;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0;
-let scene, gameOverImage, randomText;
+let scene, gameOverImage, randomText, emitterSpeedX;
 
 function decreaseLives() { lives--; if (lives <= -1) { /*gameOver();*/ } else { updateLivesUI(); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
