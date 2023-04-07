@@ -14,9 +14,7 @@ class Title extends Phaser.Scene {
     this.load.image('rain', 'assets/rain.png');
     this.load.image('ground', 'assets/ground.png');
     this.load.image('skyOverlay', 'assets/skyOverlay.png');
-    this.load.audio('titleTheme', 'assets/titleTheme.mp3');
-    this.load.audio('beeconWalk', 'assets/beeconWalk.mp3');
-    this.load.audio('beeconJump', 'assets/beeconJump.mp3');
+    this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
 
   }
 

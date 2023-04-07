@@ -25,7 +25,7 @@ let sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill
 let beeIcon, pressMeButton,pressMeButton2;
 
 // create a text object to display the lives count
-let livesText;
+let livesText, liveBG;
 
 function decreaseLives() {
     lives--;

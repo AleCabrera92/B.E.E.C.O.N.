@@ -23,16 +23,17 @@ class Scene1 extends Phaser.Scene {
         this.load.image('rain', 'assets/rain.png');
         this.load.image('ground', 'assets/ground.png');
         this.load.image('skyOverlay', 'assets/skyOverlay.png');
-        this.load.audio('titleTheme', 'assets/titleTheme.mp3');
-        this.load.audio('beeconWalk', 'assets/beeconWalk.mp3');
-        this.load.audio('beeconJump', 'assets/beeconJump.mp3');
-        this.load.audio('laser', 'assets/laser.mp3');
-        this.load.audio('bigLaser', 'assets/bigLaser.mp3');
-        this.load.audio('drill', 'assets/drill.mp3');
-        this.load.audio('enemyF', 'assets/enemyF.mp3');
-        this.load.audio('beeconF', 'assets/beeconF.mp3');
-        this.load.audio('rain', 'assets/rain.mp3');
-        this.load.audio('laserHit', 'assets/laserHit.mp3');
+        this.load.image('lifeBG', 'assets/lifeBG.png');
+        this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
+        this.load.audio('beeconWalk', 'assets/audio/beeconWalk.mp3');
+        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');
+        this.load.audio('laser', 'assets/audio/laser.mp3');
+        this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');
+        this.load.audio('drill', 'assets/audio/drill.mp3');
+        this.load.audio('enemyF', 'assets/audio/enemyF.mp3');
+        this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
+        this.load.audio('rain', 'assets/audio/rain.mp3');
+        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
 
     }
 
@@ -80,7 +81,8 @@ class Scene1 extends Phaser.Scene {
         sound_rain.play();
         sound_rain.loop = true;
 
-        livesText = this.add.text(player.x, 10, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#ffffff' }).setDepth(10);
+        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -260,8 +262,11 @@ class Scene1 extends Phaser.Scene {
 
         camera.scrollX = player.x - game.config.width / 4;
 
-        livesText.x = player.x+10 - game.config.width / 4;
-        livesText.y = 10;
+        liveBG.x = player.x+100 - game.config.width / 4;
+        liveBG.y = 30;
+
+        livesText.x = player.x+20 - game.config.width / 4;
+        livesText.y = 19;
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}

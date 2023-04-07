@@ -12,6 +12,7 @@ class Scene2 extends Phaser.Scene {
         this.load.image('laser', 'assets/laser.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
+        this.load.image('lifeBG', 'assets/lifeBG.png');
 
     }
 
@@ -23,7 +24,8 @@ class Scene2 extends Phaser.Scene {
 
         this.cameras.main.fadeIn(500);
 
-        livesText = this.add.text(player.x, 10, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#ffffff' }).setDepth(10);
+        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -124,8 +126,11 @@ class Scene2 extends Phaser.Scene {
 
         camera.scrollX = player.x - game.config.width / 4;
         
-        livesText.x = player.x+10 - game.config.width / 4;
-        livesText.y = 10;
+        liveBG.x = player.x+100 - game.config.width / 4;
+        liveBG.y = 30;
+
+        livesText.x = player.x+20 - game.config.width / 4;
+        livesText.y = 19;
 
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);
