@@ -125,7 +125,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 timer++;
-                console.log(timer);
+                //console.log(timer);
                 if (timer >= 100) {
                     platform.destroy();
                 }
