@@ -82,7 +82,7 @@ class Scene1 extends Phaser.Scene {
                 randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
+                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
@@ -98,27 +98,13 @@ class Scene1 extends Phaser.Scene {
                 this.scene.start('Scene2');
             });
         });
-        const self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
-                let timer = 0;
-                let timerEvent = self.time.addEvent({
-                    delay: 500,
-                    callback: () => {
-                        timer++;
-                        if (timer >= 1 && player.anims.currentAnim.key === 'drill') {
-                            platform.destroy();
-                            timerEvent.remove();
-                        }
-                    },
-                    loop: true,
-                    callbackScope: self
-                });
-                player.once('animationcomplete', (animation) => {
-                    if (animation.key === 'drill') {
-                        timerEvent.remove();
-                    }
-                });
+                timer++;
+                console.log(timer);
+                if (timer >= 100) {
+                    platform.destroy();
+                }
             }
         });
         this.physics.add.collider(bigLasers, bigLasers);
@@ -369,6 +355,10 @@ class Scene1 extends Phaser.Scene {
             if (bigLaserToDelete) {
                 bigLaserToDelete.destroy();
             }
+        }
+
+        if ((player.anims.currentAnim.key !== 'drill') || (!player.body.onFloor())) {
+            timer = 0;
         }
 
     }
