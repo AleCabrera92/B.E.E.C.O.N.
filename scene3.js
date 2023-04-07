@@ -20,6 +20,8 @@ class Scene3 extends Phaser.Scene {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
+        scene = 3;
+
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 

@@ -29,7 +29,7 @@ class Scene1 extends Phaser.Scene {
 
         this.scale.refresh();
 
-        scene = 2;
+        scene = 1;
 
         overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
@@ -78,13 +78,12 @@ class Scene1 extends Phaser.Scene {
         gameOverImage = this.physics.add.staticGroup();
         this.physics.add.overlap(player, enemy, function(player) {
             decreaseLives();
-            if (lives === 0) {
-                gameOver();
+            if (lives === 0) { gameOver();
                 randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
-                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene1')});
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
         this.physics.add.overlap(lasers, enemy, function(enemy) {sound_enemyF.play(); enemy.alpha === 0; enemy.anims.stop(); enemy.disableBody(true, true); lasers.setVelocity(0, 0)});

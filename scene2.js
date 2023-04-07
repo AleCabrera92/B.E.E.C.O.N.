@@ -19,6 +19,8 @@ class Scene2 extends Phaser.Scene {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
+        scene = 2;
+
         sound_drill.stop();      
 
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
