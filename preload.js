@@ -40,13 +40,13 @@ class Preload extends Phaser.Scene {
         sound_laserHit = this.sound.add('laserHit').setVolume(0.15);        sound_rain2 = this.sound.add('rain2', { loop: true }).setVolume(0.10);
         sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);      sound_thunder = this.sound.add('thunder').setVolume(0.75);     
 
-        this.scene.start('Scene1');
+        this.scene.start('First');
 
     }
 
     update() {
 
-        
+
 
     }
 
