@@ -7,7 +7,7 @@ let scene, gameOverImage, randomText, emitterSpeedX;
 let damageTint, startColor, endColor;
 let knockbackForce = 500, knockbackDirection;
 let enemyLives = 3;
-let lightning;
+let lightning, delayLightningFirt, delayLightning, airPlatform, laser;
 
 function decreaseLives() { lives--; if (lives <= -1) { /*gameOver();*/ } else { updateLivesUI(); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
@@ -54,6 +54,14 @@ function gameOver() {
 
 // Function to create and animate the white overlay
 function createOverlay() {
+
+    delayLightning = Phaser.Math.RND.integerInRange(5000, 45000);
+    console.log(delayLightning);
+    this.time.addEvent({
+      delay: delayLightning,
+      callback: createOverlay,
+      callbackScope: this
+    });
     // Add a white overlay that covers the entire game world
     lightning = this.add.graphics();
     lightning.fillStyle(0xffffff, 0.75);

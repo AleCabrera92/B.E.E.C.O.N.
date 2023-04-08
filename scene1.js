@@ -23,7 +23,7 @@ class Scene1 extends Phaser.Scene {
         this.load.audio('enemyF', 'assets/audio/enemyF.mp3');                   this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('rain2', 'assets/audio/rain2.mp3');
         this.load.audio('laserHit', 'assets/audio/laserHit.mp3');               this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
-        this.load.audio('thunder', 'assets/audio/thunder.mp3');
+        this.load.audio('thunder', 'assets/audio/thunder.mp3');                 this.load.image('airPlatform', 'assets/platform.png');
 
     }
 
@@ -48,7 +48,7 @@ class Scene1 extends Phaser.Scene {
 
         sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);    sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
         sound_laser = this.sound.add('laser').setVolume(0.25);              sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
-        sound_drill = this.sound.add('drill').setVolume(0.25);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
+        sound_drill = this.sound.add('drill').setVolume(0.15);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
         sound_beeconF = this.sound.add('beeconF').setVolume(0.25);          sound_rain = this.sound.add('rain').setVolume(0.10);
         sound_laserHit = this.sound.add('laserHit').setVolume(0.15);        sound_rain2 = this.sound.add('rain2').setVolume(0.10);
         sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);      sound_thunder = this.sound.add('thunder').setVolume(0.75);  
@@ -79,6 +79,15 @@ class Scene1 extends Phaser.Scene {
         enemy.body.setOffset(30, 60);
         enemy.setCollideWorldBounds(false);
         this.physics.add.collider(enemy, platforms);
+
+        airPlatform = this.physics.add.sprite(1000, 390, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
+        airPlatform.setVelocityX(100);
+        airPlatform.setImmovable(true);
+        airPlatform.body.allowGravity = false;
+        this.physics.add.collider(player, airPlatform);
+        this.physics.add.overlap(lasers, airPlatform);
+        this.physics.add.overlap(bigLasers, airPlatform);
+
         gameOverImage = this.physics.add.staticGroup();
         this.physics.add.collider(player, enemy, function(player) {
             if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
@@ -234,12 +243,12 @@ class Scene1 extends Phaser.Scene {
 
         this.lastWalkSoundTime = 0;
 
-        const delay = Phaser.Math.RND.integerInRange(5000, 45000);
+        delayLightningFirt = Phaser.Math.RND.integerInRange(15000, 45000);
+        console.log(delayLightningFirt);
         this.time.addEvent({
-            delay: delay,
+            delay: delayLightningFirt,
             callback: createOverlay,
             callbackScope: this,
-            repeat: -1
         });
     
     }
@@ -253,6 +262,18 @@ class Scene1 extends Phaser.Scene {
 
         livesText.x = player.x+20 - game.config.width / 4;
         livesText.y = 19;
+
+        if (airPlatform.x >= 1290) {
+            airPlatform.setVelocityX(0);
+            setTimeout(() => {
+              airPlatform.setVelocityX(-100);
+            }, 1000);
+        } else if (airPlatform.x <= 1000) {
+            airPlatform.setVelocityX(0);
+            setTimeout(() => {
+              airPlatform.setVelocityX(100);
+            }, 1000);
+        }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
@@ -312,10 +333,16 @@ class Scene1 extends Phaser.Scene {
         chargeReady.setPosition(player.x, player.y-50);
 
         lasers.getChildren().forEach(laser => {
-            if (laser.body.velocity.x === 0) {
+            if (this.physics.overlap(laser, airPlatform) || laser.body.velocity.x === 0) {
                 sound_laserHit.play();
                 laser.destroy();
-            }
+              }
+        });
+
+        bigLasers.getChildren().forEach(bigLaser => {
+            if (this.physics.overlap(bigLaser, airPlatform)) {
+                bigLaser.destroy();
+              }
         });
     
         if (cursors.left.isDown || keyA.isDown) {
