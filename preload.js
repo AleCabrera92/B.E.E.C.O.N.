@@ -25,20 +25,21 @@ class Preload extends Phaser.Scene {
         this.load.audio('laserHit', 'assets/audio/laserHit.mp3');               this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
         this.load.audio('thunder', 'assets/audio/thunder.mp3');                 this.load.image('airPlatform', 'assets/platform.png');
         this.load.image('jumpshrooms', 'assets/jumpshrooms.png');               this.load.image('title', 'assets/title.png'); this.load.image('sky', 'assets/sky.png');
-        this.load.image('beeIcon', 'assets/beeIcon.png');
+        this.load.image('beeIcon', 'assets/beeIcon.png');                       this.load.audio('mushroomJump', 'assets/audio/mushroomJump.mp3');
 
     }
-  
+
     create() {
 
         bgm = this.sound.add('titleTheme', { loop: true }).setVolume(0.5);
 
-        sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);    sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
-        sound_laser = this.sound.add('laser').setVolume(0.25);              sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
-        sound_drill = this.sound.add('drill').setVolume(0.15);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
-        sound_beeconF = this.sound.add('beeconF').setVolume(0.25);          sound_rain = this.sound.add('rain', { loop: true }).setVolume(0.10);
-        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);        sound_rain2 = this.sound.add('rain2', { loop: true }).setVolume(0.10);
-        sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);      sound_thunder = this.sound.add('thunder').setVolume(0.75);     
+        sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);        sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
+        sound_laser = this.sound.add('laser').setVolume(0.25);                  sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
+        sound_drill = this.sound.add('drill').setVolume(0.15);                  sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
+        sound_beeconF = this.sound.add('beeconF').setVolume(0.25);              sound_rain = this.sound.add('rain', { loop: true }).setVolume(0.10);
+        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);            sound_rain2 = this.sound.add('rain2', { loop: true }).setVolume(0.10);
+        sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);          sound_thunder = this.sound.add('thunder').setVolume(0.75);  
+        sound_mushroomJump = this.sound.add('mushroomJump').setVolume(0.25);
 
         this.scene.start('First');
 

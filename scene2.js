@@ -17,6 +17,10 @@ class Scene2 extends Phaser.Scene {
             sound_drill.stop();
         }
 
+        isMusicPlaying = false;
+        this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
+        if (!isMusicPlaying) { bgm.play(); }
+
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
         this.physics.add.collider(lasers, platforms);
@@ -112,6 +116,8 @@ class Scene2 extends Phaser.Scene {
 
         overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
 
+        this.lastWalkSoundTime = 0;
+
     }
 
     update() {
@@ -130,6 +136,8 @@ class Scene2 extends Phaser.Scene {
         cursors.right.on('down', enableKeys);
 
         if (Phaser.Input.Keyboard.JustDown(keyK)) {
+            sound_drill.play();
+            sound_drill.loop = true;
             player.anims.play('drill', true);
             keyJ.enabled = false;
             keyW.enabled = false;
@@ -137,6 +145,16 @@ class Scene2 extends Phaser.Scene {
             keySpace.enabled = false;
         }
 
+        if (player.body.velocity.x !==0) {
+            sound_drill.stop();
+        }
+
+        if (player.body.velocity.x !==0 && player.body.onFloor()) {
+            if (this.time.now - this.lastWalkSoundTime > 100) {
+                sound_beeconWalk.play();
+                this.lastWalkSoundTime = this.time.now;
+            }
+        }
 
         if (Phaser.Input.Keyboard.JustDown(keyF)) {
             toggleFullscreen();
@@ -158,9 +176,10 @@ class Scene2 extends Phaser.Scene {
         chargeReady.setPosition(player.x, player.y-50);
 
         lasers.getChildren().forEach(laser => {
-            if (laser.body.velocity.x === 0) {
+            if (this.physics.overlap(laser, airPlatform) || laser.body.velocity.x === 0) {
+                sound_laserHit.play();
                 laser.destroy();
-            }
+              }
         });
     
         if (cursors.left.isDown || keyA.isDown) {
@@ -195,19 +214,27 @@ class Scene2 extends Phaser.Scene {
             }
         }
     
+        didPressUp = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP));
+        didPressW = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W));
+        didPressSpace = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
+
         if (didPressUp || didPressW || didPressSpace) {
             if (player.body.onFloor()) {
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle') {
+                    sound_beeconJump.play();
                     player.anims.play('jump', true);
                 } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack') {
+                    sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }          
                 canDoubleJump = true;
                 player.setVelocityY(-380);
             } else if (canDoubleJump) {
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                    sound_beeconJump.play();
                     player.anims.play('jump', true);
                 } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                    sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   
                 canDoubleJump = false;
