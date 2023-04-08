@@ -3,28 +3,15 @@ class Scene3 extends Phaser.Scene {
     constructor() {
         super({ key: 'Scene3' });
     }
-/*
-    preload() {
 
-        this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
-
-        this.load.image('sky', 'assets/sky.png');                   this.load.image('platform', 'assets/platform.png');
-        this.load.image('wall', 'assets/wall.png');                 this.load.image('mountains', 'assets/mountains.png');
-        this.load.image('laser', 'assets/laser.png');               this.load.image('bigLaser', 'assets/bigLaser.png');
-        this.load.image('chargeReady', 'assets/chargeReady.png');   this.load.image('ground', 'assets/ground.png');
-        this.load.image('lifeBG', 'assets/lifeBG.png');             this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
-        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');
-
+    preload() { //Assets to preload for the scene
     }
-*/
+
     create() {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
         scene = 3;
-
-        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
         sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
 
@@ -43,6 +30,8 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
+        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
         jumpshrooms = this.physics.add.group({ immovable: true, allowGravity: false });
         jumpshrooms.create(2000, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);

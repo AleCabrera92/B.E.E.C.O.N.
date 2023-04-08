@@ -4,28 +4,7 @@ class Scene1 extends Phaser.Scene {
         super({ key: 'Scene1' });
     }
 
-    preload() {
-
-        this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
-        this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 350, frameHeight: 300 });
-
-        this.load.image('sky', 'assets/sky.png');                               this.load.image('platform', 'assets/platform.png');
-        this.load.image('breakableGround', 'assets/breakablePlatform.png');     this.load.image('wall', 'assets/wall.png');
-        this.load.image('mountains', 'assets/mountains.png');                   this.load.image('laser', 'assets/laser.png');
-        this.load.image('bigLaser', 'assets/bigLaser.png');                     this.load.image('chargeReady', 'assets/chargeReady.png');
-        this.load.image('clouds', 'assets/cloud.png');                          this.load.image('gameOver', 'assets/gameOver.png');
-        this.load.image('tree', 'assets/tree.png');                             this.load.image('grass', 'assets/grass.png');
-        this.load.image('rain', 'assets/rain.png');                             this.load.image('ground', 'assets/ground.png');
-        this.load.image('skyOverlay', 'assets/skyOverlay.png');                 this.load.image('lifeBG', 'assets/lifeBG.png');
-        this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');           this.load.audio('beeconWalk', 'assets/audio/beeconWalk.mp3');
-        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');           this.load.audio('laser', 'assets/audio/laser.mp3');
-        this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');               this.load.audio('drill', 'assets/audio/drill.mp3');
-        this.load.audio('enemyF', 'assets/audio/enemyF.mp3');                   this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
-        this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('rain2', 'assets/audio/rain2.mp3');
-        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');               this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
-        this.load.audio('thunder', 'assets/audio/thunder.mp3');                 this.load.image('airPlatform', 'assets/platform.png');
-        this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
-
+    preload() { //Assets to preload for the scene
     }
 
     create() {
@@ -47,22 +26,12 @@ class Scene1 extends Phaser.Scene {
           });
         }, [], this);
 
-        sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);    sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
-        sound_laser = this.sound.add('laser').setVolume(0.25);              sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
-        sound_drill = this.sound.add('drill').setVolume(0.15);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
-        sound_beeconF = this.sound.add('beeconF').setVolume(0.25);          sound_rain = this.sound.add('rain').setVolume(0.10);
-        sound_laserHit = this.sound.add('laserHit').setVolume(0.15);        sound_rain2 = this.sound.add('rain2').setVolume(0.10);
-        sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);      sound_thunder = this.sound.add('thunder').setVolume(0.75);  
-
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
         if (!isMusicPlaying) { bgm.play(); }
 
-        sound_rain.play(); sound_rain.loop = true;
-        setTimeout(() => { sound_rain2.play(); sound_rain2.loop = true; }, 5000); // Start playing sound_rain2 after a delay of 5000 milliseconds (5 seconds)
-
-        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
+        sound_rain.play();
+        setTimeout(() => { sound_rain2.play(); }, 5000);
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -75,12 +44,13 @@ class Scene1 extends Phaser.Scene {
         player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
+        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
         enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(0.25).setDepth(0.19);
         enemy.body.setSize(280, 220);
         enemy.body.setOffset(30, 60);
         enemy.setCollideWorldBounds(false);
         this.physics.add.collider(enemy, platforms);
-
         airPlatform = this.physics.add.sprite(1000, 390, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
         airPlatform.setVelocityX(100);
         airPlatform.setImmovable(true);

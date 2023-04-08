@@ -3,28 +3,19 @@ class Scene2 extends Phaser.Scene {
     constructor() {
         super({ key: 'Scene2' });
     }
-/*
-    preload() {
 
-        // this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
-
-        // this.load.image('wall', 'assets/wall.png');                 this.load.image('mountains', 'assets/mountains.png');
-        // this.load.image('laser', 'assets/laser.png');               this.load.image('bigLaser', 'assets/bigLaser.png');
-        // this.load.image('chargeReady', 'assets/chargeReady.png');   this.load.image('lifeBG', 'assets/lifeBG.png');
-        // this.load.image('gameOver', 'assets/gameOver.png');         this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
-
+    preload() { //Assets to preload for the scene
     }
-*/
+
     create() {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
         scene = 2;
 
-        sound_drill.stop();      
-
-        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
+        if (sound_drill.isPlaying) {
+            sound_drill.stop();
+        }
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -40,6 +31,8 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
+        liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
         this.physics.add.overlap(player, triggerPlatform, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {

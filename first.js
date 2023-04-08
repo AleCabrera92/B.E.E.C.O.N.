@@ -4,10 +4,7 @@ class First extends Phaser.Scene {
       super({ key: 'First' });
     }
   
-    preload() {
-
-      this.load.image('beeIcon', 'assets/beeIcon.png');
-
+    preload() { //Assets to preload for the scene
     }
   
     create() {
