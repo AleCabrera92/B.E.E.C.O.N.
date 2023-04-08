@@ -160,9 +160,9 @@ class Scene1 extends Phaser.Scene {
         this.add.image(340, 463, 'tree').setScale(0.8).setDepth(0.21).setTint(Phaser.Display.Color.GetColor(230, 230, 230));
         this.add.image(1250, 470, 'tree').setScale(0.65).setDepth(-0.2).setScrollFactor(0.8).setTint(Phaser.Display.Color.GetColor(180, 180, 180));
 
-        for (let i = -2; i < 16; i++) {this.add.image(i * 240, 610, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
+        for (let i = -2; i < 16; i++) {this.add.image(i * 233.4, 610, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
 
-        for (let i = -2; i < 16; i++) {this.add.image(i * 240, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(1);}
+        for (let i = -2; i < 16; i++) {this.add.image(i * 311.2, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(0.9);}
 
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'right', frames: this.anims.generateFrameNumbers('beecon_full', { start: 4, end: 5 }), frameRate: 10, repeat: -1});
