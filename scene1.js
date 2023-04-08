@@ -23,6 +23,7 @@ class Scene1 extends Phaser.Scene {
         this.load.audio('enemyF', 'assets/audio/enemyF.mp3');                   this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('rain2', 'assets/audio/rain2.mp3');
         this.load.audio('laserHit', 'assets/audio/laserHit.mp3');               this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
+        this.load.audio('thunder', 'assets/audio/thunder.mp3');
 
     }
 
@@ -50,7 +51,7 @@ class Scene1 extends Phaser.Scene {
         sound_drill = this.sound.add('drill').setVolume(0.25);              sound_enemyF = this.sound.add('enemyF').setVolume(0.25);
         sound_beeconF = this.sound.add('beeconF').setVolume(0.25);          sound_rain = this.sound.add('rain').setVolume(0.10);
         sound_laserHit = this.sound.add('laserHit').setVolume(0.15);        sound_rain2 = this.sound.add('rain2').setVolume(0.10);
-        sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);  
+        sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);      sound_thunder = this.sound.add('thunder').setVolume(0.75);  
 
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
@@ -232,6 +233,14 @@ class Scene1 extends Phaser.Scene {
         emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
 
         this.lastWalkSoundTime = 0;
+
+        const delay = Phaser.Math.RND.integerInRange(5000, 45000);
+        this.time.addEvent({
+            delay: delay,
+            callback: createOverlay,
+            callbackScope: this,
+            repeat: -1
+        });
     
     }
 
