@@ -13,6 +13,10 @@ class Scene3 extends Phaser.Scene {
 
         scene = 3;
 
+        if (sound_drill.isPlaying) {
+            sound_drill.stop();
+        }
+
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
         if (!isMusicPlaying) { bgm.play(); }
