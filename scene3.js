@@ -3,7 +3,7 @@ class Scene3 extends Phaser.Scene {
     constructor() {
         super({ key: 'Scene3' });
     }
-
+/*
     preload() {
 
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
@@ -12,10 +12,11 @@ class Scene3 extends Phaser.Scene {
         this.load.image('wall', 'assets/wall.png');                 this.load.image('mountains', 'assets/mountains.png');
         this.load.image('laser', 'assets/laser.png');               this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');   this.load.image('ground', 'assets/ground.png');
-        this.load.image('lifeBG', 'assets/lifeBG.png');
+        this.load.image('lifeBG', 'assets/lifeBG.png');             this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
+        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');
 
     }
-
+*/
     create() {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
@@ -24,6 +25,8 @@ class Scene3 extends Phaser.Scene {
 
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
+
+        sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -40,12 +43,28 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
-        this.physics.add.overlap(player, triggerPlatform, () => {
-            this.cameras.main.fadeOut(500);
-            this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene2');
-            });
+
+        jumpshrooms = this.physics.add.group({ immovable: true, allowGravity: false });
+        jumpshrooms.create(2000, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
+        jumpshrooms.create(2350, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
+        jumpshrooms.create(2700, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
+
+        this.physics.add.collider(player, jumpshrooms, function (player, jumpshrooms) {
+            if (player.body.bottom <= jumpshrooms.body.top) {
+                // Player is on top of the jumpshroom
+                sound_beeconJump.play();
+                player.setVelocityY(-800);
+                jumpshrooms.flipX = !jumpshrooms.flipX;
+            }
         });
+
+        // this.physics.add.overlap(player, triggerPlatform, () => {
+        //     this.cameras.main.fadeOut(500);
+        //     this.cameras.main.once('camerafadeoutcomplete', () => {
+        //         this.scene.start('Scene2');
+        //     });
+        // });
+
         this.physics.add.overlap(player, triggerPlatformBack, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
@@ -96,7 +115,7 @@ class Scene3 extends Phaser.Scene {
         platforms.create(500, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
-        for (let i = -1; i < 6; i++) {
+        for (let i = -1; i < 4; i++) {
             platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
         }
 

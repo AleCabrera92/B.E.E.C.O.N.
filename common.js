@@ -7,7 +7,7 @@ let scene, gameOverImage, randomText, emitterSpeedX;
 let damageTint, startColor, endColor;
 let knockbackForce = 500, knockbackDirection;
 let enemyLives = 3;
-let lightning, delayLightningFirt, delayLightning, airPlatform, laser;
+let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 
 function decreaseLives() { lives--; if (lives <= -1) { /*gameOver();*/ } else { updateLivesUI(); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }

@@ -24,6 +24,7 @@ class Scene1 extends Phaser.Scene {
         this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('rain2', 'assets/audio/rain2.mp3');
         this.load.audio('laserHit', 'assets/audio/laserHit.mp3');               this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
         this.load.audio('thunder', 'assets/audio/thunder.mp3');                 this.load.image('airPlatform', 'assets/platform.png');
+        this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
 
     }
 
@@ -136,7 +137,7 @@ class Scene1 extends Phaser.Scene {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 timer++;
                 //console.log(timer);
-                if (timer >= 100) {
+                if (timer >= 50) {
                     platform.destroy();
                 }
             }

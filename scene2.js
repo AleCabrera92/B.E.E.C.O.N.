@@ -3,18 +3,18 @@ class Scene2 extends Phaser.Scene {
     constructor() {
         super({ key: 'Scene2' });
     }
-
+/*
     preload() {
 
-        this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
+        // this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
 
-        this.load.image('wall', 'assets/wall.png');                 this.load.image('mountains', 'assets/mountains.png');
-        this.load.image('laser', 'assets/laser.png');               this.load.image('bigLaser', 'assets/bigLaser.png');
-        this.load.image('chargeReady', 'assets/chargeReady.png');   this.load.image('lifeBG', 'assets/lifeBG.png');
-        this.load.image('gameOver', 'assets/gameOver.png');
+        // this.load.image('wall', 'assets/wall.png');                 this.load.image('mountains', 'assets/mountains.png');
+        // this.load.image('laser', 'assets/laser.png');               this.load.image('bigLaser', 'assets/bigLaser.png');
+        // this.load.image('chargeReady', 'assets/chargeReady.png');   this.load.image('lifeBG', 'assets/lifeBG.png');
+        // this.load.image('gameOver', 'assets/gameOver.png');         this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
 
     }
-
+*/
     create() {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
