@@ -70,10 +70,10 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
         for (let i = 0; i <= 1; i++) {
-            this.add.image(i * 320, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
-            this.add.image(i * 320, 0, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
-            this.add.image(i * 320, 300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
-            this.add.image(i * 320, 600, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, 0, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, 300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, 600, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
         }
 
         platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);

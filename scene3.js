@@ -113,10 +113,10 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.collider(player, triggerPlatform, function(player) {player.setAlpha(0)});
 
         for (let i = 0; i <= 4; i++) {
-            this.add.image(i * 320, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
-            this.add.image(i * 320, 0, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
-            this.add.image(i * 320, 300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
-            this.add.image(i * 320, 600, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, -300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, 0, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, 300, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
+            this.add.image(i * 1600, 600, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
         }
 
         platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
@@ -127,6 +127,8 @@ class Scene3 extends Phaser.Scene {
         platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(3300, 100, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(4100, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(4500, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(4900, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(500, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
@@ -134,7 +136,7 @@ class Scene3 extends Phaser.Scene {
             platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
         }
 
-        for (let i = 6.2; i < 9.2; i++) {
+        for (let i = 6.2; i < 10.2; i++) {
             platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
         }
 
@@ -176,6 +178,25 @@ class Scene3 extends Phaser.Scene {
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
         overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*7, this.cameras.main.height*2, 0x000000, 0.5).setDepth(1);
+
+        emitter = this.add.particles('rain').setDepth(0.11).createEmitter({
+            x: 0,
+            y: 0,
+            //quantity: 50,
+            quantity: 20,
+            lifespan: 1600,
+            //speedY: { min: 300, max: 500 },
+            speedY: { min: 700, max: 900 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.1, end: 0.5 },
+            rotate: { start: 0, end: 0 },
+            frequency: 5,
+            //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+            emitZone: { source: new Phaser.Geom.Rectangle(1795, 0, 1200, 1) },
+            on: true
+        });
+      
+        emitter.setScrollFactor(1).setScale(0.5).setAlpha(1);
 
         this.lastWalkSoundTime = 0;
 
@@ -318,6 +339,12 @@ class Scene3 extends Phaser.Scene {
             }
         }
 
+        //emitterSpeedX = player.body.velocity.x * -0.1;
+        emitterSpeedX = player.body.velocity.x * -0.26;
+        emitter.setSpeedX({ min: emitterSpeedX - 0.52, max: emitterSpeedX + 0.52 });
+
     }
+
+    shutdown() {this.timer.remove();}
 
 }
