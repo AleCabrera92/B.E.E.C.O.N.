@@ -49,7 +49,7 @@ class Title extends Phaser.Scene {
   
     // Play the audio after a delay of 3 seconds
     this.time.delayedCall(850, function() {
-      bgm.play();
+      sound_titleTheme.play();
     }, [], this);
 
     const randomText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);

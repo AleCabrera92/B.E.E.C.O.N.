@@ -17,9 +17,11 @@ class Scene3 extends Phaser.Scene {
             sound_drill.stop();
         }
 
+        sound_titleTheme.stop();
+
         isMusicPlaying = false;
-        this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
-        if (!isMusicPlaying) { bgm.play(); }
+        this.sound.sounds.forEach(function(sound) { if (sound.key === 'levelTheme' && sound.isPlaying) { isMusicPlaying = true; } });
+        if (!isMusicPlaying) { sound_levelTheme.play(); }
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});

@@ -26,9 +26,11 @@ class Scene1 extends Phaser.Scene {
           });
         }, [], this);
 
+        sound_titleTheme.stop();
+
         isMusicPlaying = false;
-        this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
-        if (!isMusicPlaying) { bgm.play(); }
+        this.sound.sounds.forEach(function(sound) { if (sound.key === 'levelTheme' && sound.isPlaying) { isMusicPlaying = true; } });
+        if (!isMusicPlaying) { sound_levelTheme.play(); }
 
         sound_rain.play();
         setTimeout(() => { sound_rain2.play(); }, 5000);
