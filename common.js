@@ -1,13 +1,14 @@
 let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds, clouds2, clouds3, cursors, didPressUp, didPressW, didPressSpace, enemy, emitter;
-let keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack, triggerPlatformDeath;
+let lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack, triggerPlatformDeath;
 let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_beeconHit, sound_rain, sound_rain2;
 let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_levelTheme;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0;
 let scene, gameOverImage, randomText, emitterSpeedX;
-let damageTint, startColor, endColor;
+let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
 let knockbackForce = 500, knockbackDirection;
 let enemyLives = 3;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
+let isPaused = false, pauseText, pauseOverlay;
 
 function decreaseLives() { lives--; if (lives <= -1) { /*gameOver();*/ } else { updateLivesUI(); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }

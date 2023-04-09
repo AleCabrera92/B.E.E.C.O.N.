@@ -15,14 +15,14 @@
     <body>
 
         <script src="common.js"></script><script src="title.js"></script><script src="test.js"></script> <script src="first.js"></script> <script src="preload.js"></script>
-        </script><script src="scene1.js"></script><script src="scene2.js"></script><script src="scene3.js"></script><script src="ending.js"></script>
+        </script><script src="scene1.js"></script><script src="scene2.js"></script><script src="scene3.js"></script><script src="ending.js"></script><script src="pause.js"></script>
         <script>
             const config = {
                 type: Phaser.AUTO, width: 1280, height: 720,
                 physics: {default: 'arcade', 
                 arcade: {fixedStep: false, gravity: { y: 1200 }, debug: false}},
                 scale: {mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH},
-                scene: [Preload, First, Title, Scene1, Scene2, Scene3, Ending]};
+                scene: [Preload, Pause, First, Title, Scene1, Scene2, Scene3, Ending]};
             const game = new Phaser.Game(config);
         </script>
 

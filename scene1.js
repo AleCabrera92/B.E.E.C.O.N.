@@ -186,6 +186,7 @@ class Scene1 extends Phaser.Scene {
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -223,10 +224,28 @@ class Scene1 extends Phaser.Scene {
             callback: createOverlay,
             callbackScope: this,
         });
+
+        this.input.keyboard.on('keydown-P', function () {
+            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
+            pauseText = this.add.text(0, 0, 'PAUSE', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+            pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+            this.sound.pauseAll();
+            this.sound.mute = true;
+            game.scene.pause('Scene'+scene);
+            game.scene.stop('Pause');
+            game.scene.start('Pause');
+        }, this);
     
     }
 
     update() {
+
+        if (!game.scene.isPaused() && pauseOverlay && pauseText) {
+            this.sound.resumeAll();
+            this.sound.mute = false;
+            pauseOverlay.destroy();
+            pauseText.destroy();
+        }
 
         camera.scrollX = player.x - game.config.width / 4;
 
@@ -412,5 +431,9 @@ class Scene1 extends Phaser.Scene {
     }
 
     shutdown() {this.timer.remove();}
+
+    resume() {
+        this.overlay.setVisible(false);
+    }
 
 }
