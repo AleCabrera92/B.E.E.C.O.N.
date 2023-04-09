@@ -12,6 +12,7 @@ class Scene1 extends Phaser.Scene {
         this.scale.refresh();
 
         scene = 1;
+        enemyLives = 3;
 
         overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
