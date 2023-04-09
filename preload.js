@@ -33,7 +33,7 @@ class Preload extends Phaser.Scene {
     create() {
 
         sound_titleTheme = this.sound.add('titleTheme', { loop: true }).setVolume(0.45);
-        sound_levelTheme = this.sound.add('levelTheme').setVolume(0.35);
+        sound_levelTheme = this.sound.add('levelTheme', { loop: true }).setVolume(0.35);
 
         sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);        sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
         sound_laser = this.sound.add('laser').setVolume(0.25);                  sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);
