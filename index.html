@@ -20,9 +20,9 @@
             const config = {
                 type: Phaser.AUTO, width: 1280, height: 720,
                 physics: {default: 'arcade', 
-                arcade: {fixedStep: false, gravity: { y: 1200 }, debug: false}},
+                arcade: {fixedStep: false, gravity: { y: 1200 }, debug: true}},
                 scale: {mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH},
-                scene: [Preload, Pause, First, Title, Scene1, Scene2, Scene3, Ending]};
+                scene: [Preload, Pause, First, Title, Scene1, Scene2, Scene3, Ending, Test]};
             const game = new Phaser.Game(config);
         </script>
 

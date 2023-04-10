@@ -26,7 +26,11 @@ class Pause extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyF)) { toggleFullscreen(); }
 
         this.input.keyboard.on('keydown-P', function () {
-            game.scene.resume('Scene'+scene);
+            if (scene === 0) {
+                game.scene.resume('Test');
+            } else {
+                game.scene.resume('Scene'+scene);
+            }
         }, this);
     }
 

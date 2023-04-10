@@ -43,7 +43,7 @@ class Preload extends Phaser.Scene {
         sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);          sound_thunder = this.sound.add('thunder').setVolume(0.75);  
         sound_mushroomJump = this.sound.add('mushroomJump').setVolume(0.25);
 
-        this.scene.start('First');
+        this.scene.start('Test');
 
     }
 
