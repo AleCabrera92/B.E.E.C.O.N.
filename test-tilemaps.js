@@ -5,9 +5,29 @@ class Test extends Phaser.Scene {
     }
 
     preload() { //Assets to preload for the scene
+        this.load.tilemapTiledJSON('map', 'assets/beecon-tileset.json');
+        this.load.image('tiles', 'assets/beecon-tileset.png');
+        this.load.image('ground', 'assets/ground.png');
+        this.load.image('wall', 'assets/wall.png');
+        this.load.image('platform', 'assets/platform.png');
+        this.load.image('breakablePlatform', 'assets/breakablePlatform.png');
+        this.load.image('sky', 'assets/sky.png');
+        this.load.image('overlay', 'assets/skyOverlay.png');
+        this.load.image('grass', 'assets/grass.png');
     }
 
     create() {
+
+        const map = this.make.tilemap({ key: 'map' });
+        const tileset = map.addTilesetImage('beecon-tileset', 'tiles');
+        const platform = map.createLayer('platform', tileset);
+        platform.setCollisionByExclusion([-1]);
+        const wall = map.createLayer('wall', tileset);
+        wall.setCollisionByExclusion([-1]);
+        const ground = map.createLayer('ground', tileset);
+        ground.setCollisionByExclusion([-1]);
+        const breakablePlatform = map.createLayer('breakablePlatform', tileset);
+        breakablePlatform.setCollisionByExclusion([-1]);
 
         this.scale.refresh();
 
@@ -42,9 +62,9 @@ class Test extends Phaser.Scene {
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
-        this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
+        //this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+        player = this.physics.add.sprite(200, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
@@ -131,13 +151,13 @@ class Test extends Phaser.Scene {
 
         for (let i = 0; i <= 4; i++) {this.add.image(i * 1200, 450, 'mountains').setScale(1.5).setScrollFactor(0.2).setDepth(-0.8).setTint(Phaser.Display.Color.GetColor(125, 100, 150));}
 
-        platforms.create(1500, 400, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
-        platforms.create(1700, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
-        platforms.create(1900, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
-        platforms.create(2100, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
-        platforms.create(-400, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+        //platforms.create(1500, 400, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+        //platforms.create(1700, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+        //platforms.create(1900, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+        //platforms.create(2100, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+        //platforms.create(-400, 350, 'wall').setScale(1).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
 
-        for (let i = -2; i < 6; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
+        //for (let i = -2; i < 6; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
 
         this.add.image(-270, 185, 'tree').setScale(0.55).setDepth(-0.2).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
         this.add.image(340, 463, 'tree').setScale(0.6).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(190, 190, 190));
@@ -145,7 +165,7 @@ class Test extends Phaser.Scene {
 
         for (let i = -2; i < 16; i++) {this.add.image(i * 233.4, 610, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
 
-        for (let i = -2; i < 16; i++) {this.add.image(i * 311.2, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(0.9);}
+        //for (let i = -2; i < 16; i++) {this.add.image(i * 311.2, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(0.9);}
 
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'right', frames: this.anims.generateFrameNumbers('beecon_full', { start: 4, end: 5 }), frameRate: 10, repeat: -1});
@@ -216,6 +236,12 @@ class Test extends Phaser.Scene {
             game.scene.stop('Pause');
             game.scene.start('Pause');
         }, this);
+
+        // Enable collision detection between the player and the 'wall'    
+        this.physics.add.collider(player, wall);
+        this.physics.add.collider(player, ground);
+        this.physics.add.collider(enemy, wall);
+        this.physics.add.collider(enemy, ground);
     
     }
 
@@ -416,5 +442,7 @@ class Test extends Phaser.Scene {
     resume() {
         this.overlay.setVisible(false);
     }
+
+
 
 }
