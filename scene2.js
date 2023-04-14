@@ -239,18 +239,36 @@ class Scene2 extends Phaser.Scene {
         didPressW = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W));
         didPressSpace = Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
 
+        if (player.body.onFloor()) {
+            hasJumped = false;
+        }
+
         if (didPressUp || didPressW || didPressSpace) {
             if (player.body.onFloor()) {
+                //console.log("1")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
                 } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
-                }          
+                }   
                 canDoubleJump = true;
                 player.setVelocityY(-380);
             } else if (canDoubleJump) {
+                //console.log("2")
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                    sound_beeconJump.play();
+                    player.anims.play('jump', true);
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                    sound_beeconJump.play();
+                    player.anims.play('jumpBack', true);
+                }
+                hasJumped = true;
+                canDoubleJump = false;
+                player.setVelocityY(-350);
+            } else if ((!player.body.onFloor()) && (hasJumped === false)) {
+                //console.log("3")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
@@ -258,7 +276,7 @@ class Scene2 extends Phaser.Scene {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   
-                canDoubleJump = false;
+                hasJumped = true;
                 player.setVelocityY(-350);
             }
         }
