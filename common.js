@@ -5,7 +5,7 @@ let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_l
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
 let scene, gameOverImage, randomText, emitterSpeedX;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
-let knockbackForce = 500, knockbackDirection;
+let knockbackForce = 500, knockbackDirection, megaTree;
 let enemyLives = 3, eneweeLives = 3, eneweeGroup;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay, distance;
@@ -57,7 +57,12 @@ function gameOver() {
 // Function to create and animate the white overlay
 function createOverlay() {
 
-    delayLightning = Phaser.Math.RND.integerInRange(5000, 45000);
+    if (scene === 1) {
+        delayLightning = Phaser.Math.RND.integerInRange(5000, 45000);
+    } else if (scene === 4) {
+        delayLightning = Phaser.Math.RND.integerInRange(3333, 30000);
+    }
+    
     console.log(delayLightning);
     this.time.addEvent({
       delay: delayLightning,
@@ -66,10 +71,18 @@ function createOverlay() {
     });
     // Add a white overlay that covers the entire game world
     lightning = this.add.graphics();
-    lightning.fillStyle(0xffffff, 0.75);
+    if (scene === 1) {
+        lightning.fillStyle(0xffffff, 0.75);
+    } else if (scene === 4) {
+        lightning.fillStyle(0xffffff, 0.95);
+    }
     lightning.fillRect(-1000, 0, this.game.config.width * 4, this.game.config.height * 2);
     lightning.setAlpha(0); // set initial alpha to 0
-    lightning.setDepth(-0.99); // set initial alpha to 0
+    if (scene === 1) {
+        lightning.setDepth(-0.99); // set initial alpha to 0
+    } else if (scene === 4) {
+        lightning.setDepth(-0.21); // set initial alpha to 0
+    }
   
     // Animate the overlay
     this.tweens.add({

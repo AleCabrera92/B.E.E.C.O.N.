@@ -28,7 +28,7 @@ class Preload extends Phaser.Scene {
         this.load.image('jumpshrooms', 'assets/jumpshrooms.png');               this.load.image('title', 'assets/title.png'); this.load.image('sky', 'assets/sky.png');
         this.load.image('beeIcon', 'assets/beeIcon.png');                       this.load.audio('mushroomJump', 'assets/audio/mushroomJump.mp3');
         this.load.audio('levelTheme', 'assets/audio/levelTheme.mp3');           this.load.audio('enemyEnraged', 'assets/audio/enemyEnraged.mp3');
-        this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');
+        this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');       this.load.image('megaTree', 'assets/megaTree.png');
 
     }
 
@@ -46,7 +46,7 @@ class Preload extends Phaser.Scene {
         sound_mushroomJump = this.sound.add('mushroomJump').setVolume(0.25);    sound_enemyEnraged = this.sound.add('enemyEnraged').setVolume(0.25);
         sound_eneweeAttack = this.sound.add('eneweeAttack').setVolume(0.15);
 
-        this.scene.start('First');
+        this.scene.start('Scene4');
 
     }
 

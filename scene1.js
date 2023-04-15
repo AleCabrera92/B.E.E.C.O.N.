@@ -13,6 +13,7 @@ class Scene1 extends Phaser.Scene {
 
         scene = 1;
         enemyLives = 3;
+        sound_thunder.setVolume(0.75);
 
         overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
