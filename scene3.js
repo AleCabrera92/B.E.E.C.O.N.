@@ -300,9 +300,13 @@ class Scene3 extends Phaser.Scene {
                 enewee.body.allowGravity = true;
                 enewee.setVelocityX(0);
                 enewee.setVelocityY(600);
+                if (enewee.y === 150) {
+                    sound_eneweeAttack.play();
+                }
             } else if (enewee.body.onFloor()) {
                 enewee.setImmovable(true);
                 enewee.setVelocityY(0);
+                sound_laserHit.play();
             }
           });
 

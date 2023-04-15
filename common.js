@@ -9,7 +9,7 @@ let knockbackForce = 500, knockbackDirection;
 let enemyLives = 3, eneweeLives = 3, eneweeGroup;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay, distance;
-let spiky = false, throttled = false, velocitySet = false;
+let spiky = false, throttled = false, velocitySet = false, sound_eneweeAttack;
 
 function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
