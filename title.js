@@ -58,7 +58,7 @@ class Title extends Phaser.Scene {
     //this.input.keyboard.on('keydown-ENTER', () => {this.cameras.main.fadeOut(1000); this.scene.start('Scene1')});
     this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
     platforms = this.physics.add.staticGroup();
-    player = this.physics.add.sprite(0, 600, 'beecon_full').setScale(0.3);
+    player = this.physics.add.sprite(750, 600, 'beecon_full').setScale(0.3);
     player.body.setSize(120, 120);
     player.body.setOffset(65, 110);
     player.setCollideWorldBounds(true);
@@ -88,8 +88,8 @@ class Title extends Phaser.Scene {
   
     keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
-    player.anims.play('right');
-    player.setVelocityX(250);
+    player.anims.play('left');
+    player.setVelocityX(-250);
 
     // emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
     //   x: 0,

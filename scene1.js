@@ -262,7 +262,7 @@ class Scene1 extends Phaser.Scene {
         distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
 
         if (distance <= 250 && player.alpha !== 0) {
-            if (spiky === false) {
+            if (spiky === false && enemy.alpha !== 0) {
                 sound_enemyEnraged.play({loop: false});
             }
             spiky = true;
@@ -285,7 +285,7 @@ class Scene1 extends Phaser.Scene {
                     enemy.setVelocityX(-100);
                 }
             }
-            if (spiky != false) {
+            if (spiky != false && enemy.alpha !== 0) {
                 sound_enemyEnraged.play({loop: false});
             }
             spiky = false;

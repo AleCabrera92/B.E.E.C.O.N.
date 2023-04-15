@@ -12,6 +12,7 @@ class Scene3 extends Phaser.Scene {
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
         scene = 3;
+        eneweeLives = 3;
 
         if (sound_drill.isPlaying) {
             sound_drill.stop();
@@ -42,6 +43,16 @@ class Scene3 extends Phaser.Scene {
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
+        eneweeGroup = this.add.group();
+        for (let i = 0; i < 3; i++) {
+          enewee = this.physics.add.sprite(600 + i * 300, 150, 'enewee').setScale(0.25).setDepth(0.19);
+          enewee.body.setSize(280, 220);
+          enewee.body.setOffset(30, 60);
+          enewee.setCollideWorldBounds(false);
+          this.physics.add.collider(enewee, platforms);
+          eneweeGroup.add(enewee);
+        }
+
         jumpshrooms = this.physics.add.group({ immovable: true, allowGravity: false });
         jumpshrooms.create(2000, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
         jumpshrooms.create(2350, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
@@ -61,6 +72,43 @@ class Scene3 extends Phaser.Scene {
         });
 
         gameOverImage = this.physics.add.staticGroup();
+
+        eneweeGroup.getChildren().forEach(enewee => {
+        this.physics.add.collider(player, enewee, function(player) {
+            if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
+            damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
+            this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
+                onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
+                onComplete: () => { player.setTint(endColor.color); } });
+            decreaseLives();
+
+            knockbackDirection = new Phaser.Math.Vector2(player.x - enewee.x, player.y - enewee.y).normalize().scale(knockbackForce);
+            player.setVelocityY(knockbackDirection.y);
+            player.setVelocityX(knockbackDirection.x);
+
+            if (lives <= 0) { gameOver();
+                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+                this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
+                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
+                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
+            }, null, this);
+            this.physics.add.collider(lasers, enewee, function(enewee) {
+                eneweeLives--;
+                sound_enemyF.play();
+                enewee.setTint(0xff0000);
+                setTimeout(function() { enewee.setTint(0xffffff); }, 200);
+                if (eneweeLives <= 0) {
+                    enewee.alpha = 0;
+                    enewee.anims.stop();
+                    enewee.disableBody(true, true);
+                }
+                lasers.setVelocity(0, 0);
+            });
+        this.physics.add.overlap(bigLasers, enewee, function(enewee, bigLasers) {
+            if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enewee.alpha = 0; enewee.anims.stop(); enewee.disableBody(true, true); });
+        });
         this.physics.add.overlap(player, triggerPlatformDeath, () => {
             lives = 0;
             updateLivesUI();
@@ -123,16 +171,17 @@ class Scene3 extends Phaser.Scene {
 
         platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(600, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(900, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(600, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(900, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(1200, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(1500, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(3300, 100, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(4100, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(4500, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(4900, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(500, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(600, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(900, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1200, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
         for (let i = -1; i < 4; i++) {
             platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
@@ -150,7 +199,7 @@ class Scene3 extends Phaser.Scene {
             triggerPlatformBack.create(i * 150, -150, 'platform').setScale(1).setAlpha(1).setDepth(0.3);
         }
 
-        for (let i = 10; i < 22; i++) {
+        for (let i = 0; i < 22; i++) {
             triggerPlatformDeath.create(i * 150, 900, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
         }
 
@@ -161,6 +210,10 @@ class Scene3 extends Phaser.Scene {
         this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_full', { start: 14, end: 15 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 13, end: 12 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
+        this.anims.create({key: 'eneweeChill', frames: this.anims.generateFrameNumbers('enewee', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'eneweeStill', frames: this.anims.generateFrameNumbers('enewee', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
+
+        enewee.anims.play('eneweeStill');
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -214,6 +267,12 @@ class Scene3 extends Phaser.Scene {
             game.scene.start('Pause');
         }, this);
 
+        eneweeGroup.getChildren().forEach(enewee => {
+            enewee.body.allowGravity = false;
+            enewee.setVelocityX(0);
+            enewee.setVelocityY(0);
+        });
+
     }
 
     update() {
@@ -232,6 +291,20 @@ class Scene3 extends Phaser.Scene {
 
         livesText.x = player.x+20 - game.config.width / 4;
         livesText.y = 19;
+
+        eneweeGroup.getChildren().forEach(enewee => {
+            if (player.body.x + 50 > enewee.body.x && !enewee.body.onFloor()) {
+                //enewee.anims.stop('eneweeStill');
+                //enewee.anims.play('eneweeChill');
+                enewee.setImmovable(true);
+                enewee.body.allowGravity = true;
+                enewee.setVelocityX(0);
+                enewee.setVelocityY(600);
+            } else if (enewee.body.onFloor()) {
+                enewee.setImmovable(true);
+                enewee.setVelocityY(0);
+            }
+          });
 
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);
