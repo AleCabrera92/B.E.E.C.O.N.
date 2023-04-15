@@ -210,10 +210,8 @@ class Scene3 extends Phaser.Scene {
         this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_full', { start: 14, end: 15 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 13, end: 12 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
-        this.anims.create({key: 'eneweeChill', frames: this.anims.generateFrameNumbers('enewee', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
-        this.anims.create({key: 'eneweeStill', frames: this.anims.generateFrameNumbers('enewee', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
-
-        enewee.anims.play('eneweeStill');
+        this.anims.create({key: 'eneweeStill', frames: this.anims.generateFrameNumbers('enewee', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'eneweeChill', frames: this.anims.generateFrameNumbers('enewee', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -268,6 +266,7 @@ class Scene3 extends Phaser.Scene {
         }, this);
 
         eneweeGroup.getChildren().forEach(enewee => {
+            enewee.anims.play('eneweeStill');
             enewee.body.allowGravity = false;
             enewee.setVelocityX(0);
             enewee.setVelocityY(0);
@@ -294,8 +293,9 @@ class Scene3 extends Phaser.Scene {
 
         eneweeGroup.getChildren().forEach(enewee => {
             if (player.body.x + 50 > enewee.body.x && !enewee.body.onFloor()) {
-                //enewee.anims.stop('eneweeStill');
-                //enewee.anims.play('eneweeChill');
+                if (enewee.anims.currentAnim.key === 'eneweeStill') {
+                    enewee.anims.play('eneweeChill');
+                }
                 enewee.setImmovable(true);
                 enewee.body.allowGravity = true;
                 enewee.setVelocityX(0);
