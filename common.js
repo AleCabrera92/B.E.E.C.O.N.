@@ -1,16 +1,17 @@
 let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds, clouds2, clouds3, cursors, didPressUp, didPressW, didPressSpace, enemy, emitter;
 let lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack, triggerPlatformDeath;
 let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_beeconHit, sound_rain, sound_rain2;
-let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_levelTheme;
+let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_levelTheme, sound_enemyEnraged;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
 let scene, gameOverImage, randomText, emitterSpeedX;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
 let knockbackForce = 500, knockbackDirection;
 let enemyLives = 3;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
-let isPaused = false, pauseText, pauseOverlay;
+let isPaused = false, pauseText, pauseOverlay, distance;
+let spiky = false, throttled = false, velocitySet = false;
 
-function decreaseLives() { lives--; if (lives <= -1) { /*gameOver();*/ } else { updateLivesUI(); } }
+function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
 function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled = true; keySpace.enabled = true; keysDisabled = false; }
 function toggleFullscreen() { if (game.scale.isFullscreen) { game.scale.stopFullscreen(); game.scale.setGameSize(1280, 720); } else { game.scale.startFullscreen(); } }

@@ -75,7 +75,7 @@ class Scene1 extends Phaser.Scene {
             player.setVelocityY(knockbackDirection.y);
             player.setVelocityX(knockbackDirection.x);
 
-            if (lives === 0) { gameOver();
+            if (lives <= 0) { gameOver();
                 randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
@@ -84,16 +84,18 @@ class Scene1 extends Phaser.Scene {
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
             this.physics.add.collider(lasers, enemy, function(enemy) {
-                enemyLives--;
-                sound_enemyF.play();
-                lasers.setVelocity(0, 0);
-                enemy.setTint(0xff0000);
-                setTimeout(function() { enemy.setTint(0xffffff); }, 200);
-                if (enemyLives <= 0) {
-                  enemy.alpha = 0;
-                  enemy.anims.stop();
-                  enemy.disableBody(true, true);
+                if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
+                    enemyLives--;
+                    sound_enemyF.play();
+                    enemy.setTint(0xff0000);
+                    setTimeout(function() { enemy.setTint(0xffffff); }, 200);
+                    if (enemyLives <= 0) {
+                      enemy.alpha = 0;
+                      enemy.anims.stop();
+                      enemy.disableBody(true, true);
+                    }
                 }
+                lasers.setVelocity(0, 0);
             });
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
@@ -175,6 +177,7 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 13, end: 12 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
         this.anims.create({key: 'enemyChill', frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'enemyEnraged', frames: this.anims.generateFrameNumbers('enemy', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
 
         enemy.anims.play('enemyChill');
         enemy.setVelocityX(100);
@@ -256,6 +259,48 @@ class Scene1 extends Phaser.Scene {
         livesText.x = player.x+20 - game.config.width / 4;
         livesText.y = 19;
 
+        distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
+
+        if (distance <= 250 && player.alpha !== 0) {
+            if (spiky === false) {
+                sound_enemyEnraged.play({loop: false});
+            }
+            spiky = true;
+            setTimeout(() => {
+                enemy.anims.play('enemyEnraged', true);
+            }, 100);
+            enemy.setVelocity(0);
+            velocitySet = true;
+            enemy.setImmovable(true);
+            if (enemy.body.onFloor()) {
+                enemy.body.allowGravity = false;
+            }
+        } else {
+            enemy.setImmovable(false);
+            enemy.body.allowGravity = true;
+            if (velocitySet) {
+                if (player.x < enemy.x) {
+                    enemy.setVelocityX(100);
+                } else if (player.x >= enemy.x) {
+                    enemy.setVelocityX(-100);
+                }
+            }
+            if (spiky != false) {
+                sound_enemyEnraged.play({loop: false});
+            }
+            spiky = false;
+            setTimeout(() => {
+                enemy.anims.play('enemyChill', true);
+            }, 100);
+            if (enemy.body.touching.right) {
+                enemy.setVelocityX(-100);
+                velocitySet = false;
+            } else if (enemy.body.touching.left) {
+                enemy.setVelocityX(100);
+                velocitySet = false;
+            }
+        }
+
         if (airPlatform.x >= 1290) {
             airPlatform.setVelocityX(0);
             setTimeout(() => {
@@ -271,14 +316,6 @@ class Scene1 extends Phaser.Scene {
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
         if (clouds3) {this.physics.world.wrap(clouds3.body, clouds3.width+50, true);}
-
-        enemy.anims.play('enemyChill', true);
-
-        if (enemy.body.touching.right) {
-            enemy.setVelocityX(-100);
-        } else if (enemy.body.touching.left) {
-            enemy.setVelocityX(100);
-        }
 
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);
