@@ -360,7 +360,7 @@ class Scene5 extends Phaser.Scene {
                 if (enemy.body.onFloor()) {
                     enemy.body.allowGravity = false;
                 }
-            } else {
+            } else /*if (this.cameras.main.worldView.contains(enemy.x/2, enemy.y/2) && distance > 250)*/ {
                 enemy.setImmovable(false);
                 enemy.body.allowGravity = true;
                 if (velocitySet) {
