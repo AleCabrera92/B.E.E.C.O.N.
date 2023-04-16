@@ -112,12 +112,13 @@ class Scene4 extends Phaser.Scene {
                 this.scene.start('Scene3');
             });
         });
-        // this.physics.add.overlap(player, triggerPlatform, () => {
-        //     this.cameras.main.fadeOut(500);
-        //     this.cameras.main.once('camerafadeoutcomplete', () => {
-        //         this.scene.start('Scene2');
-        //     });
-        // });
+        this.physics.add.overlap(player, triggerPlatform, () => {
+            player.setAlpha(0);
+            this.cameras.main.fadeOut(500);
+            this.cameras.main.once('camerafadeoutcomplete', () => {
+                this.scene.start('Ending');
+            });
+        });
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 timer++;
@@ -130,8 +131,8 @@ class Scene4 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        //for (let i = -2; i < 4; i++) {triggerPlatformBack.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
-        //for (let i = 9.5; i < 15; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
+        for (let i = -2; i < 4; i++) {triggerPlatformBack.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
+        for (let i = 10; i < 20; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
         for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
 
@@ -170,12 +171,14 @@ class Scene4 extends Phaser.Scene {
         //platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         //platforms.create(880, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
-        for (let i = 0.3; i < 4; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
+        for (let i = 0.3; i < 4.3; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
 
+        platforms.create(1620, 460, 'platform').setScale(0.8).refreshBody().setDepth(2).setAlpha(0);
         this.add.image(-370, 185, 'tree').setScale(0.55).setDepth(-0.2).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
         //this.add.image(340, 463, 'tree').setScale(0.8).setDepth(0.21).setTint(Phaser.Display.Color.GetColor(230, 230, 230));
         this.add.image(937.5, 470, 'tree').setScale(0.65).setDepth(-0.2).setScrollFactor(0.8).setTint(Phaser.Display.Color.GetColor(180, 180, 180));
-        this.add.image(1370, -190, 'megaTree').setScale(1.75).setDepth(0.2).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(140, 140, 140));
+        this.add.image(2050, -188, 'megaTree').setScale(1.75).setDepth(0.189).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(180, 130, 180));
+        this.add.image(2050, -188, 'megaTreeCover').setScale(1.75).setDepth(0.199).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(180, 130, 180));
 
         for (let i = -2; i < 16; i++) {this.add.image(i * 233.4, 650, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
 

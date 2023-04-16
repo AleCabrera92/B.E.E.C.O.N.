@@ -29,6 +29,7 @@ class Preload extends Phaser.Scene {
         this.load.image('beeIcon', 'assets/beeIcon.png');                       this.load.audio('mushroomJump', 'assets/audio/mushroomJump.mp3');
         this.load.audio('levelTheme', 'assets/audio/levelTheme.mp3');           this.load.audio('enemyEnraged', 'assets/audio/enemyEnraged.mp3');
         this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');       this.load.image('megaTree', 'assets/megaTree.png');
+        this.load.image('megaTreeCover', 'assets/megaTreeCover.png');
 
     }
 

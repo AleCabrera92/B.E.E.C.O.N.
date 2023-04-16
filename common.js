@@ -5,7 +5,7 @@ let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_l
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
 let scene, gameOverImage, randomText, emitterSpeedX;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
-let knockbackForce = 500, knockbackDirection, megaTree;
+let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives = 3, eneweeLives = 3, eneweeGroup;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay, distance;
