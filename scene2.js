@@ -19,6 +19,10 @@ class Scene2 extends Phaser.Scene {
 
         sound_titleTheme.stop();
 
+        sound_rain.play();
+        sound_rain.setVolume(0.25);
+        setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.25)}, 5000);
+
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'levelTheme' && sound.isPlaying) { isMusicPlaying = true; } });
         if (!isMusicPlaying) { sound_levelTheme.play(); }
