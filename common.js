@@ -6,7 +6,7 @@ let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, time
 let scene, gameOverImage, randomText, emitterSpeedX;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
-let enemyLives = 3, eneweeLives = 3, eneweeGroup;
+let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay, distance;
 let spiky = false, throttled = false, velocitySet = false, sound_eneweeAttack;
@@ -50,8 +50,13 @@ function gameOver() {
   player.alpha = 0;
   player.anims.stop();
   player.disableBody(true, true);
-  gameOverImage.create(player.x+320, game.config.height / 4, 'gameOver');
-  gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
+  if (scene === 5) {
+    gameOverImage.create(game.config.width / 2.35, player.y-330, 'gameOver');
+    gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
+  } else {
+    gameOverImage.create(player.x+320, game.config.height / 4, 'gameOver');
+    gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
+  }
 }
 
 // Function to create and animate the white overlay
