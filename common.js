@@ -10,7 +10,10 @@ let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
 let throttled = false, sound_eneweeAttack;
-//let distance, velocitySet, spiky;
+/********************************************************************************************************************
+let keyL;
+********************************************************************************************************************/
+
 
 function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }

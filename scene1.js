@@ -207,6 +207,9 @@ class Scene1 extends Phaser.Scene {
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+/*******************************************************************************************************************
+        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+********************************************************************************************************************/
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -255,7 +258,68 @@ class Scene1 extends Phaser.Scene {
             game.scene.stop('Pause');
             game.scene.start('Pause');
         }, this);
-    
+/********************************************************************************************************************
+        player.canDash = true;
+        player.dashCooldown = 2000; // two-second cooldown
+        
+        player.dash = function() {
+            // check if the player is able to dash
+            if (this.canDash) {
+                // set the player's horizontal velocity to the dash speed
+                var dashDirection = keyA.isDown ? -1 : 1;
+                player.body.setVelocityX(500 * dashDirection);
+        
+                // disable gravity while dashing to prevent falling
+                player.body.allowGravity = false;
+        
+                // set the player's dash ability to false and start the dash cooldown
+                this.canDash = false;
+                this.lastDashTime = this.scene.time.now;
+        
+                // Move the player 50 pixels to the side during the dash
+                var dashDistance = 50;
+                var tween = this.scene.tweens.add({
+                    targets: this,
+                    x: this.x + dashDistance * dashDirection,
+                    ease: 'Linear',
+                    duration: 50,
+                    repeat: 0,
+                    onComplete: function() {
+                        player.body.setVelocityX(0);
+                    },
+                    onCompleteScope: this
+                });
+        
+                // check for collisions during the dash
+                this.scene.physics.world.addCollider(this, this.scene.platforms, function(player, platforms) {
+                    // stop the dash tween if the player collides with a platform
+                    tween.stop();
+        
+                    // move the player to the edge of the platform to prevent clipping
+                    if (dashDirection < 0) {
+                        player.x = platforms.right + player.width / 2;
+                    } else {
+                        player.x = platforms.left - player.width / 2;
+                    }
+        
+                    // set the player's velocity to 0 to prevent sliding off the platform
+                    player.body.setVelocity(0);
+        
+                    // re-enable gravity
+                    player.body.allowGravity = true;
+        
+                    // set the player's ability to dash to true and start the dash cooldown
+                    player.canDash = true;
+                    player.lastDashTime = player.scene.time.now;
+                }, null, this);
+        
+                // re-enable gravity after a short delay
+                this.scene.time.delayedCall(200, function() {
+                    player.body.allowGravity = true;
+                }, [], this);
+            }
+        };
+********************************************************************************************************************/
     }
 
     update() {
@@ -309,7 +373,22 @@ class Scene1 extends Phaser.Scene {
             keyUP.enabled = false;
             keySpace.enabled = false;
         }
+/********************************************************************************************************************
+        // check if the player is on the ground
+        if (player.body.onFloor()) {
+            // if the player is on the ground, they can dash again
+            player.canDash = true;
+        }
 
+        // check if enough time has passed since the last dash
+        if (!player.canDash && this.time.now - player.lastDashTime >= player.dashCooldown) {
+            player.canDash = true;
+        }
+
+        if (player.canDash && (keyL.isDown && ((keyA.isDown) || keyD.isDown))) {
+            player.dash();
+        }
+********************************************************************************************************************/
         if (player.body.velocity.x !==0) {
             sound_drill.stop();
         }
