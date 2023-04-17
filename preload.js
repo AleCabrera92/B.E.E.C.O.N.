@@ -47,7 +47,7 @@ class Preload extends Phaser.Scene {
         sound_mushroomJump = this.sound.add('mushroomJump').setVolume(0.25);    sound_enemyEnraged = this.sound.add('enemyEnraged').setVolume(0.25);
         sound_eneweeAttack = this.sound.add('eneweeAttack').setVolume(0.15);
 
-        this.scene.start('Scene5');
+        this.scene.start('First');
 
     }
 

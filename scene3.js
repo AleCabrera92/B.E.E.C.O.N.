@@ -12,7 +12,6 @@ class Scene3 extends Phaser.Scene {
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
         scene = 3;
-        eneweeLives = 3;
 
         if (sound_drill.isPlaying) {
             sound_drill.stop();
@@ -57,6 +56,10 @@ class Scene3 extends Phaser.Scene {
           eneweeGroup.add(enewee);
         }
 
+        eneweeGroup.children.iterate((enewee) => {
+            enewee.eneweeLives = 3;
+        });
+
         jumpshrooms = this.physics.add.group({ immovable: true, allowGravity: false });
         jumpshrooms.create(2000, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
         jumpshrooms.create(2350, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
@@ -99,11 +102,11 @@ class Scene3 extends Phaser.Scene {
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
             this.physics.add.collider(lasers, enewee, function(enewee) {
-                eneweeLives--;
+                enewee.eneweeLives--;
                 sound_enemyF.play();
                 enewee.setTint(0xff0000);
                 setTimeout(function() { enewee.setTint(0xffffff); }, 200);
-                if (eneweeLives <= 0) {
+                if (enewee.eneweeLives <= 0) {
                     enewee.alpha = 0;
                     enewee.anims.stop();
                     enewee.disableBody(true, true);

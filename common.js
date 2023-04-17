@@ -8,13 +8,59 @@ let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, 
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
-let isPaused = false, pauseText, pauseOverlay, distance;
-let spiky = false, throttled = false, velocitySet = false, sound_eneweeAttack;
+let isPaused = false, pauseText, pauseOverlay;
+let throttled = false, sound_eneweeAttack;
+//let distance, velocitySet, spiky;
 
 function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
 function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled = true; keySpace.enabled = true; keysDisabled = false; }
 function toggleFullscreen() { if (game.scale.isFullscreen) { game.scale.stopFullscreen(); game.scale.setGameSize(1280, 720); } else { game.scale.startFullscreen(); } }
+
+function updateEnemyBehavior(enemy) {
+    distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
+    if (distance <= 250 && player.alpha !== 0) {
+        if (!enemy.getData('spiky') && enemy.alpha !== 0) {
+            sound_enemyEnraged.play({loop: false});
+        }
+        enemy.setData('spiky', true);
+        enemy.setData('velocitySet', true);
+        setTimeout(() => {
+            enemy.anims.play('enemyEnraged', true);
+        }, 100);
+        enemy.setVelocity(0);
+        enemy.setImmovable(true);
+        if (enemy.body.onFloor()) {
+            enemy.body.allowGravity = false;
+        }
+    } else {
+        enemy.setImmovable(false);
+        enemy.body.allowGravity = true;
+        if (enemy.getData('velocitySet')) {
+            if (player.x < enemy.x) {
+                enemy.setVelocityX(100);
+            } else if (player.x >= enemy.x) {
+                enemy.setVelocityX(-100);
+            }
+        }
+        if (enemy.getData('spiky') && enemy.alpha !== 0) {
+            sound_enemyEnraged.play({loop: false});
+        }
+        enemy.setData('spiky', false);
+        setTimeout(() => {
+            if (scene != 2 && scene != 3 && scene != 4) {
+                enemy.anims.play('enemyChill', true);
+            } 
+        }, 100);
+        if (enemy.body.touching.right) {
+            enemy.setVelocityX(-100);
+            enemy.setData('velocitySet', false);
+        } else if (enemy.body.touching.left) {
+            enemy.setVelocityX(100);
+            enemy.setData('velocitySet', false);
+        }
+    }
+}
 
 function shootLaser() {
     if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {

@@ -345,46 +345,7 @@ class Scene5 extends Phaser.Scene {
         if (clouds3) {this.physics.world.wrap(clouds3.body, clouds3.width+50, true);}     
 
         enemyGroup.getChildren().forEach(enemy => {
-            distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
-            if (distance <= 250 && player.alpha !== 0) {
-                if (spiky === false && enemy.alpha !== 0) {
-                    sound_enemyEnraged.play({loop: false});
-                }
-                spiky = true;
-                setTimeout(() => {
-                    enemy.anims.play('enemyEnraged', true);
-                }, 100);
-                enemy.setVelocity(0);
-                velocitySet = true;
-                enemy.setImmovable(true);
-                if (enemy.body.onFloor()) {
-                    enemy.body.allowGravity = false;
-                }
-            } else /*if (this.cameras.main.worldView.contains(enemy.x/2, enemy.y/2) && distance > 250)*/ {
-                enemy.setImmovable(false);
-                enemy.body.allowGravity = true;
-                if (velocitySet) {
-                    if (player.x < enemy.x) {
-                        enemy.setVelocityX(100);
-                    } else if (player.x >= enemy.x) {
-                        enemy.setVelocityX(-100);
-                    }
-                }
-                if (spiky != false && enemy.alpha !== 0) {
-                    sound_enemyEnraged.play({loop: false});
-                }
-                spiky = false;
-                setTimeout(() => {
-                    enemy.anims.play('enemyChill', true);
-                }, 100);
-                if (enemy.body.touching.right) {
-                    enemy.setVelocityX(-100);
-                    velocitySet = false;
-                } else if (enemy.body.touching.left) {
-                    enemy.setVelocityX(100);
-                    velocitySet = false;
-                }
-            }
+            updateEnemyBehavior(enemy);
         });
 
         keyA.on('down', enableKeys);

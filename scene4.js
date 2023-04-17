@@ -12,7 +12,7 @@ class Scene4 extends Phaser.Scene {
         this.scale.refresh();
 
         scene = 4;
-        enemyLives = 3;
+
         sound_thunder.setVolume(0.95);
 
         overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
@@ -53,56 +53,9 @@ class Scene4 extends Phaser.Scene {
         player.body.setOffset(65, 110);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
-        enemy = this.physics.add.sprite(1560, 1250, 'enemy').setScale(0.25).setDepth(0.19);
-        enemy.body.setSize(280, 220);
-        enemy.body.setOffset(30, 60);
-        enemy.setCollideWorldBounds(false);
-        this.physics.add.collider(enemy, platforms);
-        airPlatform = this.physics.add.sprite(1000, 1390, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
-        airPlatform.setVelocityX(100);
-        airPlatform.setImmovable(true);
-        airPlatform.body.allowGravity = false;
-        this.physics.add.collider(player, airPlatform);
-        this.physics.add.overlap(lasers, airPlatform);
-        this.physics.add.overlap(bigLasers, airPlatform);
 
         gameOverImage = this.physics.add.staticGroup();
-        this.physics.add.collider(player, enemy, function(player) {
-            if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
-            damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
-            this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
-                onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
-                onComplete: () => { player.setTint(endColor.color); } });
-            decreaseLives();
 
-            knockbackDirection = new Phaser.Math.Vector2(player.x - enemy.x, player.y - enemy.y).normalize().scale(knockbackForce);
-            player.setVelocityY(knockbackDirection.y);
-            player.setVelocityX(knockbackDirection.x);
-
-            if (lives <= 0) { gameOver();
-                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
-                this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
-            }, null, this);
-            this.physics.add.collider(lasers, enemy, function(enemy) {
-                if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
-                    enemyLives--;
-                    sound_enemyF.play();
-                    enemy.setTint(0xff0000);
-                    setTimeout(function() { enemy.setTint(0xffffff); }, 200);
-                    if (enemyLives <= 0) {
-                      enemy.alpha = 0;
-                      enemy.anims.stop();
-                      enemy.disableBody(true, true);
-                    }
-                }
-                lasers.setVelocity(0, 0);
-            });
-        this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
-            if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
@@ -157,7 +110,6 @@ class Scene4 extends Phaser.Scene {
         this.add.image(2050, -188, 'megaTreeCover').setScale(1.75).setDepth(0.21).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(180, 130, 180));
 
         for (let i = -2; i < 16; i++) {this.add.image(i * 233.4, 650, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
-
         for (let i = -2; i < 16; i++) {this.add.image(i * 311.2, 730, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(0.9);}
 
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
@@ -167,11 +119,6 @@ class Scene4 extends Phaser.Scene {
         this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_full', { start: 14, end: 15 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 13, end: 12 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
-        this.anims.create({key: 'enemyChill', frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
-        this.anims.create({key: 'enemyEnraged', frames: this.anims.generateFrameNumbers('enemy', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
-
-        enemy.anims.play('enemyChill');
-        enemy.setVelocityX(100);
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -249,60 +196,6 @@ class Scene4 extends Phaser.Scene {
 
         livesText.x = player.x+20 - game.config.width / 4;
         livesText.y = 19;
-
-        distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
-
-        if (distance <= 250 && player.alpha !== 0) {
-            if (spiky === false && enemy.alpha !== 0) {
-                sound_enemyEnraged.play({loop: false});
-            }
-            spiky = true;
-            setTimeout(() => {
-                enemy.anims.play('enemyEnraged', true);
-            }, 100);
-            enemy.setVelocity(0);
-            velocitySet = true;
-            enemy.setImmovable(true);
-            if (enemy.body.onFloor()) {
-                enemy.body.allowGravity = false;
-            }
-        } else {
-            enemy.setImmovable(false);
-            enemy.body.allowGravity = true;
-            if (velocitySet) {
-                if (player.x < enemy.x) {
-                    enemy.setVelocityX(100);
-                } else if (player.x >= enemy.x) {
-                    enemy.setVelocityX(-100);
-                }
-            }
-            if (spiky != false && enemy.alpha !== 0) {
-                sound_enemyEnraged.play({loop: false});
-            }
-            spiky = false;
-            setTimeout(() => {
-                enemy.anims.play('enemyChill', true);
-            }, 100);
-            if (enemy.body.touching.right) {
-                enemy.setVelocityX(-100);
-                velocitySet = false;
-            } else if (enemy.body.touching.left) {
-                enemy.setVelocityX(100);
-                velocitySet = false;
-            }
-        }
-
-        if (airPlatform.x >= 1290) {
-            airPlatform.setVelocityX(0);
-            setTimeout(() => {
-              airPlatform.setVelocityX(-100);
-            }, 1000);
-        } else if (airPlatform.x <= 1000) {
-            airPlatform.setVelocityX(0);
-            setTimeout(() => {
-              airPlatform.setVelocityX(100);
-            }, 1000);
-        }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}

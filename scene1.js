@@ -12,7 +12,6 @@ class Scene1 extends Phaser.Scene {
         this.scale.refresh();
 
         scene = 1;
-        enemyLives = 3;
         sound_thunder.setVolume(0.75);
 
         overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
@@ -50,10 +49,21 @@ class Scene1 extends Phaser.Scene {
         player.body.setOffset(65, 110);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
-        enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(0.25).setDepth(0.19);
-        enemy.body.setSize(280, 220);
-        enemy.body.setOffset(30, 60);
-        enemy.setCollideWorldBounds(false);
+
+        enemyGroup = this.add.group();
+        for (let i = 1; i < 2; i++) {
+          enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(0.25).setDepth(0.19);
+          enemy.body.setSize(280, 220);
+          enemy.body.setOffset(30, 60);
+          enemy.setCollideWorldBounds(false);
+          this.physics.add.collider(enemy, platforms);
+          enemyGroup.add(enemy);
+        }
+
+        enemyGroup.children.iterate((enemy) => {
+            enemy.enemyLives = 3;
+        });
+
         this.physics.add.collider(enemy, platforms);
         airPlatform = this.physics.add.sprite(1000, 390, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
         airPlatform.setVelocityX(100);
@@ -64,6 +74,8 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.overlap(bigLasers, airPlatform);
 
         gameOverImage = this.physics.add.staticGroup();
+
+        enemyGroup.getChildren().forEach(enemy => {
         this.physics.add.collider(player, enemy, function(player) {
             if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
             damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
@@ -78,7 +90,7 @@ class Scene1 extends Phaser.Scene {
 
             if (lives <= 0) { gameOver();
                 randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
@@ -86,20 +98,21 @@ class Scene1 extends Phaser.Scene {
             }, null, this);
             this.physics.add.collider(lasers, enemy, function(enemy) {
                 if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
-                    enemyLives--;
+                    enemy.enemyLives--;
                     sound_enemyF.play();
                     enemy.setTint(0xff0000);
                     setTimeout(function() { enemy.setTint(0xffffff); }, 200);
-                    if (enemyLives <= 0) {
-                      enemy.alpha = 0;
-                      enemy.anims.stop();
-                      enemy.disableBody(true, true);
+                    if (enemy.enemyLives <= 0) {
+                    enemy.alpha = 0;
+                    enemy.anims.stop();
+                    enemy.disableBody(true, true);
                     }
                 }
                 lasers.setVelocity(0, 0);
             });
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
+        });
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
@@ -180,8 +193,10 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({key: 'enemyChill', frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'enemyEnraged', frames: this.anims.generateFrameNumbers('enemy', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
 
-        enemy.anims.play('enemyChill');
-        enemy.setVelocityX(100);
+        enemyGroup.getChildren().forEach(enemy => {
+            enemy.anims.play('enemyChill');
+            enemy.setVelocityX(100);
+        });
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -260,57 +275,19 @@ class Scene1 extends Phaser.Scene {
         livesText.x = player.x+20 - game.config.width / 4;
         livesText.y = 19;
 
-        distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
-
-        if (distance <= 250 && player.alpha !== 0) {
-            if (spiky === false && enemy.alpha !== 0) {
-                sound_enemyEnraged.play({loop: false});
-            }
-            spiky = true;
-            setTimeout(() => {
-                enemy.anims.play('enemyEnraged', true);
-            }, 100);
-            enemy.setVelocity(0);
-            velocitySet = true;
-            enemy.setImmovable(true);
-            if (enemy.body.onFloor()) {
-                enemy.body.allowGravity = false;
-            }
-        } else {
-            enemy.setImmovable(false);
-            enemy.body.allowGravity = true;
-            if (velocitySet) {
-                if (player.x < enemy.x) {
-                    enemy.setVelocityX(100);
-                } else if (player.x >= enemy.x) {
-                    enemy.setVelocityX(-100);
-                }
-            }
-            if (spiky != false && enemy.alpha !== 0) {
-                sound_enemyEnraged.play({loop: false});
-            }
-            spiky = false;
-            setTimeout(() => {
-                enemy.anims.play('enemyChill', true);
-            }, 100);
-            if (enemy.body.touching.right) {
-                enemy.setVelocityX(-100);
-                velocitySet = false;
-            } else if (enemy.body.touching.left) {
-                enemy.setVelocityX(100);
-                velocitySet = false;
-            }
-        }
+        enemyGroup.getChildren().forEach(enemy => {
+            updateEnemyBehavior(enemy);
+        });
 
         if (airPlatform.x >= 1290) {
             airPlatform.setVelocityX(0);
             setTimeout(() => {
-              airPlatform.setVelocityX(-100);
+                airPlatform.setVelocityX(-100);
             }, 1000);
         } else if (airPlatform.x <= 1000) {
             airPlatform.setVelocityX(0);
             setTimeout(() => {
-              airPlatform.setVelocityX(100);
+                airPlatform.setVelocityX(100);
             }, 1000);
         }
 
