@@ -353,7 +353,7 @@ class Scene5 extends Phaser.Scene {
         cursors.left.on('down', enableKeys);
         cursors.right.on('down', enableKeys);
 
-        if (Phaser.Input.Keyboard.JustDown(keyK)) {
+        if (Phaser.Input.Keyboard.JustDown(keyK) && player.body.velocity.x ===0) {
             sound_drill.play();
             sound_drill.loop = true;
             player.anims.play('drill', true);
