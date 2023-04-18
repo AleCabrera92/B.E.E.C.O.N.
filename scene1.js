@@ -36,7 +36,8 @@ class Scene1 extends Phaser.Scene {
         sound_rain.play();
         setTimeout(() => { sound_rain2.play(); }, 5000);
 
-        platforms = this.physics.add.staticGroup({immovable: true});
+        //platforms = this.physics.add.staticGroup({immovable: true});
+        platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
         this.physics.add.collider(lasers, platforms);
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});

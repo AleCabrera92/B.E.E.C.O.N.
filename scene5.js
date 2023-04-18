@@ -294,7 +294,7 @@ class Scene5 extends Phaser.Scene {
             frequency: 5,
             //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
             emitZone: { source: new Phaser.Geom.Rectangle(-200, 0, this.game.config.width + 800, 1) },
-             on: true
+            on: true
         });
       
         emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
