@@ -130,24 +130,42 @@ class Scene4 extends Phaser.Scene {
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
-        emitter = this.add.particles('rain').setDepth(0.29).createEmitter({
+        // emitter = this.add.particles('rain').setDepth(0.29).createEmitter({
+        //     x: 0,
+        //     y: 0,
+        //     //quantity: 50,
+        //     quantity: 100,
+        //     lifespan: 1600,
+        //     //speedY: { min: 300, max: 500 },
+        //     speedY: { min: 1700, max: 1900 },
+        //     speedX: { min: -5, max: 5 },
+        //     scale: { start: 0.1, end: 0.5 },
+        //     rotate: { start: 20, end: 45 },
+        //     frequency: 5,
+        //     //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
+        //     emitZone: { source: new Phaser.Geom.Rectangle(-200, 0, this.game.config.width + 800, 1) },
+        //     on: true
+        // });
+      
+        // emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
+
+        emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
-            y: 0,
-            //quantity: 50,
-            quantity: 100,
+            y: -100,
+            quantity: 40,
             lifespan: 1600,
-            //speedY: { min: 300, max: 500 },
-            speedY: { min: 1700, max: 1900 },
-            speedX: { min: -5, max: 5 },
+            speedY: { min: 700, max: 900 },
+            speedX: { min: -1000, max: -950 },
             scale: { start: 0.1, end: 0.5 },
-            rotate: { start: 20, end: 45 },
+            rotate: { start: 40, end: 40 },
             frequency: 5,
-            //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
-            emitZone: { source: new Phaser.Geom.Rectangle(-200, 0, this.game.config.width + 800, 1) },
+            //blendMode: 'ADD',
+            //angle: { min: 0, max: 0 },
+            emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width*3.5, 1) },
             on: true
         });
       
-        emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
+        emitter.setScrollFactor(0.5).setDepth(0.29);
 
         this.lastWalkSoundTime = 0;
 
@@ -347,18 +365,6 @@ class Scene4 extends Phaser.Scene {
         if ((player.anims.currentAnim.key !== 'drill') || (!player.body.onFloor())) {
             timer = 0;
         }
-
-        if (player.body.velocity.x > 0) {
-            emitter.setAngle(130);
-        } else if (player.body.velocity.x < 0) {
-            emitter.setAngle(-130);
-        } else {
-            emitter.setAngle(0);
-        }
-
-        //emitterSpeedX = player.body.velocity.x * -0.1;
-        emitterSpeedX = -1000 + player.body.velocity.x * -0.26;
-        emitter.setSpeedX({ min: emitterSpeedX - 0.52, max: emitterSpeedX + 0.52 });
 
     }
 

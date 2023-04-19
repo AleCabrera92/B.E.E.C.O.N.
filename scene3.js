@@ -230,25 +230,6 @@ class Scene3 extends Phaser.Scene {
 
         overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*7, this.cameras.main.height*2, 0x000000, 0.5).setDepth(1);
 
-        emitter = this.add.particles('rain').setDepth(0.11).createEmitter({
-            x: 0,
-            y: 0,
-            //quantity: 50,
-            quantity: 20,
-            lifespan: 1600,
-            //speedY: { min: 300, max: 500 },
-            speedY: { min: 700, max: 900 },
-            speedX: { min: -5, max: 5 },
-            scale: { start: 0.1, end: 0.5 },
-            rotate: { start: 0, end: 0 },
-            frequency: 5,
-            //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
-            emitZone: { source: new Phaser.Geom.Rectangle(1795, 0, 1200, 1) },
-            on: true
-        });
-      
-        emitter.setScrollFactor(1).setScale(0.5).setAlpha(1);
-
         this.lastWalkSoundTime = 0;
 
         this.input.keyboard.on('keydown-P', function () {
@@ -451,10 +432,6 @@ class Scene3 extends Phaser.Scene {
                 bigLaserToDelete.destroy();
             }
         }
-
-        //emitterSpeedX = player.body.velocity.x * -0.1;
-        emitterSpeedX = player.body.velocity.x * -0.26;
-        emitter.setSpeedX({ min: emitterSpeedX - 0.52, max: emitterSpeedX + 0.52 });
 
     }
 

@@ -3,7 +3,7 @@ let lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, 
 let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_beeconHit, sound_rain, sound_rain2;
 let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_levelTheme, sound_enemyEnraged;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
-let scene, gameOverImage, randomText, emitterSpeedX;
+let scene, gameOverImage, randomText;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup;
@@ -139,24 +139,22 @@ function createOverlay() {
         lightning.setDepth(-0.21); // set initial alpha to 0
     }
   
-    // Animate the overlay
     this.tweens.add({
         targets: lightning,
         alpha: 1,
         duration: 150,
         ease: 'Power2',
         yoyo: true,
-        onComplete: function() {
+        onComplete: () => {
             // Wait for two seconds, then play the sound_enemyF sound
             lightning.destroy(); // remove the overlay when the animation is complete
             this.time.addEvent({
                 delay: 1000, // Delay in milliseconds
-                callback: function() {
+                callback: () => {
                     sound_thunder.play();
                 },
                 callbackScope: this
             });
-        },
-        onCompleteScope: this
+        }
     });
 }

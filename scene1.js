@@ -209,24 +209,23 @@ class Scene1 extends Phaser.Scene {
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
-        emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
+        emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
-            y: 0,
-            //quantity: 50,
+            y: -100,
             quantity: 20,
             lifespan: 1600,
-            //speedY: { min: 300, max: 500 },
             speedY: { min: 700, max: 900 },
             speedX: { min: -5, max: 5 },
             scale: { start: 0.1, end: 0.5 },
             rotate: { start: 0, end: 0 },
             frequency: 5,
-            //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
-            emitZone: { source: new Phaser.Geom.Rectangle(-200, 0, this.game.config.width + 400, 1) },
+            //blendMode: 'ADD',
+            //angle: { min: 0, max: 0 },
+            emitZone: { source: new Phaser.Geom.Rectangle(-this.game.config.width, 0, this.game.config.width*8, 1) },
             on: true
         });
       
-        emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
+        emitter.setScrollFactor(0.5).setDepth(-0.11);
 
         this.lastWalkSoundTime = 0;
 
@@ -443,17 +442,25 @@ class Scene1 extends Phaser.Scene {
             timer = 0;
         }
 
-        if (player.body.velocity.x > 0) {
-            emitter.setAngle(130);
-        } else if (player.body.velocity.x < 0) {
-            emitter.setAngle(-130);
-        } else {
-            emitter.setAngle(0);
-        }
+        // if (player.body.velocity.x > 0) {
+        //     emitterSpeedX = 5;
+        // } else if (player.body.velocity.x < 0) {
+        //     emitterSpeedX = -5;
+        // } else {
+        //     emitterSpeedX = 0;
+        // }
 
-        //emitterSpeedX = player.body.velocity.x * -0.1;
-        emitterSpeedX = player.body.velocity.x * -0.26;
-        emitter.setSpeedX({ min: emitterSpeedX - 0.52, max: emitterSpeedX + 0.52 });
+        // //emitterSpeedX = player.body.velocity.x * -0.1;
+        // //emitterSpeedX = player.body.velocity.x * 0.26;
+        // //emitter.setSpeedX({ min: emitterSpeedX - 0.52, max: emitterSpeedX + 0.52 });
+
+        // // Create the tween to update particle properties
+        // this.tweens.add({
+        //     targets: emitter.particles,
+        //     //angle: emitterSpeedX,
+        //     //ease: 'Linear',
+        //     //repeat: -1
+        // });
 
     }
 
