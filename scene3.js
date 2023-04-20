@@ -101,7 +101,7 @@ class Scene3 extends Phaser.Scene {
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
-            this.physics.add.collider(lasers, enewee, function(enewee) {
+            this.physics.add.collider(lasers, enewee, function(enewee, laser) {
                 enewee.eneweeLives--;
                 sound_enemyF.play();
                 enewee.setTint(0xff0000);
@@ -111,7 +111,7 @@ class Scene3 extends Phaser.Scene {
                     enewee.anims.stop();
                     enewee.disableBody(true, true);
                 }
-                lasers.setVelocity(0, 0);
+                laser.setVelocity(0, 0);
             });
         this.physics.add.overlap(bigLasers, enewee, function(enewee, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enewee.alpha = 0; enewee.anims.stop(); enewee.disableBody(true, true); });
@@ -229,6 +229,24 @@ class Scene3 extends Phaser.Scene {
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
         overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*7, this.cameras.main.height*2, 0x000000, 0.5).setDepth(1);
+
+        emitter = this.add.particles(0, 0, 'rain',{
+            x: 0,
+            y: -100,
+            quantity: 20,
+            lifespan: 1600,
+            speedY: { min: 700, max: 900 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.25, end: 0.5 },
+            rotate: { start: 0, end: 0 },
+            frequency: 5,
+            //blendMode: 'ADD',
+            //angle: { min: 0, max: 0 },
+            emitZone: { source: new Phaser.Geom.Rectangle(1795, 0, 1200, 1) },
+            on: true
+        });
+      
+        emitter.setScrollFactor(1).setDepth(0.11);
 
         this.lastWalkSoundTime = 0;
 

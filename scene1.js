@@ -97,7 +97,7 @@ class Scene1 extends Phaser.Scene {
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
             }, null, this);
-            this.physics.add.collider(lasers, enemy, function(enemy) {
+            this.physics.add.collider(lasers, enemy, function(enemy, laser) {
                 if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
                     enemy.enemyLives--;
                     sound_enemyF.play();
@@ -109,7 +109,7 @@ class Scene1 extends Phaser.Scene {
                     enemy.disableBody(true, true);
                     }
                 }
-                lasers.setVelocity(0, 0);
+                laser.setVelocity(0, 0);
             });
         this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
             if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
