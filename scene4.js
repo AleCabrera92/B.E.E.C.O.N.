@@ -42,6 +42,7 @@ class Scene4 extends Phaser.Scene {
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
         this.physics.add.collider(lasers, platforms);
+        this.physics.add.collider(lasers, platforms, function(laser) {laser.setVelocityX(0), laser.setAcceleration(0)});
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
@@ -130,25 +131,6 @@ class Scene4 extends Phaser.Scene {
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
-        // emitter = this.add.particles('rain').setDepth(0.29).createEmitter({
-        //     x: 0,
-        //     y: 0,
-        //     //quantity: 50,
-        //     quantity: 100,
-        //     lifespan: 1600,
-        //     //speedY: { min: 300, max: 500 },
-        //     speedY: { min: 1700, max: 1900 },
-        //     speedX: { min: -5, max: 5 },
-        //     scale: { start: 0.1, end: 0.5 },
-        //     rotate: { start: 20, end: 45 },
-        //     frequency: 5,
-        //     //emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
-        //     emitZone: { source: new Phaser.Geom.Rectangle(-200, 0, this.game.config.width + 800, 1) },
-        //     on: true
-        // });
-      
-        // emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
-
         emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
             y: -100,
@@ -199,13 +181,19 @@ class Scene4 extends Phaser.Scene {
             pauseText.destroy();
         }
 
-        camera.scrollX = player.x - game.config.width / 4;
-
-        liveBG.x = player.x+100 - game.config.width / 4;
-        liveBG.y = 30;
-
-        livesText.x = player.x+20 - game.config.width / 4;
-        livesText.y = 19;
+        if (player.x > 1300) {
+            camera.scrollX = 975;
+            liveBG.x = 1075;
+            liveBG.y = 30;
+            livesText.x = 995;
+            livesText.y = 19;
+        } else {
+            camera.scrollX = player.x - game.config.width / 4;
+            liveBG.x = player.x+100 - game.config.width / 4;
+            liveBG.y = 30;
+            livesText.x = player.x+20 - game.config.width / 4;
+            livesText.y = 19;
+        }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}

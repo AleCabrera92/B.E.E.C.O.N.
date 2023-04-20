@@ -40,6 +40,7 @@ class Scene1 extends Phaser.Scene {
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
         this.physics.add.collider(lasers, platforms);
+        this.physics.add.collider(lasers, platforms, function(laser) {laser.setVelocityX(0), laser.setAcceleration(0)});
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
