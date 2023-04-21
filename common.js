@@ -6,7 +6,7 @@ let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, time
 let scene, gameOverImage, randomText;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
-let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup;
+let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
 let throttled = false, sound_eneweeAttack;
@@ -18,7 +18,7 @@ function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled 
 function toggleFullscreen() { if (game.scale.isFullscreen) { game.scale.stopFullscreen(); game.scale.setGameSize(1280, 720); } else { game.scale.startFullscreen(); } }
 
 function updateEnemyBehavior(enemy) {
-    distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
+    let distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
     if (distance <= 250 && player.alpha !== 0) {
         if (!enemy.getData('spiky') && enemy.alpha !== 0) {
             sound_enemyEnraged.play({loop: false});
@@ -27,10 +27,10 @@ function updateEnemyBehavior(enemy) {
         enemy.setData('velocitySet', true);
         setTimeout(() => {
             enemy.anims.play('enemyEnraged', true);
-        }, 100);
-        enemy.setVelocity(0);
-        enemy.setImmovable(true);
+        }, 100);        
         if (enemy.body.onFloor()) {
+            enemy.setVelocity(0);
+            enemy.setImmovable(true);
             enemy.body.allowGravity = false;
         }
     } else {
@@ -60,6 +60,41 @@ function updateEnemyBehavior(enemy) {
             enemy.setData('velocitySet', false);
         }
     }
+}
+
+function updatelilWaspBehavior(lilWasp) {
+  // Calculate distance between enemy and player
+  let distanceToPlayer = Phaser.Math.Distance.Between(lilWasp.x, lilWasp.y, player.x, player.y);
+
+  if (lilWasp.x >= player.x) {
+    lilWasp.setFlip(false);
+  } else {
+    lilWasp.setFlip(true);
+  }
+
+  if (distanceToPlayer <= 500 && player.alpha != 0) {
+    // Enemy is close to player, move towards player
+    const angleToPlayer = Phaser.Math.Angle.Between(lilWasp.x, lilWasp.y, player.x, player.y);
+    const speed = 3;
+
+    enemy.rotation = angleToPlayer; // Point towards player
+    if (distanceToPlayer < 100 && player.alpha != 0) {
+      // If not in attack mode, move towards player
+      lilWasp.x += Math.cos(angleToPlayer) * speed * 5;
+      lilWasp.y += Math.sin(angleToPlayer) * speed * 5;
+    } else if (player.alpha != 0) {
+        lilWasp.x += Math.cos(angleToPlayer) * speed;
+        lilWasp.y += Math.sin(angleToPlayer) * speed;
+      // Enemy is in attack mode
+    //   lilWasp.body.setVelocity(0, 0); // Stop moving
+    //   this.time.delayedCall(500, () => {
+    //     // After 500ms, increase speed and move towards player
+    //     const attackSpeed = 300;
+    //     lilWasp.x += Math.cos(angleToPlayer) * attackSpeed;
+    //     lilWasp.y += Math.sin(angleToPlayer) * attackSpeed;
+    //   });
+    }
+  }
 }
 
 function shootLaser() {

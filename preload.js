@@ -9,6 +9,7 @@ class Preload extends Phaser.Scene {
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
         this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 350, frameHeight: 300 });
         this.load.spritesheet('enewee', 'assets/enewee.png', { frameWidth: 336, frameHeight: 504 });
+        this.load.spritesheet('lilWasp', 'assets/lilWasp.png', { frameWidth: 412, frameHeight: 412 });
 
         this.load.image('sky', 'assets/sky.png');                               this.load.image('platform', 'assets/platform.png');
         this.load.image('breakableGround', 'assets/breakablePlatform.png');     this.load.image('wall', 'assets/wall.png');
@@ -58,6 +59,7 @@ class Preload extends Phaser.Scene {
         this.anims.create({key: 'enemyEnraged', frames: this.anims.generateFrameNumbers('enemy', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'eneweeStill', frames: this.anims.generateFrameNumbers('enewee', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'eneweeChill', frames: this.anims.generateFrameNumbers('enewee', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'lilWaspChill', frames: this.anims.generateFrameNumbers('lilWasp', { start: 0, end: 2 }), frameRate: 10, repeat: -1});
 
         this.scene.start('First');
 
