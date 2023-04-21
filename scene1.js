@@ -249,6 +249,31 @@ class Scene1 extends Phaser.Scene {
             game.scene.start('Pause');
         }, this);
 
+        /******************************************************************** JUMP ********************************************************************/
+        let tutorialBoxJump = this.add.container(600, 125);
+        let boxBackgroundJump = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        tutorialBoxJump.add(boxBackgroundJump);
+        let tutorialTextJump = this.add.text(0, 0, "PRESS 'SPACEBAR' TO JUMP... AND PRESS IT AGAIN FOR A DOUBLE JUMP", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        tutorialTextJump.setOrigin(0.5, 0.5);
+        tutorialBoxJump.add(tutorialTextJump);
+        this.add.existing(tutorialBoxJump);
+        /******************************************************************** SHOOT ********************************************************************/
+        let tutorialBoxShoot = this.add.container(1200, 125);
+        let boxBackgroundShoot = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        tutorialBoxShoot.add(boxBackgroundShoot);
+        let tutorialTextShoot = this.add.text(0, 0, "PRESS 'J' TO SHOOT", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        tutorialTextShoot.setOrigin(0.5, 0.5);
+        tutorialBoxShoot.add(tutorialTextShoot);
+        this.add.existing(tutorialBoxShoot);
+        /******************************************************************** DRILL ********************************************************************/
+        let tutorialBoxDrill = this.add.container(1900, 125);
+        let boxBackgroundDrill = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        tutorialBoxDrill.add(boxBackgroundDrill);
+        let tutorialTextDrill = this.add.text(0, 0, "PRESS 'K' TO DRILL", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        tutorialTextDrill.setOrigin(0.5, 0.5);
+        tutorialBoxDrill.add(tutorialTextDrill);
+        this.add.existing(tutorialBoxDrill);
+
     }
 
     update() {
