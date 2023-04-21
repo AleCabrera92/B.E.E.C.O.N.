@@ -250,26 +250,42 @@ class Scene1 extends Phaser.Scene {
         }, this);
 
         /******************************************************************** JUMP ********************************************************************/
-        let tutorialBoxJump = this.add.container(600, 125);
-        let boxBackgroundJump = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        let tutorialBoxF = this.add.container(0, 125);
+        let boxBackgroundF = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxF.add(boxBackgroundF);
+        let tutorialTextF = this.add.text(0, 0, "Press ''F'' to enter/exit Fullscreen Mode.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextF.setOrigin(0.5, 0.5);
+        tutorialBoxF.add(tutorialTextF);
+        this.add.existing(tutorialBoxF);
+        /******************************************************************** JUMP ********************************************************************/
+        let tutorialBoxMove = this.add.container(350, 125);
+        let boxBackgroundMove = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxMove.add(boxBackgroundMove);
+        let tutorialTextMove = this.add.text(0, 0, "Use ''WASD'' or the ''ARROW KEYS'' to move.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextMove.setOrigin(0.5, 0.5);
+        tutorialBoxMove.add(tutorialTextMove);
+        this.add.existing(tutorialBoxMove);
+        /******************************************************************** JUMP ********************************************************************/
+        let tutorialBoxJump = this.add.container(700, 125);
+        let boxBackgroundJump = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxJump.add(boxBackgroundJump);
-        let tutorialTextJump = this.add.text(0, 0, "PRESS 'SPACEBAR' TO JUMP... AND PRESS IT AGAIN FOR A DOUBLE JUMP", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        let tutorialTextJump = this.add.text(0, 0, "Press ''SPACEBAR'' to jump... and press it again while on the air for a double jump.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextJump.setOrigin(0.5, 0.5);
         tutorialBoxJump.add(tutorialTextJump);
         this.add.existing(tutorialBoxJump);
         /******************************************************************** SHOOT ********************************************************************/
-        let tutorialBoxShoot = this.add.container(1200, 125);
-        let boxBackgroundShoot = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        let tutorialBoxShoot = this.add.container(1050, 125);
+        let boxBackgroundShoot = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxShoot.add(boxBackgroundShoot);
-        let tutorialTextShoot = this.add.text(0, 0, "PRESS 'J' TO SHOOT", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        let tutorialTextShoot = this.add.text(0, 0, "Press ''J'' to shoot your laser", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextShoot.setOrigin(0.5, 0.5);
         tutorialBoxShoot.add(tutorialTextShoot);
         this.add.existing(tutorialBoxShoot);
         /******************************************************************** DRILL ********************************************************************/
-        let tutorialBoxDrill = this.add.container(1900, 125);
-        let boxBackgroundDrill = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        let tutorialBoxDrill = this.add.container(1750, 125);
+        let boxBackgroundDrill = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxDrill.add(boxBackgroundDrill);
-        let tutorialTextDrill = this.add.text(0, 0, "PRESS 'K' TO DRILL", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        let tutorialTextDrill = this.add.text(0, 0, "Press ''K'' to drill.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextDrill.setOrigin(0.5, 0.5);
         tutorialBoxDrill.add(tutorialTextDrill);
         this.add.existing(tutorialBoxDrill);

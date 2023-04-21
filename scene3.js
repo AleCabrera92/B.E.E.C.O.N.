@@ -270,28 +270,28 @@ class Scene3 extends Phaser.Scene {
         });
 
         /***************************************************************** HONEY BEAM *****************************************************************/
-        let tutorialBoxHoneyBeam = this.add.container(4000, 125);
-        let boxBackgroundHoneyBeam = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        let tutorialBoxHoneyBeam = this.add.container(4100, 125);
+        let boxBackgroundHoneyBeam = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam.add(boxBackgroundHoneyBeam);
-        let tutorialTextHoneyBeam = this.add.text(0, 0, "HOLD 'J' TO CHARGE A HONEY BEAM", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        let tutorialTextHoneyBeam = this.add.text(0, 0, "Hold ''J'' to charge a Honey Beam", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextHoneyBeam.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam.add(tutorialTextHoneyBeam);
         this.add.existing(tutorialBoxHoneyBeam);
         tutorialBoxHoneyBeam.setDepth(99);
         /**************************************************************** HONEY BEAM 2 ****************************************************************/
-        let tutorialBoxHoneyBeam2 = this.add.container(4000, 300);
-        let boxBackgroundHoneyBeam2 = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        let tutorialBoxHoneyBeam2 = this.add.container(4100, 300);
+        let boxBackgroundHoneyBeam2 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam2.add(boxBackgroundHoneyBeam2);
-        let tutorialTextHoneyBeam2 = this.add.text(0, 0, "YOU CAN JUMP ON HONEY BEAMS AND USE THEM AS PLATFORMS", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        let tutorialTextHoneyBeam2 = this.add.text(0, 0, "You can jump on Honey Beams and use them as platforms.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextHoneyBeam2.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam2.add(tutorialTextHoneyBeam2);
         this.add.existing(tutorialBoxHoneyBeam2);
         tutorialBoxHoneyBeam2.setDepth(99);
         /**************************************************************** HONEY BEAM 3 ****************************************************************/
-        let tutorialBoxHoneyBeam3 = this.add.container(4000, 450);
-        let boxBackgroundHoneyBeam3 = this.add.rectangle(0, 0, 300, 100, 0x000000, 0.75);
+        let tutorialBoxHoneyBeam3 = this.add.container(4100, 450);
+        let boxBackgroundHoneyBeam3 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam3.add(boxBackgroundHoneyBeam3);
-        let tutorialTextHoneyBeam3 = this.add.text(0, 0, "YOU CAN ONLY HAVE 4 HONEY BEAMS ON SCREEN AT THE SAME TIME", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 250 } });
+        let tutorialTextHoneyBeam3 = this.add.text(0, 0, "You can only have 4 Honey Beams on screen at the same time.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextHoneyBeam3.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam3.add(tutorialTextHoneyBeam3);
         this.add.existing(tutorialBoxHoneyBeam3);
