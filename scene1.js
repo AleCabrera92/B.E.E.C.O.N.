@@ -253,7 +253,7 @@ class Scene1 extends Phaser.Scene {
         let tutorialBoxF = this.add.container(0, 125);
         let boxBackgroundF = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxF.add(boxBackgroundF);
-        let tutorialTextF = this.add.text(0, 0, "Press ''F'' to enter/exit Fullscreen Mode and ''P'' to pause the game.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        let tutorialTextF = this.add.text(0, 0, "Press ''F'' to enter Fullscreen Mode and ''P'' to pause the game.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextF.setOrigin(0.5, 0.5);
         tutorialBoxF.add(tutorialTextF);
         this.add.existing(tutorialBoxF);
