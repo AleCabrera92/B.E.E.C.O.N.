@@ -48,8 +48,12 @@ class Scene5 extends Phaser.Scene {
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
         enemyGroup = this.add.group();
-        for (let i = 1; i < 5; i++) {
-          enemy = this.physics.add.sprite(300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
+        for (let i = 1; i < 4; i++) {
+          if (i < 3) {
+            enemy = this.physics.add.sprite(300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
+          } else {
+            enemy = this.physics.add.sprite(1300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
+          }
           enemy.body.setSize(280, 220);
           enemy.body.setOffset(30, 60);
           enemy.setCollideWorldBounds(false);
@@ -62,8 +66,14 @@ class Scene5 extends Phaser.Scene {
         });
 
         lilWaspGroup = this.add.group();
-        for (let i = 1; i < 2; i++) {
-          lilWasp = this.physics.add.sprite(900 - i * 100, 1500 - i * 1000, 'lilWasp').setScale(0.25).setDepth(0.19);
+        for (let i = 1; i < 5; i++) {
+          if (i < 3) {
+            lilWasp = this.physics.add.sprite(950 - i * 100, 1300 - i * 1000, 'lilWasp').setScale(0.25).setDepth(0.19);
+          } else if (i < 4) {
+            lilWasp = this.physics.add.sprite(150, -1300, 'lilWasp').setScale(0.25).setDepth(0.19);
+          } else if (i < 5) {
+            lilWasp = this.physics.add.sprite(50, -1250, 'lilWasp').setScale(0.25).setDepth(0.19);
+          }
           lilWasp.body.setSize(190, 220);
           lilWasp.body.setOffset(90, 170);
           lilWasp.setCollideWorldBounds(false);
@@ -206,7 +216,7 @@ class Scene5 extends Phaser.Scene {
                 this.scene.start('Scene4');
             });
         });
-        this.physics.add.overlap(player, triggerPlatform, () => {
+        this.physics.add.collider(player, triggerPlatform, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
                 this.scene.start('Ending');
@@ -214,25 +224,12 @@ class Scene5 extends Phaser.Scene {
         });
         const self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
-            if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
-                let timer = 0;
-                let timerEvent = self.time.addEvent({
-                    delay: 500,
-                    callback: () => {
-                        timer++;
-                        if (timer >= 1 && player.anims.currentAnim.key === 'drill') {
-                            platform.destroy();
-                            timerEvent.remove();
-                        }
-                    },
-                    loop: true,
-                    callbackScope: self
-                });
-                player.once('animationcomplete', (animation) => {
-                    if (animation.key === 'drill') {
-                        timerEvent.remove();
-                    }
-                });
+            if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableBranch') {
+                timer++;
+                //console.log(timer);
+                if (timer >= 50) {
+                    platform.destroy();
+                }
             }
         });
         this.physics.add.collider(bigLasers, bigLasers);
@@ -247,8 +244,8 @@ class Scene5 extends Phaser.Scene {
         for (let i = 0; i <= 40; i++) {
             this.add.image(0, 1200 - (i*799), 'treeTexture').setScale(1).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
             this.add.image(799, 1200 - (i*799), 'treeTexture').setScale(1).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
-            this.add.image(-405, 50 - (i*799), 'treeTexture').setScale(1).setScrollFactor(1).setDepth(3);
-            this.add.image(1500, 236 - (i*799), 'treeTexture').setScale(1).setScrollFactor(1).setDepth(3);
+            //this.add.image(-405, 50 - (i*799), 'treeTexture').setScale(1).setScrollFactor(1).setDepth(3);
+            //this.add.image(1500, 236 - (i*799), 'treeTexture').setScale(1).setScrollFactor(1).setDepth(3);
         }
 
         clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.9).setGravity(false).setAlpha(0.75);
@@ -260,34 +257,40 @@ class Scene5 extends Phaser.Scene {
 
         for (let i = 0; i <= 4; i++) {this.add.image(i * 1200, 450, 'mountains').setScale(1.5).setScrollFactor(0.2).setDepth(-0.8).setTint(Phaser.Display.Color.GetColor(125, 100, 150));}
 
-        for (let i = 0; i < 10; i++) {
-            platforms.create(-300, 0 - (i*300), 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-            platforms.create(1400, 400 - (i*300), 'wall').setScale(1.5).refreshBody().setDepth(0.2).setFlip(true);
+        for (let i = -1; i < 10; i++) {
+            if (i < 4) {
+                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+                platforms.create(-500 + i * 120, -1040, 'branch').setScale(0.8).refreshBody().setDepth(0.2);;
+            } else if (i > 4) {
+                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+            }
+            platforms.create(1250, 186 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
         }
 
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
-        platforms.create(1030, 600, 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));
-        platforms.create(910, 420, 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));
-        for (let i = 0.48; i <= 6; i++) {platforms.create(i * 120, 300, 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
-        for (let i = 1.48; i <= 6; i++) {platforms.create(240, 200 - (i * 120), 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
-        for (let i = 2.48; i <= 9; i++) {platforms.create(i * 120, -180, 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
-        for (let i = 2.48; i <= 5; i++) {platforms.create(i * 120, -480, 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
-        for (let i = 5.48; i <= 6; i++) {platforms.create(i * 120, -480, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
-        for (let i = 1.48; i <= 6; i++) {platforms.create(770, -250 - (i * 120), 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
-        for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -800, 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
-        for (let i = 0.48; i <= 13; i++) {platforms.create(i * 120, -1050, 'platform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(125, 100, 250));}
+        platforms.create(1050, 565, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(850, 485, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        for (let i = 0.48; i <= 6; i++) {platforms.create(-10 + i * 120, 400, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 2.48; i <= 9; i++) {platforms.create(50 + i * 120, -180, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 2.48; i <= 5; i++) {platforms.create(i * 120, -487, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 0.48; i <= 6; i++) {platforms.create(240, 200 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 5.48; i <= 7; i++) {platforms.create(i * 120, -487, 'breakableBranch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -800, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 0.48; i <= 2; i++) {platforms.create(i * 120, -900, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 0.48; i <= 1; i++) {platforms.create(i * 120, -1000, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 1.48; i <= 5; i++) {platforms.create(890, -235 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
 
         for (let i = 0.2; i < 4; i++) {
-            platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            platforms.create(i * 512, 760, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
         }
 
-        for (let i = 20; i < 30; i++) {
-            triggerPlatform.create(i * 150, -150, 'platform').setScale(1).setAlpha(1).setDepth(0.3);
+        for (let i = -8; i < -1; i++) {
+            triggerPlatform.create(i * 150, -1000, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
         }
 
         for (let i = -4; i < 10; i++) {
@@ -387,6 +390,10 @@ class Scene5 extends Phaser.Scene {
     
             livesText.x = -78;
             livesText.y = player.y-483; //583
+        }
+
+        if (player.x < -200 && player.y < -200) {
+            player.setVelocityY(-300);
         }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}

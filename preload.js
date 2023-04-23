@@ -31,6 +31,8 @@ class Preload extends Phaser.Scene {
         this.load.audio('levelTheme', 'assets/audio/levelTheme.mp3');           this.load.audio('enemyEnraged', 'assets/audio/enemyEnraged.mp3');
         this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');       this.load.image('megaTree', 'assets/megaTree.png');
         this.load.image('megaTreeCover', 'assets/megaTreeCover.png');           this.load.image('treeTexture', 'assets/treeTexture.png');
+        this.load.image('treeFloor', 'assets/treeFloor.png');                   this.load.image('branch', 'assets/branch.png');
+        this.load.image('trunk', 'assets/trunk.png');                           this.load.image('breakableBranch', 'assets/breakableBranch.png');
 
     }
 
