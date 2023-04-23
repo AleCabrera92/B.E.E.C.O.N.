@@ -1,7 +1,7 @@
-class Scene5 extends Phaser.Scene {
+class Scene7 extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'Scene5' });
+        super({ key: 'Scene7' });
     }
 
     preload() { //Assets to preload for the scene
@@ -11,9 +11,9 @@ class Scene5 extends Phaser.Scene {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
-        scene = 5;
+        scene = 7;
 
-        sound_thunder.setVolume(0.75);
+        sound_thunder.setVolume(0.95);
 
         if (sound_drill.isPlaying) {
             sound_drill.stop();
@@ -22,8 +22,8 @@ class Scene5 extends Phaser.Scene {
         sound_titleTheme.stop();
 
         sound_rain.play();
-        sound_rain.setVolume(0.15);
-        setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.15)}, 5000);
+        sound_rain.setVolume(0.75);
+        setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.75)}, 5000);
 
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'levelTheme' && sound.isPlaying) { isMusicPlaying = true; } });
@@ -39,7 +39,7 @@ class Scene5 extends Phaser.Scene {
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(100, 603, 'beecon_full').setScale(0.3).setDepth(0.19);
+        player = this.physics.add.sprite(100, -111, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         this.physics.add.collider(bigLasers, player);
@@ -48,138 +48,7 @@ class Scene5 extends Phaser.Scene {
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
-        enemyGroup = this.add.group();
-        for (let i = 1; i < 4; i++) {
-          if (i < 3) {
-            enemy = this.physics.add.sprite(300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
-          } else {
-            enemy = this.physics.add.sprite(1300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
-          }
-          enemy.body.setSize(280, 220);
-          enemy.body.setOffset(30, 60);
-          enemy.setCollideWorldBounds(false);
-          this.physics.add.collider(enemy, platforms);
-          enemyGroup.add(enemy);
-        }
-
-        enemyGroup.children.iterate((enemy) => {
-            enemy.enemyLives = 3;
-        });
-
-        lilWaspGroup = this.add.group();
-        for (let i = 1; i < 5; i++) {
-          if (i < 3) {
-            lilWasp = this.physics.add.sprite(950 - i * 100, 1300 - i * 1000, 'lilWasp').setScale(0.25).setDepth(0.19);
-          } else if (i < 4) {
-            lilWasp = this.physics.add.sprite(150, -1300, 'lilWasp').setScale(0.25).setDepth(0.19);
-          } else if (i < 5) {
-            lilWasp = this.physics.add.sprite(50, -1250, 'lilWasp').setScale(0.25).setDepth(0.19);
-          }
-          lilWasp.body.setSize(190, 220);
-          lilWasp.body.setOffset(90, 170);
-          lilWasp.setCollideWorldBounds(false);
-          this.physics.add.collider(lilWasp, platforms);
-          lilWaspGroup.add(lilWasp);
-        }
-
-        lilWaspGroup.children.iterate((lilWasp) => {
-            lilWasp.lilWaspLives = 3;
-        });
-
         gameOverImage = this.physics.add.staticGroup();
-
-        enemyGroup.getChildren().forEach(enemy => {
-        this.physics.add.collider(player, enemy, function(player) {
-            if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
-            damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
-            this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
-                onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
-                onComplete: () => { player.setTint(endColor.color); } });
-            decreaseLives();
-
-            knockbackDirection = new Phaser.Math.Vector2(player.x - enemy.x, player.y - enemy.y).normalize().scale(knockbackForce);
-            player.setVelocityY(knockbackDirection.y);
-            player.setVelocityX(knockbackDirection.x);
-
-            if (lives <= 0) { gameOver();
-                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
-                this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
-            }, null, this);
-            this.physics.add.collider(lasers, enemy, function(enemy, laser) {
-                if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
-                    enemy.enemyLives--;
-                    sound_enemyF.play();
-                    enemy.setTint(0xff0000);
-                    setTimeout(function() { enemy.setTint(0xffffff); }, 200);
-                    if (enemy.enemyLives <= 0) {
-                    enemy.alpha = 0;
-                    enemy.anims.stop();
-                    enemy.disableBody(true, true);
-                    }
-                }
-                laser.setVelocity(0, 0);
-            });
-        this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
-            if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); });
-        });
-
-        lilWaspGroup.getChildren().forEach(lilWasp => {
-            this.physics.add.collider(player, lilWasp, function(player) {
-                if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
-                damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
-                this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
-                    onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
-                    onComplete: () => { player.setTint(endColor.color); } });
-                decreaseLives();
-    
-                knockbackDirection = new Phaser.Math.Vector2(player.x - lilWasp.x, player.y - lilWasp.y).normalize().scale(knockbackForce);
-                player.setVelocityY(knockbackDirection.y);
-                player.setVelocityX(knockbackDirection.x);
-                if (lilWasp.x >= player.x) {
-                    this.tweens.add({
-                      targets: lilWasp,
-                      x: lilWasp.x + 150,
-                      y: lilWasp.y - 200,
-                      duration: 250,
-                      ease: 'Linear'
-                    });
-                } else {
-                    this.tweens.add({
-                      targets: lilWasp,
-                      x: lilWasp.x - 150,
-                      y: lilWasp.y - 200,
-                      duration: 250,
-                      ease: 'Linear'
-                    });
-                }
-                
-                if (lives <= 0) { gameOver();
-                    randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-                    randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
-                    this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-                    this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-                    this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-                    this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
-                }, null, this);
-                this.physics.add.collider(lasers, lilWasp, function(lilWasp, laser) {
-                    lilWasp.lilWaspLives--;
-                    //sound_enemyF.play();
-                    lilWasp.setTint(0xff0000);
-                    setTimeout(function() { lilWasp.setTint(0xffffff); }, 200);
-                    if (lilWasp.lilWaspLives <= 0) {
-                        lilWasp.alpha = 0;
-                        lilWasp.anims.stop();
-                        lilWasp.disableBody(true, true);
-                    }
-                    laser.setVelocity(0, 0);
-                });
-            this.physics.add.overlap(bigLasers, lilWasp, function(lilWasp, bigLasers) {
-                if (bigLasers.body.velocity.x === 0) {return;} /*sound_enemyF.play();*/ lilWasp.alpha = 0; lilWasp.anims.stop(); lilWasp.disableBody(true, true); });
-            });
 
         this.physics.add.overlap(player, triggerPlatformDeath, () => {
             lives = 0;
@@ -199,8 +68,7 @@ class Scene5 extends Phaser.Scene {
                 this.scene.start('Scene4');
             });
         });
-        this.physics.add.overlap(player, triggerPlatform, () => {
-            player.setAlpha(0);
+        this.physics.add.collider(player, triggerPlatform, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
                 this.scene.start('Scene6');
@@ -220,13 +88,15 @@ class Scene5 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
         this.physics.add.overlap(player, triggerPlatformBack, function(player) {player.setAlpha(0)});
+        this.physics.add.collider(player, triggerPlatform, function(player) {player.setAlpha(0)});
 
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
         for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
 
-        for (let i = 0; i <= 40; i++) {
+        for (let i = 0; i <= 1; i++) {
             this.add.image(0, 1200 - (i*799), 'treeTexture').setScale(1).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
             this.add.image(799, 1200 - (i*799), 'treeTexture').setScale(1).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
+            this.add.image(1598, 1200 - (i*799), 'treeTexture').setScale(1).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
             //this.add.image(-405, 50 - (i*799), 'treeTexture').setScale(1).setScrollFactor(1).setDepth(3);
             //this.add.image(1500, 236 - (i*799), 'treeTexture').setScale(1).setScrollFactor(1).setDepth(3);
         }
@@ -238,42 +108,31 @@ class Scene5 extends Phaser.Scene {
         clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.9).setGravity(false).setAlpha(0.75);
         clouds3.body.setVelocityX(-22); clouds3.body.setCollideWorldBounds(false); clouds3.body.allowGravity = false;
 
-        for (let i = 0; i <= 4; i++) {this.add.image(i * 1200, 450, 'mountains').setScale(1.5).setScrollFactor(0.2).setDepth(-0.8).setTint(Phaser.Display.Color.GetColor(125, 100, 150));}
-
-        for (let i = -1; i < 10; i++) {
-            if (i < 4) {
-                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
-                platforms.create(-500 + i * 120, -1040, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-            } else if (i > 4) {
-                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
-            }
-            platforms.create(1250, 186 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
+        for (let i = -1; i < 2; i++) {
+            platforms.create(-170, 286 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+            platforms.create(1250, 286 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
         }
 
-        // for (let i = 1; i < 8; i++) {leavesBG = this.add.image(i * 150, -800, 'leavesBG').setScrollFactor(0.2).setDepth(-0.99).setAngle(-135).setScale(0.75).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-        //     this.tweens.add({targets: leavesBG, angle: { getStart: () => -136, getEnd: () => -134, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-        //     this.tweens.add({targets: leavesBG, y: { getStart: () => -801, getEnd: () => -799, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -800, 'leavesBG').setScrollFactor(1).setDepth(0.99).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+            this.tweens.add({targets: leavesBG, y: { getStart: () => -801, getEnd: () => -799, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -500, 'leavesBG').setScrollFactor(1).setDepth(0.99).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+            this.tweens.add({targets: leavesBG, y: { getStart: () => -501, getEnd: () => -499, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -200, 'leavesBG').setScrollFactor(1).setDepth(0.99).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+            this.tweens.add({targets: leavesBG, y: { getStart: () => -201, getEnd: () => -199, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
 
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
-        platforms.create(1050, 565, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(850, 485, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-        for (let i = 0.48; i <= 6; i++) {platforms.create(-10 + i * 120, 400, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 2.48; i <= 9; i++) {platforms.create(50 + i * 120, -180, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 2.48; i <= 5; i++) {platforms.create(i * 120, -487, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 0.48; i <= 6; i++) {platforms.create(240, 200 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 5.48; i <= 7; i++) {platforms.create(i * 120, -487, 'breakableBranch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -800, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 0.48; i <= 2; i++) {platforms.create(i * 120, -900, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 0.48; i <= 1; i++) {platforms.create(i * 120, -1000, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 1.48; i <= 5; i++) {platforms.create(890, -235 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
+
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
 
-        for (let i = 0.2; i < 4; i++) {
-            platforms.create(i * 512, 760, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
+        for (let i = 0.2; i < 3; i++) {
+            platforms.create(i * 512, 860, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
         }
 
         for (let i = -8; i < -1; i++) {
@@ -281,7 +140,7 @@ class Scene5 extends Phaser.Scene {
         }
 
         for (let i = -4; i < 10; i++) {
-            triggerPlatformBack.create(i * 150, 750, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
+            triggerPlatformBack.create(i * 150, 850, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
         }
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -316,19 +175,6 @@ class Scene5 extends Phaser.Scene {
             game.scene.stop('Pause');
             game.scene.start('Pause');
         }, this);
-
-        enemyGroup.getChildren().forEach(enemy => {
-            enemy.anims.play('enemyChill');
-            enemy.setVelocityX(100);
-        });
-
-        lilWaspGroup.getChildren().forEach(lilWasp => {
-            lilWasp.anims.play('lilWaspChill');
-            lilWasp.body.allowGravity = false;
-            lilWasp.setImmovable(true);
-            lilWasp.setVelocityX(0);
-            lilWasp.setVelocityY(0);
-        });
 
         emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
@@ -369,7 +215,7 @@ class Scene5 extends Phaser.Scene {
 
         camera.scrollX = -100;
 
-        if (player.y <= 603) {
+        if (player.y <= 595) {
             camera.scrollY = player.y - 505; //605
 
             liveBG.x = 3;
@@ -379,21 +225,13 @@ class Scene5 extends Phaser.Scene {
             livesText.y = player.y-483; //583
         }
 
-        if (player.x < -300 && player.y < -200) {
+        if (player.x < -200 && player.y < -200) {
             player.setVelocityY(-300);
         }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
         if (clouds3) {this.physics.world.wrap(clouds3.body, clouds3.width+50, true);}     
-
-        enemyGroup.getChildren().forEach(enemy => {
-            updateEnemyBehavior(enemy);
-        });
-
-        lilWaspGroup.getChildren().forEach(lilWasp => {
-            updatelilWaspBehavior(lilWasp);
-        });
 
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);

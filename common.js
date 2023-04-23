@@ -10,7 +10,7 @@ let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives,
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
 let throttled = false, sound_eneweeAttack;
-let keyL;
+let keyL, leaves, leavesBG;
 
 function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
@@ -132,11 +132,14 @@ function gameOver() {
   player.anims.stop();
   player.disableBody(true, true);
   if (scene === 5) {
-    gameOverImage.create(game.config.width / 2.35, player.y-330, 'gameOver');
-    gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
+      gameOverImage.create(game.config.width / 2.35, player.y-330, 'gameOver');
+      gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
+  } else if (scene === 6) {
+      gameOverImage.create(game.config.width / 2.35, player.y-680, 'gameOver');
+      gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
   } else {
-    gameOverImage.create(player.x+320, game.config.height / 4, 'gameOver');
-    gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
+      gameOverImage.create(player.x+320, game.config.height / 4, 'gameOver');
+      gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
   }
 }
 
@@ -145,7 +148,7 @@ function createOverlay() {
 
     if (scene === 1) {
         delayLightning = Phaser.Math.RND.integerInRange(5000, 45000);
-    } else if (scene === 4 || scene === 5) {
+    } else if (scene === 4 || scene === 5 || scene === 6) {
         delayLightning = Phaser.Math.RND.integerInRange(3333, 30000);
     }
     
@@ -159,18 +162,18 @@ function createOverlay() {
     lightning = this.add.graphics();
     if (scene === 1) {
         lightning.fillStyle(0xffffff, 0.75);
-    } else if (scene === 4 || scene === 5) {
+    } else if (scene === 4 || scene === 5 || scene === 6) {
         lightning.fillStyle(0xffffff, 0.95);
     }
     if (scene === 1 || scene === 4) {
         lightning.fillRect(-1000, 0, this.game.config.width * 4, this.game.config.height * 2);
-    } else if (scene === 5) {
+    } else if (scene === 5 || scene === 6) {
         lightning.fillRect(-1000, -10000, this.game.config.width * 4, this.game.config.height * 80);
     }
     lightning.setAlpha(0); // set initial alpha to 0
     if (scene === 1) {
         lightning.setDepth(-0.99); // set initial alpha to 0
-    } else if (scene === 4) {
+    } else if (scene === 4 || scene === 5 || scene === 6) {
         lightning.setDepth(-0.21); // set initial alpha to 0
     }
   
