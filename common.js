@@ -73,26 +73,23 @@ function updatelilWaspBehavior(lilWasp) {
   }
 
   if (distanceToPlayer <= 500 && player.alpha != 0) {
+    if (!lilWasp.getData('spiky') && lilWasp.alpha !== 0) {
+        sound_eneweeAttack.play({loop: false});
+    }
+    lilWasp.setData('spiky', true);
     // Enemy is close to player, move towards player
     const angleToPlayer = Phaser.Math.Angle.Between(lilWasp.x, lilWasp.y, player.x, player.y);
     const speed = 3;
-
+  
     enemy.rotation = angleToPlayer; // Point towards player
-    if (distanceToPlayer < 100 && player.alpha != 0) {
+    if (distanceToPlayer <= 500 && distanceToPlayer > 100 && player.alpha != 0) {
       // If not in attack mode, move towards player
-      lilWasp.x += Math.cos(angleToPlayer) * speed * 5;
-      lilWasp.y += Math.sin(angleToPlayer) * speed * 5;
-    } else if (player.alpha != 0) {
-        lilWasp.x += Math.cos(angleToPlayer) * speed;
-        lilWasp.y += Math.sin(angleToPlayer) * speed;
+      lilWasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
+      lilWasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
+    } else if (distanceToPlayer <= 100 && player.alpha != 0) {
       // Enemy is in attack mode
-    //   lilWasp.body.setVelocity(0, 0); // Stop moving
-    //   this.time.delayedCall(500, () => {
-    //     // After 500ms, increase speed and move towards player
-    //     const attackSpeed = 300;
-    //     lilWasp.x += Math.cos(angleToPlayer) * attackSpeed;
-    //     lilWasp.y += Math.sin(angleToPlayer) * attackSpeed;
-    //   });
+      lilWasp.x += Math.cos(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
+      lilWasp.y += Math.sin(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
     }
   }
 }

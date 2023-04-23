@@ -39,12 +39,9 @@ class Scene1 extends Phaser.Scene {
         //platforms = this.physics.add.staticGroup({immovable: true});
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
-        this.physics.add.collider(lasers, platforms);
         this.physics.add.collider(lasers, platforms, function(laser) {laser.setVelocityX(0), laser.setAcceleration(0)});
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
-        this.physics.add.collider(bigLasers, platforms);
-        this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
@@ -53,8 +50,12 @@ class Scene1 extends Phaser.Scene {
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
 
         enemyGroup = this.add.group();
-        for (let i = 1; i < 2; i++) {
-          enemy = this.physics.add.sprite(1560, 250, 'enemy').setScale(0.25).setDepth(0.19);
+        for (let i = 1; i < 7; i++) {
+          if (i < 2) {
+            enemy = this.physics.add.sprite(1360, 250, 'enemy').setScale(0.25).setDepth(0.19);
+          } else {
+            enemy = this.physics.add.sprite(1800 + i * 150, 250, 'enemy').setScale(0.25).setDepth(0.19);
+          }
           enemy.body.setSize(280, 220);
           enemy.body.setOffset(30, 60);
           enemy.setCollideWorldBounds(false);
@@ -67,8 +68,8 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.physics.add.collider(enemy, platforms);
-        airPlatform = this.physics.add.sprite(1000, 390, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
-        airPlatform.setVelocityX(100);
+        airPlatform = this.physics.add.sprite(2400, 490, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
+        airPlatform.setVelocityX(-100);
         airPlatform.setImmovable(true);
         airPlatform.body.allowGravity = false;
         this.physics.add.collider(player, airPlatform);
@@ -136,7 +137,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        for (let i = 9.5; i < 15; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
+        for (let i = 15; i < 27; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
         for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
 
@@ -148,42 +149,40 @@ class Scene1 extends Phaser.Scene {
         clouds3.body.setVelocityX(-22); clouds3.body.setCollideWorldBounds(false); clouds3.body.allowGravity = false;
 
         for (let i = 0; i <= 4; i++) {this.add.image(i * 1200, 450, 'mountains').setScale(1.5).setScrollFactor(0.2).setDepth(-0.8).setTint(Phaser.Display.Color.GetColor(125, 100, 150));}
-        for (let i = 0; i < 4; i++) {platforms.create(1880, 390 + i * 100, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);}
-
-        platforms.create(1400, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1400, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1520, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1520, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1520, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1640, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1760, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1760, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1760, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1760, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(2000, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(2000, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(2000, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(2000, 690, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(2530, 300, 'wall').setScale(2.4).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
 
         platforms.create(-400, 400, 'wall').setScale(1).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
         platforms.create(500, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(800, 570, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(880, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1800, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1920, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1920, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2040, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
-        for (let i = -2; i < 4; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
+        platforms.create(2920, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2920, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(3040, 490, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);
+        platforms.create(3160, -10, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(3160, 90, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(3160, 190, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(3160, 290, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(3160, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(3160, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+
+        platforms.create(3900, 690, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);
+        platforms.create(4550, 300, 'wall').setScale(2.4).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
+
+        for (let i = -2; i < 8; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
+        for (let i = 8.236; i < 11; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
 
         this.add.image(-270, 185, 'tree').setScale(0.55).setDepth(-0.2).setScrollFactor(1).setAlpha(1).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
         this.add.image(340, 463, 'tree').setScale(0.8).setDepth(0.21).setTint(Phaser.Display.Color.GetColor(230, 230, 230));
         this.add.image(1250, 470, 'tree').setScale(0.65).setDepth(-0.2).setScrollFactor(0.8).setTint(Phaser.Display.Color.GetColor(180, 180, 180));
 
-        for (let i = -2; i < 16; i++) {this.add.image(i * 233.4, 610, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
+        for (let i = -2; i < 19; i++) {this.add.image(i * 233.4, 610, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
 
-        for (let i = -2; i < 16; i++) {this.add.image(i * 311.2, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(0.9);}
+        for (let i = -2; i < 19; i++) {this.add.image(i * 311.2, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(0.9);}
 
         enemyGroup.getChildren().forEach(enemy => {
             enemy.anims.play('enemyChill');
@@ -282,7 +281,7 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxShoot.add(tutorialTextShoot);
         this.add.existing(tutorialBoxShoot);
         /******************************************************************** DRILL ********************************************************************/
-        let tutorialBoxDrill = this.add.container(1750, 125);
+        let tutorialBoxDrill = this.add.container(2900, 125);
         let boxBackgroundDrill = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxDrill.add(boxBackgroundDrill);
         let tutorialTextDrill = this.add.text(0, 0, "Press ''K'' to drill.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
@@ -313,12 +312,12 @@ class Scene1 extends Phaser.Scene {
             updateEnemyBehavior(enemy);
         });
 
-        if (airPlatform.x >= 1290) {
+        if (airPlatform.x >= 2600) {
             airPlatform.setVelocityX(0);
             setTimeout(() => {
                 airPlatform.setVelocityX(-100);
             }, 1000);
-        } else if (airPlatform.x <= 1000) {
+        } else if (airPlatform.x <= 2200) {
             airPlatform.setVelocityX(0);
             setTimeout(() => {
                 airPlatform.setVelocityX(100);

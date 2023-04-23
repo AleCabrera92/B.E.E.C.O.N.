@@ -167,7 +167,7 @@ class Scene5 extends Phaser.Scene {
                 }, null, this);
                 this.physics.add.collider(lasers, lilWasp, function(lilWasp, laser) {
                     lilWasp.lilWaspLives--;
-                    //sound_enemyF.play();
+                    sound_enemyF.play();
                     lilWasp.setTint(0xff0000);
                     setTimeout(function() { lilWasp.setTint(0xffffff); }, 200);
                     if (lilWasp.lilWaspLives <= 0) {
@@ -178,7 +178,7 @@ class Scene5 extends Phaser.Scene {
                     laser.setVelocity(0, 0);
                 });
             this.physics.add.overlap(bigLasers, lilWasp, function(lilWasp, bigLasers) {
-                if (bigLasers.body.velocity.x === 0) {return;} /*sound_enemyF.play();*/ lilWasp.alpha = 0; lilWasp.anims.stop(); lilWasp.disableBody(true, true); });
+                if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); lilWasp.alpha = 0; lilWasp.anims.stop(); lilWasp.disableBody(true, true); });
             });
 
         this.physics.add.overlap(player, triggerPlatformDeath, () => {
@@ -249,6 +249,16 @@ class Scene5 extends Phaser.Scene {
             }
             platforms.create(1250, 186 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
         }
+
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -800, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+            this.tweens.add({targets: leavesBG, y: { getStart: () => -801, getEnd: () => -799, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -500, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+            this.tweens.add({targets: leavesBG, y: { getStart: () => -501, getEnd: () => -499, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -200, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+            this.tweens.add({targets: leavesBG, y: { getStart: () => -201, getEnd: () => -199, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
 
         // for (let i = 1; i < 8; i++) {leavesBG = this.add.image(i * 150, -800, 'leavesBG').setScrollFactor(0.2).setDepth(-0.99).setAngle(-135).setScale(0.75).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
         //     this.tweens.add({targets: leavesBG, angle: { getStart: () => -136, getEnd: () => -134, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
@@ -355,6 +365,23 @@ class Scene5 extends Phaser.Scene {
             callback: createOverlay,
             callbackScope: this,
         });
+
+        // // add tweens to each wasp sprite in the group
+        // lilWaspGroup.children.iterate((lilWasp, index) => {
+        //     this.tweens.add({
+        //     targets: lilWasp,
+        //     y: lilWasp.y + 10,
+        //     duration: 250,
+        //     yoyo: true,
+        //     repeat: -1,
+        //     delay: index * 100, // stagger the start time of each tween
+        //     onUpdate: () => {
+        //         if (lilWasp.body.velocity.x = 0) {
+        //             tween.pause();
+        //         }
+        //     }
+        //     });
+        // });
 
     }
 
