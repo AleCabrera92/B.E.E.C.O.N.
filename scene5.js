@@ -39,7 +39,15 @@ class Scene5 extends Phaser.Scene {
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(100, 603, 'beecon_full').setScale(0.3).setDepth(0.19);
+
+        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
+
+        if (sceneBack === true) {
+            player = this.physics.add.sprite(50, -1060, 'beecon_full').setScale(0.3).setDepth(0.19);
+        } else {
+            player = this.physics.add.sprite(100, 603, 'beecon_full').setScale(0.3).setDepth(0.19);
+        }
+
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         this.physics.add.collider(bigLasers, player);
@@ -47,6 +55,8 @@ class Scene5 extends Phaser.Scene {
         player.setCollideWorldBounds(false);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
+
+        player.anims.play('idle');
 
         enemyGroup = this.add.group();
         for (let i = 1; i < 4; i++) {
@@ -106,8 +116,8 @@ class Scene5 extends Phaser.Scene {
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
             }, null, this);
             this.physics.add.collider(lasers, enemy, function(enemy, laser) {
                 if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
@@ -162,8 +172,8 @@ class Scene5 extends Phaser.Scene {
                     randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
                     this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                     this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-                    this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-                    this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
+                    this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+                    this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
                 }, null, this);
                 this.physics.add.collider(lasers, lilWasp, function(lilWasp, laser) {
                     lilWasp.lilWaspLives--;
@@ -189,21 +199,21 @@ class Scene5 extends Phaser.Scene {
             randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
             this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
             this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')});
+            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })});
         });
 
         this.physics.add.overlap(player, triggerPlatformBack, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene4');
+                this.scene.start('Scene4', { sceneBack: true });
             });
         });
         this.physics.add.overlap(player, triggerPlatform, () => {
             player.setAlpha(0);
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene6');
+                this.scene.start('Scene6', { sceneBack: false });
             });
         });
         const self = this;
@@ -273,7 +283,7 @@ class Scene5 extends Phaser.Scene {
         for (let i = 2.48; i <= 9; i++) {platforms.create(50 + i * 120, -180, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 2.48; i <= 5; i++) {platforms.create(i * 120, -487, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 6; i++) {platforms.create(240, 200 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 5.48; i <= 7; i++) {platforms.create(i * 120, -487, 'breakableBranch').setScale(0.8).refreshBody().setDepth(0.2);}
+        if (sceneBack) {  } else { for (let i = 5.48; i <= 7; i++) {platforms.create(i * 120, -487, 'breakableBranch').setScale(0.8).refreshBody().setDepth(0.2);} }
         for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -800, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 2; i++) {platforms.create(i * 120, -900, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 1; i++) {platforms.create(i * 120, -1000, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}

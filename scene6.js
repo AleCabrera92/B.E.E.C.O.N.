@@ -40,7 +40,9 @@ class Scene6 extends Phaser.Scene {
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
+
         player = this.physics.add.sprite(1000, 603, 'beecon_full').setScale(0.3).setDepth(0.19);
+
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         this.physics.add.collider(bigLasers, player);
@@ -59,14 +61,14 @@ class Scene6 extends Phaser.Scene {
             randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-530,);
             this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
             this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')});
+            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })});
         });
 
         this.physics.add.overlap(player, triggerPlatformBack, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene5');
+                this.scene.start('Scene5', { sceneBack: true });
             });
         });
         this.physics.add.overlap(player, triggerPlatform, () => {
@@ -74,7 +76,7 @@ class Scene6 extends Phaser.Scene {
             player.y = player.y + 1;
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene7');
+                this.scene.start('Scene7', { sceneBack: false });
             });
         });
         const self = this;

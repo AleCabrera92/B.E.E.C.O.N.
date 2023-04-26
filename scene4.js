@@ -15,7 +15,7 @@ class Scene4 extends Phaser.Scene {
 
         sound_thunder.setVolume(0.95);
 
-        overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
+        overlay = this.add.rectangle(-500, 0, this.game.config.width*2.5, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
         this.time.delayedCall(1000, function() {
           this.tweens.add({
@@ -49,13 +49,25 @@ class Scene4 extends Phaser.Scene {
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+
+        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
+
+        if (sceneBack === true) {
+            player = this.physics.add.sprite(1700, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+        } else {
+            player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+        }
+
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
 
-        gameOverImage = this.physics.add.staticGroup();
+        if (sceneBack) {
+            player.anims.play('idleBack');
+        } else {
+            player.anims.play('idle');
+        }
 
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
@@ -63,14 +75,14 @@ class Scene4 extends Phaser.Scene {
         this.physics.add.overlap(player, triggerPlatformBack, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene3');
+                this.scene.start('Scene3', { sceneBack: true });
             });
         });
         this.physics.add.overlap(player, triggerPlatform, () => {
             player.setAlpha(0);
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene5');
+                this.scene.start('Scene5', { sceneBack: false });
             });
         });
         this.physics.add.collider(player, platforms, function(player, platform) {
@@ -162,7 +174,11 @@ class Scene4 extends Phaser.Scene {
         this.input.keyboard.on('keydown-P', function () {
             pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
             pauseText = this.add.text(0, 0, 'PAUSE', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-            pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+            if (player.x > 1300) {
+                pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(1620, game.config.height / 2);
+            } else {
+                pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+            }
             this.sound.pauseAll();
             this.sound.mute = true;
             game.scene.pause('Scene'+scene);

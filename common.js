@@ -10,7 +10,13 @@ let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives,
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
 let throttled = false, sound_eneweeAttack;
-let keyL, leaves, leavesBG;
+let keyL, leaves, leavesBG, sceneBack;
+
+var jumpTimer = 0;
+var jumpVelocity = -380;
+var jumpTime = 150; // milliseconds
+var jumpCount = 0;
+var maxJumps = 6;
 
 function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }

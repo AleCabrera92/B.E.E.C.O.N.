@@ -38,7 +38,15 @@ class Scene3 extends Phaser.Scene {
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
+
+        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
+
+        if (sceneBack === true) {
+            player = this.physics.add.sprite(3700, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
+        } else {
+            player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
+        }
+
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         this.physics.add.collider(bigLasers, player);
@@ -46,6 +54,12 @@ class Scene3 extends Phaser.Scene {
         player.setCollideWorldBounds(false);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
+
+        if (sceneBack) {
+            player.anims.play('idleBack');
+        } else {
+            player.anims.play('idle');
+        }
 
         eneweeGroup = this.add.group();
         for (let i = 0; i < 3; i++) {
@@ -99,8 +113,8 @@ class Scene3 extends Phaser.Scene {
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
             }, null, this);
             this.physics.add.collider(lasers, enewee, function(enewee, laser) {
                 enewee.eneweeLives--;
@@ -125,20 +139,20 @@ class Scene3 extends Phaser.Scene {
             randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
             this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
             this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')});
+            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })});
         });
 
         this.physics.add.overlap(player, triggerPlatformBack, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene1');
+                this.scene.start('Scene1', { sceneBack: true });
             });
         });
         this.physics.add.overlap(player, triggerPlatform, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene4');
+                this.scene.start('Scene4', { sceneBack: false });
             });
         });
         const self = this;

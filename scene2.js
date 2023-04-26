@@ -47,32 +47,10 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.overlap(player, triggerPlatform, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene3');
+                this.scene.start('Scene3', { sceneBack: false });
             });
         });
-        const self = this;
-        this.physics.add.collider(player, platforms, function(player, platform) {
-            if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
-                let timer = 0;
-                let timerEvent = self.time.addEvent({
-                    delay: 500,
-                    callback: () => {
-                        timer++;
-                        if (timer >= 1 && player.anims.currentAnim.key === 'drill') {
-                            platform.destroy();
-                            timerEvent.remove();
-                        }
-                    },
-                    loop: true,
-                    callbackScope: self
-                });
-                player.once('animationcomplete', (animation) => {
-                    if (animation.key === 'drill') {
-                        timerEvent.remove();
-                    }
-                });
-            }
-        });
+
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 

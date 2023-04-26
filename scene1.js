@@ -43,11 +43,24 @@ class Scene1 extends Phaser.Scene {
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+
+        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
+
+        if (sceneBack) {
+            player = this.physics.add.sprite(3800, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+        } else {
+            player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+        }
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
+
+        if (sceneBack) {
+            player.anims.play('idleBack');
+        } else {
+            player.anims.play('idle');
+        }
 
         enemyGroup = this.add.group();
         for (let i = 1; i < 7; i++) {
@@ -93,11 +106,11 @@ class Scene1 extends Phaser.Scene {
 
             if (lives <= 0) { gameOver();
                 randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
+                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')}); }
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
             }, null, this);
             this.physics.add.collider(lasers, enemy, function(enemy, laser) {
                 if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
@@ -122,7 +135,7 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.overlap(player, triggerPlatform, () => {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene2');
+                this.scene.start('Scene2', { sceneBack: false });
             });
         });
         this.physics.add.collider(player, platforms, function(player, platform) {
@@ -162,7 +175,7 @@ class Scene1 extends Phaser.Scene {
 
         platforms.create(2920, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(2920, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(3040, 490, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);
+        if (sceneBack) {  } else { platforms.create(3040, 490, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3); }      
         platforms.create(3160, -10, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(3160, 90, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(3160, 190, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
@@ -170,7 +183,7 @@ class Scene1 extends Phaser.Scene {
         platforms.create(3160, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(3160, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
-        platforms.create(3900, 690, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3);
+        if (sceneBack) {  } else { platforms.create(3900, 690, 'breakableGround').setScale(0.8).refreshBody().setDepth(0.3); }     
         platforms.create(4550, 300, 'wall').setScale(2.4).refreshBody().setDepth(0.2).setFlipX(true).setTint(Phaser.Display.Color.GetColor(200, 200, 200));
 
         for (let i = -2; i < 8; i++) {platforms.create(i * 512, 755, 'ground').setScale(1).refreshBody().setDepth(0.2);}
@@ -181,6 +194,7 @@ class Scene1 extends Phaser.Scene {
         this.add.image(1250, 470, 'tree').setScale(0.65).setDepth(-0.2).setScrollFactor(0.8).setTint(Phaser.Display.Color.GetColor(180, 180, 180));
 
         for (let i = -2; i < 19; i++) {this.add.image(i * 233.4, 610, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
+        for (let i = -2; i < 19; i++) {this.add.image(i * 233.4, 710, 'grass').setScale(0.3).setDepth(-0.2).setScrollFactor(0.9).setTint(Phaser.Display.Color.GetColor(230, 230, 230));}
 
         for (let i = -2; i < 19; i++) {this.add.image(i * 311.2, 690, 'grass').setScale(0.4).setDepth(0.3).setScrollFactor(1.1).setTint(Phaser.Display.Color.GetColor(50, 50, 50)).setAlpha(0.9);}
 
@@ -238,7 +252,7 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.input.keyboard.on('keydown-P', function () {
-            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
+            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*6, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
             pauseText = this.add.text(0, 0, 'PAUSE', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
             pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
             this.sound.pauseAll();
@@ -332,6 +346,9 @@ class Scene1 extends Phaser.Scene {
         keyD.on('down', enableKeys);
         cursors.left.on('down', enableKeys);
         cursors.right.on('down', enableKeys);
+        cursors.up.on('down', enableKeys);
+        keyW.on('down', enableKeys);
+        keySpace.on('down', enableKeys);
 
         if (Phaser.Input.Keyboard.JustDown(keyK) && player.body.velocity.x ===0) {
             sound_drill.play();
@@ -426,7 +443,15 @@ class Scene1 extends Phaser.Scene {
             hasJumped = false;
         }
 
-        if (didPressUp || didPressW || didPressSpace) {
+/*
+        if ((cursors.up.isDown || keyW.isDown || keySpace.isDown) && (player.body.touching.down || jumpCount < maxJumps)) {
+            if (jumpCount === 0) {jumpTimer = this.time.now;}
+            if (this.time.now - jumpTimer < jumpTime) {player.setVelocityY(jumpVelocity - (this.time.now - jumpTimer) / 5);}
+            if (player.body.touching.down) {jumpCount = 0;} else {jumpCount++;}
+        }   else {jumpTimer = 0;}
+*/
+
+        if (didPressUp ||didPressW || didPressSpace) {
             if (player.body.onFloor()) {
                 //console.log("1")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle') {
