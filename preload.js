@@ -11,29 +11,67 @@ class Preload extends Phaser.Scene {
         this.load.spritesheet('enewee', 'assets/enewee.png', { frameWidth: 336, frameHeight: 504 });
         this.load.spritesheet('lilWasp', 'assets/lilWasp.png', { frameWidth: 412, frameHeight: 412 });
 
-        this.load.image('sky', 'assets/sky.png');                               this.load.image('platform', 'assets/platform.png');
-        this.load.image('breakableGround', 'assets/breakablePlatform.png');     this.load.image('wall', 'assets/wall.png');
-        this.load.image('mountains', 'assets/mountains.png');                   this.load.image('laser', 'assets/laser.png');
-        this.load.image('bigLaser', 'assets/bigLaser.png');                     this.load.image('chargeReady', 'assets/chargeReady.png');
-        this.load.image('clouds', 'assets/cloud.png');                          this.load.image('gameOver', 'assets/gameOver.png');
-        this.load.image('tree', 'assets/tree.png');                             this.load.image('grass', 'assets/grass.png');
-        this.load.image('rain', 'assets/rain.png');                             this.load.image('ground', 'assets/ground.png');
-        this.load.image('skyOverlay', 'assets/skyOverlay.png');                 this.load.image('lifeBG', 'assets/lifeBG.png');
-        this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');           this.load.audio('beeconWalk', 'assets/audio/beeconWalk.mp3');
-        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');           this.load.audio('laser', 'assets/audio/laser.mp3');
-        this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');               this.load.audio('drill', 'assets/audio/drill.mp3');
-        this.load.audio('enemyF', 'assets/audio/enemyF.mp3');                   this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
-        this.load.audio('rain', 'assets/audio/rain.mp3');                       this.load.audio('rain2', 'assets/audio/rain2.mp3');
-        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');               this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
-        this.load.audio('thunder', 'assets/audio/thunder.mp3');                 this.load.image('airPlatform', 'assets/platform.png');
-        this.load.image('jumpshrooms', 'assets/jumpshrooms.png');               this.load.image('title', 'assets/title.png'); this.load.image('sky', 'assets/sky.png');
-        this.load.image('beeIcon', 'assets/beeIcon.png');                       this.load.audio('mushroomJump', 'assets/audio/mushroomJump.mp3');
-        this.load.audio('levelTheme', 'assets/audio/levelTheme.mp3');           this.load.audio('enemyEnraged', 'assets/audio/enemyEnraged.mp3');
-        this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');       this.load.image('megaTree', 'assets/megaTree.png');
-        this.load.image('megaTreeCover', 'assets/megaTreeCover.png');           this.load.image('treeTexture', 'assets/treeTexture.png');
-        this.load.image('treeFloor', 'assets/treeFloor.png');                   this.load.image('branch', 'assets/branch.png');
-        this.load.image('trunk', 'assets/trunk.png');                           this.load.image('breakableBranch', 'assets/breakableBranch.png');
-        this.load.image('leaf', 'assets/leaf.png');                             this.load.image('leavesBG', 'assets/leavesBG.png');
+        this.load.image('airPlatform', 'assets/platform.png');
+        this.load.image('beeIcon', 'assets/beeIcon.png');
+        this.load.image('bigLaser', 'assets/bigLaser.png');
+        this.load.image('branch', 'assets/branch.png');
+        this.load.image('breakableBranch', 'assets/breakableBranch.png');
+        this.load.image('breakableGround', 'assets/breakablePlatform.png');
+        this.load.image('chargeReady', 'assets/chargeReady.png');
+        this.load.image('clouds', 'assets/cloud.png');
+        this.load.image('gameOver', 'assets/gameOver.png');
+        this.load.image('grass', 'assets/grass.png');
+        this.load.image('ground', 'assets/ground.png');
+        this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
+        this.load.image('laser', 'assets/laser.png');
+        this.load.image('leaf', 'assets/leaf.png');
+        this.load.image('leavesBG', 'assets/leavesBG.png');
+        this.load.image('lifeBG', 'assets/lifeBG.png');
+        this.load.image('megaTree', 'assets/megaTree.png');
+        this.load.image('megaTreeCover', 'assets/megaTreeCover.png');
+        this.load.image('mountains', 'assets/mountains.png');
+        this.load.image('platform', 'assets/platform.png');
+        this.load.image('rain', 'assets/rain.png');
+        this.load.image('sky', 'assets/sky.png');
+        this.load.image('skyOverlay', 'assets/skyOverlay.png');
+        this.load.audio('thunder', 'assets/audio/thunder.mp3');
+        this.load.image('title', 'assets/title.png');
+        this.load.image('tree', 'assets/tree.png');
+        this.load.image('treeFloor', 'assets/treeFloor.png');
+        this.load.image('treeTexture', 'assets/treeTexture.png');
+        this.load.image('trunk', 'assets/trunk.png');   
+        this.load.image('wall', 'assets/wall.png');
+
+        this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
+        this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');
+        this.load.audio('beeconJump', 'assets/audio/beeconJump.mp3');
+        this.load.audio('beeconWalk', 'assets/audio/beeconWalk.mp3');
+        this.load.audio('bigLaser', 'assets/audio/bigLaser.mp3');
+        this.load.audio('drill', 'assets/audio/drill.mp3');
+        this.load.audio('enemyF', 'assets/audio/enemyF.mp3');
+        this.load.audio('enemyEnraged', 'assets/audio/enemyEnraged.mp3');
+        this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');
+        this.load.audio('laser', 'assets/audio/laser.mp3');
+        this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
+        this.load.audio('levelTheme', 'assets/audio/levelTheme.mp3');
+        this.load.audio('mushroomJump', 'assets/audio/mushroomJump.mp3');
+        this.load.audio('rain', 'assets/audio/rain.mp3');
+        this.load.audio('rain2', 'assets/audio/rain2.mp3');
+        this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
+
+        // // Display loading progress
+        // const progress = this.add.graphics();
+        // this.load.on('progress', value => {
+        //   progress.clear();
+        //   progress.fillStyle(0xffffff, 1);
+        //   progress.fillRect(0, this.game.config.height / 2, this.game.config.width * value, 50);
+        // });
+
+        // // Load complete
+        // this.load.on('complete', () => {
+        //   progress.destroy();
+        //   this.scene.start('First');
+        // });
 
     }
 
