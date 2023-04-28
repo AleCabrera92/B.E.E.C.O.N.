@@ -379,12 +379,14 @@ class Scene1 extends Phaser.Scene {
             jKeyDownTime = this.time.now;
         }
 
-        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 750)) {
+        if (honeyBeam) {
+            if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 750)) {
 
-            let holdTime = this.time.now - jKeyDownTime;
-
-            if (holdTime > 750) {
-                chargeReady.setVisible(true);
+                let holdTime = this.time.now - jKeyDownTime;
+    
+                if (holdTime > 750) {
+                    chargeReady.setVisible(true);
+                }
             }
         }
 
@@ -425,9 +427,9 @@ class Scene1 extends Phaser.Scene {
                 player.anims.play('idleBack', true);
             }
         }
-
+        
         if (Phaser.Input.Keyboard.JustUp(keyJ)) {
-            if (keyJ.duration > 750) {
+            if (keyJ.duration > 750 && honeyBeam) {
                 chargeReady.setVisible(false);
                 shootBigLaser();
             } else {

@@ -1,4 +1,4 @@
-let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds, clouds2, clouds3, cursors, didPressUp, didPressW, didPressSpace, enemy, enewee, emitter;
+let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds, clouds2, clouds3, cursors, didPressUp, didPressW, didPressSpace, enemy, enewee, emitter, emitter2;
 let lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack, triggerPlatformDeath, treeTexture;
 let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_beeconHit, sound_rain, sound_rain2;
 let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_levelTheme, sound_enemyEnraged;
@@ -10,7 +10,9 @@ let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives,
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
 let throttled = false, sound_eneweeAttack;
-let keyL, leaves, leavesBG, sceneBack;
+let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
+let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
+let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
 
 var jumpTimer = 0;
 var jumpVelocity = -380;

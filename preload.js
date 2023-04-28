@@ -20,6 +20,7 @@ class Preload extends Phaser.Scene {
         this.load.image('chargeReady', 'assets/chargeReady.png');
         this.load.image('clouds', 'assets/cloud.png');
         this.load.image('gameOver', 'assets/gameOver.png');
+        this.load.image('glow', 'assets/glow.png');
         this.load.image('grass', 'assets/grass.png');
         this.load.image('ground', 'assets/ground.png');
         this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
@@ -55,6 +56,7 @@ class Preload extends Phaser.Scene {
         this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
         this.load.audio('levelTheme', 'assets/audio/levelTheme.mp3');
         this.load.audio('mushroomJump', 'assets/audio/mushroomJump.mp3');
+        this.load.audio('powerUp', 'assets/audio/powerUp.mp3');
         this.load.audio('rain', 'assets/audio/rain.mp3');
         this.load.audio('rain2', 'assets/audio/rain2.mp3');
         this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
@@ -87,7 +89,7 @@ class Preload extends Phaser.Scene {
         sound_laserHit = this.sound.add('laserHit').setVolume(0.15);            sound_rain2 = this.sound.add('rain2', { loop: true }).setVolume(0.10);
         sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);          sound_thunder = this.sound.add('thunder').setVolume(0.75);  
         sound_mushroomJump = this.sound.add('mushroomJump').setVolume(0.25);    sound_enemyEnraged = this.sound.add('enemyEnraged').setVolume(0.25);
-        sound_eneweeAttack = this.sound.add('eneweeAttack').setVolume(0.15);
+        sound_eneweeAttack = this.sound.add('eneweeAttack').setVolume(0.15);    sound_powerUp = this.sound.add('powerUp').setVolume(0.25);
 
         this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_full', { start: 8, end: 9 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});

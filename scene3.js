@@ -34,7 +34,6 @@ class Scene3 extends Phaser.Scene {
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
-        this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
@@ -42,7 +41,7 @@ class Scene3 extends Phaser.Scene {
         let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
         if (sceneBack === true) {
-            player = this.physics.add.sprite(3700, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
+            player = this.physics.add.sprite(4050, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
         } else {
             player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
         }
@@ -197,10 +196,15 @@ class Scene3 extends Phaser.Scene {
         platforms.create(900, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1200, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1500, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(3655, 100, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(3300, 100, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(4100, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(4500, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(4900, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(4450, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(4850, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(5150, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(5450, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(5750, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(6050, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        platforms.create(6350, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(600, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(900, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(1200, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
@@ -209,13 +213,47 @@ class Scene3 extends Phaser.Scene {
             platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
         }
 
-        for (let i = 6.2; i < 10.2; i++) {
+        for (let i = 6.2; i < 8; i++) {
             platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
+        }
+
+        for (let i = 8.605; i < 17; i++) {
+            platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
+        }
+
+        for (let i = 11.2; i < 17; i++) {
+            platforms.create(i * 512, 1049, 'ground').setScale(1).refreshBody().setDepth(0.2);
+        }
+
+        for (let i = 5.2; i < 8; i++) {
+            platforms.create(i * 512, 1009, 'ground').setScale(1).refreshBody().setDepth(0.2);
+        }
+
+        for (let i = 4; i < 17; i++) {
+            platforms.create(i * 512, 1258, 'ground').setScale(1).refreshBody().setDepth(0.2);
+        }
+
+        for (let i = 8.605; i < 17; i++) {
+            platforms.create(i * 512, 926, 'ground').setScale(1).refreshBody().setDepth(0.2);
         }
 
         for (let i = 20; i < 30; i++) {
             triggerPlatform.create(i * 150, -150, 'platform').setScale(1).setAlpha(1).setDepth(0.3);
         }
+
+        if (sceneBack) {  } else { platforms.create(4046, 748, 'breakableGround').setScale(1.5).refreshBody().setDepth(0.3).setTint(Phaser.Display.Color.GetColor(120, 145, 170)); }
+        
+        let glow = this.add.image(4000, 50, 'glow').setScale(1).setScrollFactor(1).setDepth(0.19);
+
+        // create the tween to change the alpha
+        this.tweens.add({
+            targets: glow,
+            alpha: 0.75, // start with alpha 0.5
+            duration: 1000, // 1 second duration
+            yoyo: true, // repeat the tween in reverse
+            repeat: -1, // repeat indefinitely
+            ease: 'Sine.easeInOut', // easing function
+        });
 
         for (let i = 0; i < 10; i++) {
             triggerPlatformBack.create(i * 150, -150, 'platform').setScale(1).setAlpha(1).setDepth(0.3);
@@ -243,7 +281,7 @@ class Scene3 extends Phaser.Scene {
 
         chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
 
-        overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*7, this.cameras.main.height*2, 0x000000, 0.5).setDepth(1);
+        overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*10, this.cameras.main.height*7, 0x000000, 0.5).setDepth(1);
 
         emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
@@ -262,6 +300,24 @@ class Scene3 extends Phaser.Scene {
         });
       
         emitter.setScrollFactor(1).setDepth(0.11);
+
+        emitter2 = this.add.particles(0, 0, 'rain',{
+            x: 0,
+            y: -100,
+            quantity: 5,
+            lifespan: 1600,
+            speedY: { min: 700, max: 900 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.25, end: 0.5 },
+            rotate: { start: 0, end: 0 },
+            frequency: 5,
+            //blendMode: 'ADD',
+            //angle: { min: 0, max: 0 },
+            emitZone: { source: new Phaser.Geom.Rectangle(3942, 0, 210, 1) },
+            on: true
+        });
+      
+        emitter2.setScrollFactor(1).setDepth(0.11);
 
         this.lastWalkSoundTime = 0;
 
@@ -284,32 +340,34 @@ class Scene3 extends Phaser.Scene {
         });
 
         /***************************************************************** HONEY BEAM *****************************************************************/
-        let tutorialBoxHoneyBeam = this.add.container(4100, 125);
+        tutorialBoxHoneyBeam = this.add.container(4300, 703);
         let boxBackgroundHoneyBeam = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam.add(boxBackgroundHoneyBeam);
         let tutorialTextHoneyBeam = this.add.text(0, 0, "Hold ''J'' to charge a Honey Beam", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextHoneyBeam.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam.add(tutorialTextHoneyBeam);
         this.add.existing(tutorialBoxHoneyBeam);
-        tutorialBoxHoneyBeam.setDepth(99);
+        tutorialBoxHoneyBeam.setDepth(-99);
         /**************************************************************** HONEY BEAM 2 ****************************************************************/
-        let tutorialBoxHoneyBeam2 = this.add.container(4100, 300);
+        tutorialBoxHoneyBeam2 = this.add.container(4300, 828);
         let boxBackgroundHoneyBeam2 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam2.add(boxBackgroundHoneyBeam2);
         let tutorialTextHoneyBeam2 = this.add.text(0, 0, "You can jump on Honey Beams and use them as platforms.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextHoneyBeam2.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam2.add(tutorialTextHoneyBeam2);
         this.add.existing(tutorialBoxHoneyBeam2);
-        tutorialBoxHoneyBeam2.setDepth(99);
+        tutorialBoxHoneyBeam2.setDepth(-99);
         /**************************************************************** HONEY BEAM 3 ****************************************************************/
-        let tutorialBoxHoneyBeam3 = this.add.container(4100, 450);
+        tutorialBoxHoneyBeam3 = this.add.container(4300, 953);
         let boxBackgroundHoneyBeam3 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam3.add(boxBackgroundHoneyBeam3);
         let tutorialTextHoneyBeam3 = this.add.text(0, 0, "You can only have 4 Honey Beams on screen at the same time.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextHoneyBeam3.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam3.add(tutorialTextHoneyBeam3);
         this.add.existing(tutorialBoxHoneyBeam3);
-        tutorialBoxHoneyBeam3.setDepth(99);
+        tutorialBoxHoneyBeam3.setDepth(-99);
+
+        powerup = this.add.image(5450, 1120, 'bigLaser').setScrollFactor(1).setDepth(99);
 
     }
 
@@ -322,13 +380,37 @@ class Scene3 extends Phaser.Scene {
             pauseText.destroy();
         }
 
-        camera.scrollX = player.x - game.config.width / 4;
-
         liveBG.x = player.x+100 - game.config.width / 4;
-        liveBG.y = 30;
+        liveBG.y = 30 + camera.scrollY;
 
         livesText.x = player.x+20 - game.config.width / 4;
-        livesText.y = 19;
+        livesText.y = 19 + camera.scrollY;
+
+        if (player.y >= 703 && player.x > 3500) {
+            desiredCameraY = player.y - 505;
+        } else {
+            desiredCameraY = 0;
+        }
+        
+        interpolationFactor = (player.y < 1200) ? 0.01 : 1;
+        camera.scrollY += (desiredCameraY - camera.scrollY) * interpolationFactor;
+        camera.scrollX = player.x - game.config.width / 4;
+
+        if (honeyBeam) {
+            tutorialBoxHoneyBeam.setDepth(99);
+            tutorialBoxHoneyBeam2.setDepth(99);
+            tutorialBoxHoneyBeam3.setDepth(99);
+        }
+
+        if (honeyBeam) {
+            powerup.alpha = 0;
+        }
+
+        if ((Phaser.Geom.Intersects.RectangleToRectangle(player.getBounds(), powerup.getBounds())) && (powerup.alpha !== 0) && (!honeyBeam)) {
+            sound_powerUp.play();
+            honeyBeam = true;
+            powerup.alpha = 0;
+        }
 
         eneweeGroup.getChildren().forEach(enewee => {
             if (player.body.x + 50 > enewee.body.x && !enewee.body.onFloor()) {
@@ -383,12 +465,14 @@ class Scene3 extends Phaser.Scene {
             jKeyDownTime = this.time.now;
         }
 
-        if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 750)) {
+        if (honeyBeam) {
+            if (this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J), 750)) {
 
-            let holdTime = this.time.now - jKeyDownTime;
-
-            if (holdTime > 750) {
-                chargeReady.setVisible(true);
+                let holdTime = this.time.now - jKeyDownTime;
+    
+                if (holdTime > 750) {
+                    chargeReady.setVisible(true);
+                }
             }
         }
 
@@ -425,7 +509,7 @@ class Scene3 extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustUp(keyJ)) {
-            if (keyJ.duration > 750) {
+            if (keyJ.duration > 750 && honeyBeam) {
                 chargeReady.setVisible(false);
                 shootBigLaser();
             } else {
