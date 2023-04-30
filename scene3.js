@@ -74,10 +74,14 @@ class Scene3 extends Phaser.Scene {
             enewee.eneweeLives = 3;
         });
 
+        for (let i = 15; i <= 30; i++) {
+            this.add.image(i * 117, 720, 'spikes').setScale(0.25).setDepth(0.199).setTint(Phaser.Display.Color.GetColor(130, 130, 130));
+        }
+
         jumpshrooms = this.physics.add.group({ immovable: true, allowGravity: false });
-        jumpshrooms.create(2000, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
-        jumpshrooms.create(2350, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
-        jumpshrooms.create(2700, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.2);
+        jumpshrooms.create(2000, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.199);
+        jumpshrooms.create(2350, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.199);
+        jumpshrooms.create(2700, 680, 'jumpshrooms').setScale(0.3).refreshBody().setDepth(0.199);
 
         this.physics.add.collider(player, jumpshrooms, function (player, jumpshrooms) {
             if (player.body.bottom <= jumpshrooms.body.top) {
@@ -115,6 +119,10 @@ class Scene3 extends Phaser.Scene {
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
             }, null, this);
+
+            selfs = this;
+            energyOrbs = this.physics.add.group();
+
             this.physics.add.collider(lasers, enewee, function(enewee, laser) {
                 enewee.eneweeLives--;
                 sound_enemyF.play();
@@ -124,11 +132,28 @@ class Scene3 extends Phaser.Scene {
                     enewee.alpha = 0;
                     enewee.anims.stop();
                     enewee.disableBody(true, true);
+                    if (lives < 99) { 
+                        let energyOrb = energyOrbs.create(enewee.x, enewee.y, 'energyOrb');
+                        energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                        energyOrb.body.setSize(50, 50);
+                        energyOrb.setVelocityY(-500);
+                        selfs.physics.add.collider(energyOrb, platforms);
+                        selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                    }
                 }
                 laser.setVelocity(0, 0);
             });
-        this.physics.add.overlap(bigLasers, enewee, function(enewee, bigLasers) {
-            if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enewee.alpha = 0; enewee.anims.stop(); enewee.disableBody(true, true); });
+            this.physics.add.overlap(bigLasers, enewee, function(enewee, bigLasers) {
+                if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enewee.alpha = 0; enewee.anims.stop(); enewee.disableBody(true, true);
+                if (lives < 99) { 
+                    let energyOrb = energyOrbs.create(enewee.x, enewee.y, 'energyOrb');
+                    energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                    energyOrb.body.setSize(50, 50);
+                    energyOrb.setVelocityY(-500);
+                    selfs.physics.add.collider(energyOrb, platforms);
+                    selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                }
+            });
         });
         this.physics.add.overlap(player, triggerPlatformDeath, () => {
             lives = 0;
@@ -272,6 +297,7 @@ class Scene3 extends Phaser.Scene {
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -435,6 +461,7 @@ class Scene3 extends Phaser.Scene {
         keyD.on('down', enableKeys);
         cursors.left.on('down', enableKeys);
         cursors.right.on('down', enableKeys);
+        keyL.on('down', enableKeys);
 
         if (Phaser.Input.Keyboard.JustDown(keyK) && player.body.velocity.x ===0) {
             sound_drill.play();
@@ -489,21 +516,25 @@ class Scene3 extends Phaser.Scene {
             player.setVelocityX(-250);
             if (player.anims.currentAnim.key === 'jumpBack') {
                 player.anims.play('jumpBack', true);
+            } else if (!player.body.onFloor()&& keyL.isDown) {
+                player.anims.play('glideBack', true);   
             } else {
-                player.anims.play('left', true);   
-            }    
+                player.anims.play('left', true);
+            } 
         } else if (cursors.right.isDown || keyD.isDown) {
             player.setVelocityX(250);
             if (player.anims.currentAnim.key === 'jump') {
                 player.anims.play('jump', true);
+            } else if (!player.body.onFloor()&& keyL.isDown) {
+                player.anims.play('glide', true);   
             } else {
-                player.anims.play('right', true);   
-            }  
+                player.anims.play('right', true);
+            }     
         } else {
             player.setVelocityX(0);
-            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
+            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide') {
                 player.anims.play('idle', true);
-            } else if (player.anims.currentAnim.key === 'left') {
+            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack') {
                 player.anims.play('idleBack', true);
             }
         }
@@ -576,6 +607,25 @@ class Scene3 extends Phaser.Scene {
             if (bigLaserToDelete) {
                 bigLaserToDelete.destroy();
             }
+        }
+
+        if (!player.body.onFloor() && keyL.isDown && ((cursors.left.isDown || keyA.isDown) || (cursors.right.isDown || keyD.isDown))) {
+            if (player.body.velocity.y >= 0) {
+                player.body.gravity.y = 100;
+                if (cursors.left.isDown || keyA.isDown) {
+                    //player.anims.play('glideBack');
+                    player.body.velocity.y = 30;
+                    player.body.velocity.x = -400;
+                } else if (cursors.right.isDown || keyD.isDown) {
+                    //player.anims.play('glide');
+                    player.body.velocity.y = 30;
+                    player.body.velocity.x = 400;
+                } else {
+                    player.body.velocity.y = 30;
+                }
+            }
+        } else {
+            player.body.gravity.y = 0;
         }
 
     }

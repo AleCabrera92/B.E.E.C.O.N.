@@ -179,7 +179,7 @@ class Scene6 extends Phaser.Scene {
              triggerPlatformBack.create(i * 150, 1100, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
         }
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 10; i++) {
             triggerPlatformDeath.create(i * 150, 1100, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
         }
 
@@ -192,6 +192,7 @@ class Scene6 extends Phaser.Scene {
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -279,6 +280,7 @@ class Scene6 extends Phaser.Scene {
         keyD.on('down', enableKeys);
         cursors.left.on('down', enableKeys);
         cursors.right.on('down', enableKeys);
+        keyL.on('down', enableKeys);
 
         if (Phaser.Input.Keyboard.JustDown(keyK) && player.body.velocity.x ===0) {
             sound_drill.play();
@@ -331,21 +333,25 @@ class Scene6 extends Phaser.Scene {
             player.setVelocityX(-250);
             if (player.anims.currentAnim.key === 'jumpBack') {
                 player.anims.play('jumpBack', true);
+            } else if (!player.body.onFloor()&& keyL.isDown) {
+                player.anims.play('glideBack', true);   
             } else {
-                player.anims.play('left', true);   
-            }    
+                player.anims.play('left', true);
+            } 
         } else if (cursors.right.isDown || keyD.isDown) {
             player.setVelocityX(250);
             if (player.anims.currentAnim.key === 'jump') {
                 player.anims.play('jump', true);
+            } else if (!player.body.onFloor()&& keyL.isDown) {
+                player.anims.play('glide', true);   
             } else {
-                player.anims.play('right', true);   
-            }  
+                player.anims.play('right', true);
+            }     
         } else {
             player.setVelocityX(0);
-            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right') {
+            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide') {
                 player.anims.play('idle', true);
-            } else if (player.anims.currentAnim.key === 'left') {
+            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack') {
                 player.anims.play('idleBack', true);
             }
         }
@@ -418,6 +424,25 @@ class Scene6 extends Phaser.Scene {
             if (bigLaserToDelete) {
                 bigLaserToDelete.destroy();
             }
+        }
+
+        if (!player.body.onFloor() && keyL.isDown && ((cursors.left.isDown || keyA.isDown) || (cursors.right.isDown || keyD.isDown))) {
+            if (player.body.velocity.y >= 0) {
+                player.body.gravity.y = 100;
+                if (cursors.left.isDown || keyA.isDown) {
+                    //player.anims.play('glideBack');
+                    player.body.velocity.y = 30;
+                    player.body.velocity.x = -400;
+                } else if (cursors.right.isDown || keyD.isDown) {
+                    //player.anims.play('glide');
+                    player.body.velocity.y = 30;
+                    player.body.velocity.x = 400;
+                } else {
+                    player.body.velocity.y = 30;
+                }
+            }
+        } else {
+            player.body.gravity.y = 0;
         }
 
     }

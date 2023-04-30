@@ -8,6 +8,7 @@ class Preload extends Phaser.Scene {
 
         this.load.spritesheet('beecon_full', 'assets/beecon_full.png', { frameWidth: 250, frameHeight: 250 });
         this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 350, frameHeight: 300 });
+        this.load.spritesheet('energyOrb', 'assets/energyOrb.png', { frameWidth: 100, frameHeight: 100 });
         this.load.spritesheet('enewee', 'assets/enewee.png', { frameWidth: 336, frameHeight: 504 });
         this.load.spritesheet('lilWasp', 'assets/lilWasp.png', { frameWidth: 412, frameHeight: 412 });
 
@@ -35,6 +36,7 @@ class Preload extends Phaser.Scene {
         this.load.image('rain', 'assets/rain.png');
         this.load.image('sky', 'assets/sky.png');
         this.load.image('skyOverlay', 'assets/skyOverlay.png');
+        this.load.image('spikes', 'assets/spikes.png');
         this.load.audio('thunder', 'assets/audio/thunder.mp3');
         this.load.image('title', 'assets/title.png');
         this.load.image('tree', 'assets/tree.png');
@@ -51,6 +53,7 @@ class Preload extends Phaser.Scene {
         this.load.audio('drill', 'assets/audio/drill.mp3');
         this.load.audio('enemyF', 'assets/audio/enemyF.mp3');
         this.load.audio('enemyEnraged', 'assets/audio/enemyEnraged.mp3');
+        this.load.audio('energyPick', 'assets/audio/energyPick.mp3');
         this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');
         this.load.audio('laser', 'assets/audio/laser.mp3');
         this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
@@ -90,6 +93,7 @@ class Preload extends Phaser.Scene {
         sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);          sound_thunder = this.sound.add('thunder').setVolume(0.75);  
         sound_mushroomJump = this.sound.add('mushroomJump').setVolume(0.25);    sound_enemyEnraged = this.sound.add('enemyEnraged').setVolume(0.25);
         sound_eneweeAttack = this.sound.add('eneweeAttack').setVolume(0.15);    sound_powerUp = this.sound.add('powerUp').setVolume(0.25);
+        sound_energyPick = this.sound.add('energyPick').setVolume(0.25);
 
         this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_full', { start: 8, end: 9 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});
@@ -97,6 +101,8 @@ class Preload extends Phaser.Scene {
         this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('beecon_full', { start: 14, end: 15 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'jumpBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 13, end: 12 }), frameRate: 10, repeat: 0});
         this.anims.create({key: 'idleBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 7, end: 6 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'glideBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 18, end: 19 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'glide', frames: this.anims.generateFrameNumbers('beecon_full', { start: 20, end: 21 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
         this.anims.create({key: 'enemyChill', frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
         this.anims.create({key: 'enemyEnraged', frames: this.anims.generateFrameNumbers('enemy', { start: 2, end: 3 }), frameRate: 10, repeat: -1});

@@ -13,6 +13,7 @@ let throttled = false, sound_eneweeAttack;
 let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
+let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick;
 
 var jumpTimer = 0;
 var jumpVelocity = -380;
@@ -21,6 +22,7 @@ var jumpCount = 0;
 var maxJumps = 6;
 
 function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
+function increaseLives() { if (!throttled) { lives += 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 0); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
 function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled = true; keySpace.enabled = true; keysDisabled = false; }
 function toggleFullscreen() { if (game.scale.isFullscreen) { game.scale.stopFullscreen(); game.scale.setGameSize(1280, 720); } else { game.scale.startFullscreen(); } }
@@ -103,7 +105,7 @@ function updatelilWaspBehavior(lilWasp) {
 }
 
 function shootLaser() {
-    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack" || player.anims.currentAnim.key === "glideBack") {
         sound_laser.play();
         let laser = lasers.create(player.x - 30, player.y + 4, 'laser').setDepth(0.2);
         laser.setVelocityX(-1000);
@@ -117,7 +119,7 @@ function shootLaser() {
 }
 
 function shootBigLaser() {
-    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack") {
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack" || player.anims.currentAnim.key === "glideBack") {
         let bigLaser = bigLasers.create(player.x - 30, player.y + 4, 'bigLaser').setDepth(0.2);
         sound_bigLaser.play();
         bigLaser.setVelocityX(-1000);
