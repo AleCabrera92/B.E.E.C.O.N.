@@ -208,8 +208,15 @@ class Scene7 extends Phaser.Scene {
 
         for (let i = -1; i < 2; i++) {
             platforms.create(-170, 286 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
-            platforms.create(1250, 286 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
+            //platforms.create(1250, 286 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.198);
+            platforms.create(1104, 218 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.189);
         }
+
+        destroyed = platforms.create(1101, 800, 'trunk').setScale(2).refreshBody().setDepth(0.189).setAlpha(0);
+
+        this.add.image(1069, 500, 'waspNest').setScale(1.5).setScrollFactor(1).setDepth(0.2);
+        waspNestDoor = this.add.image(1069, 500, 'waspNestDoor').setScale(1.5).setScrollFactor(1).setDepth(0.2);
+        this.add.image(1069, 500, 'waspNestUnder').setScale(1.5).setScrollFactor(1).setDepth(0.189);
 
         for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -800, 'leavesBG').setScrollFactor(1).setDepth(0.99).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
             this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
@@ -515,16 +522,19 @@ class Scene7 extends Phaser.Scene {
 
         healthBar.clear();
         healthBar.fillStyle(0xff0000, 1);
-        healthBar.fillRect(wasp.x - 40, wasp.y - 60, 80, 10);
+        //healthBar.fillRect(wasp.x - 40, wasp.y - 60, 80, 10);
+        healthBar.fillRect(game.config.width / 1.92, game.config.height / 6.89, 500, 20);
         var remainingHealth = waspLives / 20;
         healthBar.fillStyle(0x00ff00, 1);
-        healthBar.fillRect(wasp.x - 40, wasp.y - 60, remainingHealth * 80, 10);
+        //healthBar.fillRect(wasp.x - 40, wasp.y - 60, remainingHealth * 80, 10);
+        healthBar.fillRect(game.config.width / 1.92, game.config.height / 6.89, remainingHealth * 500, 20);
 
         if (wasp.alpha === 0) {
             healthBar.visible = false;
+            waspNestDoor.visible = false;
+            destroyed.destroy();
             return;
         }
-
 
     }
 

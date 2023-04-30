@@ -45,6 +45,9 @@ class Preload extends Phaser.Scene {
         this.load.image('treeTexture', 'assets/treeTexture.png');
         this.load.image('trunk', 'assets/trunk.png');   
         this.load.image('wall', 'assets/wall.png');
+        this.load.image('waspNest', 'assets/waspNest.png');
+        this.load.image('waspNestDoor', 'assets/waspNestDoor.png');
+        this.load.image('waspNestUnder', 'assets/waspNestUnder.png');
 
         this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
         this.load.audio('beeconHit', 'assets/audio/beeconHit.mp3');

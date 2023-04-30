@@ -14,7 +14,7 @@ let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
 let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick;
-let waspInterval, waspTween, healthBar;
+let waspInterval, waspTween, healthBar, waspNestDoor, destroyed;
 
 var jumpTimer = 0;
 var jumpVelocity = -380;
@@ -22,7 +22,7 @@ var jumpTime = 150; // milliseconds
 var jumpCount = 0;
 var maxJumps = 6;
 
-function decreaseLives() { if (!throttled) { lives -= 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
+function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function increaseLives() { if (!throttled) { lives += 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 0); } }
 function updateLivesUI() { livesText.setText('Energy: ' + lives); }
 function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled = true; keySpace.enabled = true; keysDisabled = false; }
