@@ -6,7 +6,7 @@ let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, time
 let scene, gameOverImage, randomText;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
-let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup;
+let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup, wasp, waspLives;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
 let throttled = false, sound_eneweeAttack;
@@ -14,6 +14,7 @@ let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
 let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick;
+let waspInterval, waspTween, healthBar;
 
 var jumpTimer = 0;
 var jumpVelocity = -380;
@@ -91,7 +92,7 @@ function updatelilWaspBehavior(lilWasp) {
     const angleToPlayer = Phaser.Math.Angle.Between(lilWasp.x, lilWasp.y, player.x, player.y);
     const speed = 3;
   
-    enemy.rotation = angleToPlayer; // Point towards player
+    //lilWasp.rotation = angleToPlayer; // Point towards player
     if (distanceToPlayer <= 500 && distanceToPlayer > 100 && player.alpha != 0) {
       // If not in attack mode, move towards player
       lilWasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
@@ -105,7 +106,7 @@ function updatelilWaspBehavior(lilWasp) {
 }
 
 function shootLaser() {
-    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack" || player.anims.currentAnim.key === "glideBack") {
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack" || player.anims.currentAnim.key === "glideBack" || player.anims.currentAnim.key === "fallBack") {
         sound_laser.play();
         let laser = lasers.create(player.x - 30, player.y + 4, 'laser').setDepth(0.2);
         laser.setVelocityX(-1000);
@@ -119,7 +120,7 @@ function shootLaser() {
 }
 
 function shootBigLaser() {
-    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack" || player.anims.currentAnim.key === "glideBack") {
+    if (player.anims.currentAnim.key === "idleBack" || player.anims.currentAnim.key === "left" || player.anims.currentAnim.key === "jumpBack" || player.anims.currentAnim.key === "glideBack" || player.anims.currentAnim.key === "fallBack") {
         let bigLaser = bigLasers.create(player.x - 30, player.y + 4, 'bigLaser').setDepth(0.2);
         sound_bigLaser.play();
         bigLaser.setVelocityX(-1000);
@@ -155,7 +156,7 @@ function createOverlay() {
 
     if (scene === 1) {
         delayLightning = Phaser.Math.RND.integerInRange(5000, 45000);
-    } else if (scene === 4 || scene === 5 || scene === 6) {
+    } else if (scene === 4 || scene === 5 || scene === 6 || scene === 7) {
         delayLightning = Phaser.Math.RND.integerInRange(3333, 30000);
     }
     
@@ -169,18 +170,18 @@ function createOverlay() {
     lightning = this.add.graphics();
     if (scene === 1) {
         lightning.fillStyle(0xffffff, 0.75);
-    } else if (scene === 4 || scene === 5 || scene === 6) {
+    } else if (scene === 4 || scene === 5 || scene === 6 || scene === 7) {
         lightning.fillStyle(0xffffff, 0.95);
     }
     if (scene === 1 || scene === 4) {
         lightning.fillRect(-1000, 0, this.game.config.width * 4, this.game.config.height * 2);
-    } else if (scene === 5 || scene === 6) {
+    } else if (scene === 5 || scene === 6 || scene === 7) {
         lightning.fillRect(-1000, -10000, this.game.config.width * 4, this.game.config.height * 80);
     }
     lightning.setAlpha(0); // set initial alpha to 0
     if (scene === 1) {
         lightning.setDepth(-0.99); // set initial alpha to 0
-    } else if (scene === 4 || scene === 5 || scene === 6) {
+    } else if (scene === 4 || scene === 5 || scene === 6 || scene === 7) {
         lightning.setDepth(-0.21); // set initial alpha to 0
     }
   
@@ -203,3 +204,35 @@ function createOverlay() {
         }
     });
 }
+
+function updateWaspBehavior(wasp) {
+    // Calculate distance between enemy and player
+    let distanceToPlayer = Phaser.Math.Distance.Between(wasp.x, wasp.y, player.x, player.y);
+  
+    if (wasp.x >= player.x) {
+      wasp.setFlip(false);
+    } else {
+      wasp.setFlip(true);
+    }
+  
+    if (distanceToPlayer <= 500 && player.alpha != 0) {
+      if (!wasp.getData('spiky') && wasp.alpha !== 0) {
+          sound_eneweeAttack.play({loop: false});
+      }
+      wasp.setData('spiky', true);
+      // Enemy is close to player, move towards player
+      const angleToPlayer = Phaser.Math.Angle.Between(wasp.x, wasp.y, player.x, player.y);
+      const speed = 3;
+    
+      //wasp.rotation = angleToPlayer; // Point towards player
+      if (distanceToPlayer <= 500 && distanceToPlayer > 100 && player.alpha != 0) {
+        // If not in attack mode, move towards player
+        wasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
+        wasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
+      } else if (distanceToPlayer <= 100 && player.alpha != 0) {
+        // Enemy is in attack mode
+        wasp.x += Math.cos(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
+        wasp.y += Math.sin(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
+      }
+    }
+  }

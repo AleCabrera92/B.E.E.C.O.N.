@@ -48,6 +48,104 @@ class Scene7 extends Phaser.Scene {
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
+        wasp = this.physics.add.sprite(800, 400, 'wasp').setScale(0.75).setDepth(0.21);
+        wasp.body.setSize(200, 300);
+        wasp.body.setOffset(160, 270);
+        wasp.setCollideWorldBounds(false);
+        this.physics.add.collider(wasp, platforms);
+
+        waspLives = 20;
+
+        wasp.anims.play('waspChill');
+        wasp.body.allowGravity = false;
+        wasp.setImmovable(true);
+        wasp.setVelocityX(0);
+        wasp.setVelocityY(0);
+
+        healthBar = this.add.graphics();
+        healthBar.setDepth(99);
+
+        selfs = this;
+        energyOrbs = this.physics.add.group();
+
+        this.physics.add.collider(player, wasp, function(player) {
+            if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
+            damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
+            this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
+                onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
+                onComplete: () => { player.setTint(endColor.color); } });
+            decreaseLives();
+
+            knockbackDirection = new Phaser.Math.Vector2(player.x - wasp.x, player.y - wasp.y).normalize().scale(knockbackForce);
+            player.setVelocityY(knockbackDirection.y);
+            player.setVelocityX(knockbackDirection.x);
+            if (wasp.x >= player.x) {
+                this.tweens.add({
+                  targets: wasp,
+                  x: wasp.x + 150,
+                  y: wasp.y - 200,
+                  duration: 250,
+                  ease: 'Linear'
+                });
+            } else {
+                this.tweens.add({
+                  targets: wasp,
+                  x: wasp.x - 150,
+                  y: wasp.y - 200,
+                  duration: 250,
+                  ease: 'Linear'
+                });
+            }
+            
+            if (lives <= 0) { gameOver();
+                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
+                this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
+                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
+        }, null, this);
+        this.physics.add.collider(lasers, wasp, function(wasp, laser) {
+            waspLives--;
+            sound_enemyF.play();
+            wasp.setTint(0xff0000);
+            setTimeout(function() { wasp.setTint(0xffffff); }, 200);
+            if (waspLives <= 0) {
+                wasp.alpha = 0;
+                wasp.anims.stop();
+                wasp.disableBody(true, true);
+                if (lives < 99) { 
+                    let energyOrb = energyOrbs.create(wasp.x, wasp.y, 'energyOrb');
+                    energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                    energyOrb.body.setSize(50, 50);
+                    energyOrb.setVelocityY(-500);
+                    selfs.physics.add.collider(energyOrb, platforms);
+                    selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                }
+            }
+            laser.setVelocity(0, 0);
+        });
+        this.physics.add.collider(bigLasers, wasp, function(wasp, bigLaser) {
+            waspLives = waspLives - 5;
+            sound_enemyF.play();
+            wasp.setTint(0xff0000);
+            setTimeout(function() { wasp.setTint(0xffffff); }, 200);
+            if (waspLives <= 0) {
+                wasp.alpha = 0;
+                wasp.anims.stop();
+                wasp.disableBody(true, true);
+                if (lives < 99) { 
+                    let energyOrb = energyOrbs.create(wasp.x, wasp.y, 'energyOrb');
+                    energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                    energyOrb.body.setSize(50, 50);
+                    energyOrb.setVelocityY(-500);
+                    selfs.physics.add.collider(energyOrb, platforms);
+                    selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                }
+            }
+            bigLaser.destroy();
+        });
+
         gameOverImage = this.physics.add.staticGroup();
 
         this.physics.add.overlap(player, triggerPlatformDeath, () => {
@@ -311,9 +409,9 @@ class Scene7 extends Phaser.Scene {
             }      
         } else {
             player.setVelocityX(0);
-            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide') {
+            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide' || player.anims.currentAnim.key === 'fall') {
                 player.anims.play('idle', true);
-            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack') {
+            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack' || player.anims.currentAnim.key === 'fallBack') {
                 player.anims.play('idleBack', true);
             }
         }
@@ -412,6 +510,21 @@ class Scene7 extends Phaser.Scene {
         } else {
             player.body.gravity.y = 0;
         }
+
+        updateWaspBehavior(wasp);
+
+        healthBar.clear();
+        healthBar.fillStyle(0xff0000, 1);
+        healthBar.fillRect(wasp.x - 40, wasp.y - 60, 80, 10);
+        var remainingHealth = waspLives / 20;
+        healthBar.fillStyle(0x00ff00, 1);
+        healthBar.fillRect(wasp.x - 40, wasp.y - 60, remainingHealth * 80, 10);
+
+        if (wasp.alpha === 0) {
+            healthBar.visible = false;
+            return;
+        }
+
 
     }
 

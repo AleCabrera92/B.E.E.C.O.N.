@@ -139,16 +139,25 @@ class Scene1 extends Phaser.Scene {
                 laser.setVelocity(0, 0);
             });
             
-            this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
-                if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true); 
-                if (lives < 99) { 
-                    let energyOrb = energyOrbs.create(enemy.x, enemy.y, 'energyOrb');
-                    energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
-                    energyOrb.body.setSize(50, 50);
-                    energyOrb.setVelocityY(-500);
-                    self.physics.add.collider(energyOrb, platforms);
-                    self.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+            this.physics.add.collider(bigLasers, enemy, function(enemy, bigLaser) {
+                enemy.enemyLives = enemy.enemyLives - 5;
+                sound_enemyF.play();
+                enemy.setTint(0xff0000);
+                setTimeout(function() { enemy.setTint(0xffffff); }, 200);
+                if (enemy.enemyLives <= 0) {
+                    enemy.alpha = 0;
+                    enemy.anims.stop();
+                    enemy.disableBody(true, true);
+                    if (lives < 99) { 
+                        let energyOrb = energyOrbs.create(enemy.x, enemy.y, 'energyOrb');
+                        energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                        energyOrb.body.setSize(50, 50);
+                        energyOrb.setVelocityY(-500);
+                        selfs.physics.add.collider(energyOrb, platforms);
+                        selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                    }
                 }
+                bigLaser.destroy();
             });
         });
         this.physics.add.collider(bigLasers, player);
@@ -461,9 +470,9 @@ class Scene1 extends Phaser.Scene {
             }     
         } else {
             player.setVelocityX(0);
-            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide') {
+            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide' || player.anims.currentAnim.key === 'fall') {
                 player.anims.play('idle', true);
-            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack') {
+            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack' || player.anims.currentAnim.key === 'fallBack') {
                 player.anims.play('idleBack', true);
             }
         }

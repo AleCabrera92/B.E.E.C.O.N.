@@ -143,16 +143,25 @@ class Scene3 extends Phaser.Scene {
                 }
                 laser.setVelocity(0, 0);
             });
-            this.physics.add.overlap(bigLasers, enewee, function(enewee, bigLasers) {
-                if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enewee.alpha = 0; enewee.anims.stop(); enewee.disableBody(true, true);
-                if (lives < 99) { 
-                    let energyOrb = energyOrbs.create(enewee.x, enewee.y, 'energyOrb');
-                    energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
-                    energyOrb.body.setSize(50, 50);
-                    energyOrb.setVelocityY(-500);
-                    selfs.physics.add.collider(energyOrb, platforms);
-                    selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+            this.physics.add.collider(bigLasers, enewee, function(enewee, bigLaser) {
+                enewee.eneweeLives = enewee.eneweeLives - 5;
+                sound_enemyF.play();
+                enewee.setTint(0xff0000);
+                setTimeout(function() { enewee.setTint(0xffffff); }, 200);
+                if (enewee.eneweeLives <= 0) {
+                    enewee.alpha = 0;
+                    enewee.anims.stop();
+                    enewee.disableBody(true, true);
+                    if (lives < 99) { 
+                        let energyOrb = energyOrbs.create(enewee.x, enewee.y, 'energyOrb');
+                        energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                        energyOrb.body.setSize(50, 50);
+                        energyOrb.setVelocityY(-500);
+                        selfs.physics.add.collider(energyOrb, platforms);
+                        selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                    }
                 }
+                bigLaser.destroy();
             });
         });
         this.physics.add.overlap(player, triggerPlatformDeath, () => {
@@ -536,9 +545,9 @@ class Scene3 extends Phaser.Scene {
             }     
         } else {
             player.setVelocityX(0);
-            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide') {
+            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide' || player.anims.currentAnim.key === 'fall') {
                 player.anims.play('idle', true);
-            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack') {
+            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack' || player.anims.currentAnim.key === 'fallBack') {
                 player.anims.play('idleBack', true);
             }
         }

@@ -59,12 +59,8 @@ class Scene5 extends Phaser.Scene {
         player.anims.play('idle');
 
         enemyGroup = this.add.group();
-        for (let i = 1; i < 4; i++) {
-          if (i < 3) {
-            enemy = this.physics.add.sprite(300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
-          } else {
-            enemy = this.physics.add.sprite(1300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
-          }
+        for (let i = 1; i < 3; i++) {
+          enemy = this.physics.add.sprite(300, 0 - i * 300, 'enemy').setScale(0.25).setDepth(0.19);
           enemy.body.setSize(280, 220);
           enemy.body.setOffset(30, 60);
           enemy.setCollideWorldBounds(false);
@@ -146,16 +142,25 @@ class Scene5 extends Phaser.Scene {
                 }
                 laser.setVelocity(0, 0);
             });
-            this.physics.add.overlap(bigLasers, enemy, function(enemy, bigLasers) {
-                if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); enemy.alpha = 0; enemy.anims.stop(); enemy.disableBody(true, true);
-                if (lives < 99) { 
-                    let energyOrb = energyOrbs.create(enemy.x, enemy.y, 'energyOrb');
-                    energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
-                    energyOrb.body.setSize(50, 50);
-                    energyOrb.setVelocityY(-500);
-                    selfs.physics.add.collider(energyOrb, platforms);
-                    selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
-                } 
+            this.physics.add.collider(bigLasers, enemy, function(enemy, bigLaser) {
+                enemy.enemyLives = enemy.enemyLives - 5;
+                sound_enemyF.play();
+                enemy.setTint(0xff0000);
+                setTimeout(function() { enemy.setTint(0xffffff); }, 200);
+                if (enemy.enemyLives <= 0) {
+                    enemy.alpha = 0;
+                    enemy.anims.stop();
+                    enemy.disableBody(true, true);
+                    if (lives < 99) { 
+                        let energyOrb = energyOrbs.create(enemy.x, enemy.y, 'energyOrb');
+                        energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                        energyOrb.body.setSize(50, 50);
+                        energyOrb.setVelocityY(-500);
+                        selfs.physics.add.collider(energyOrb, platforms);
+                        selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                    }
+                }
+                bigLaser.destroy();
             });
         });
 
@@ -207,7 +212,6 @@ class Scene5 extends Phaser.Scene {
                         lilWasp.anims.stop();
                         lilWasp.disableBody(true, true);
                         if (lives < 99) { 
-                            console.log("wakanda");
                             let energyOrb = energyOrbs.create(lilWasp.x, lilWasp.y, 'energyOrb');
                             energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
                             energyOrb.body.setSize(50, 50);
@@ -218,16 +222,25 @@ class Scene5 extends Phaser.Scene {
                     }
                     laser.setVelocity(0, 0);
                 });
-                this.physics.add.overlap(bigLasers, lilWasp, function(lilWasp, bigLasers) {
-                    if (bigLasers.body.velocity.x === 0) {return;} sound_enemyF.play(); lilWasp.alpha = 0; lilWasp.anims.stop(); lilWasp.disableBody(true, true);
-                    if (lives < 99) { 
-                        let energyOrb = energyOrbs.create(lilWasp.x, lilWasp.y, 'energyOrb');
-                        energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
-                        energyOrb.body.setSize(50, 50);
-                        energyOrb.setVelocityY(-500);
-                        selfss.physics.add.collider(energyOrb, platforms);
-                        selfss.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                this.physics.add.collider(bigLasers, lilWasp, function(lilWasp, bigLaser) {
+                    lilWasp.lilWaspLives = lilWasp.lilWaspLives - 5;
+                    sound_enemyF.play();
+                    lilWasp.setTint(0xff0000);
+                    setTimeout(function() { lilWasp.setTint(0xffffff); }, 200);
+                    if (lilWasp.lilWaspLives <= 0) {
+                        lilWasp.alpha = 0;
+                        lilWasp.anims.stop();
+                        lilWasp.disableBody(true, true);
+                        if (lives < 99) { 
+                            let energyOrb = energyOrbs.create(lilWasp.x, lilWasp.y, 'energyOrb');
+                            energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
+                            energyOrb.body.setSize(50, 50);
+                            energyOrb.setVelocityY(-500);
+                            selfs.physics.add.collider(energyOrb, platforms);
+                            selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
+                        }
                     }
+                    bigLaser.destroy();
                 });
             });
 
@@ -532,7 +545,7 @@ class Scene5 extends Phaser.Scene {
                 player.anims.play('jumpBack', true);
             } else if (!player.body.onFloor() && keyL.isDown) {
                 player.anims.play('glideBack', true);   
-            } else if (!player.body.onFloor() && !keyL.isDown) {
+            } else if (!player.body.onFloor()) {
                 player.anims.play('fallBack', true);
             } else {
                 player.anims.play('left', true);
@@ -550,9 +563,9 @@ class Scene5 extends Phaser.Scene {
             }       
         } else {
             player.setVelocityX(0);
-            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide') {
+            if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide' || player.anims.currentAnim.key === 'fall') {
                 player.anims.play('idle', true);
-            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack') {
+            } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'glideBack' || player.anims.currentAnim.key === 'fallBack') {
                 player.anims.play('idleBack', true);
             }
         }
