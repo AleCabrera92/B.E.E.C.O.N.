@@ -81,13 +81,13 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.physics.add.collider(enemy, platforms);
-        airPlatform = this.physics.add.sprite(2400, 490, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
-        airPlatform.setVelocityX(-100);
-        airPlatform.setImmovable(true);
-        airPlatform.body.allowGravity = false;
-        this.physics.add.collider(player, airPlatform);
-        this.physics.add.overlap(lasers, airPlatform);
-        this.physics.add.overlap(bigLasers, airPlatform);
+        // airPlatform = this.physics.add.sprite(2400, 490, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
+        // airPlatform.setVelocityX(-100);
+        // airPlatform.setImmovable(true);
+        // airPlatform.body.allowGravity = false;
+        // this.physics.add.collider(player, airPlatform);
+        // this.physics.add.overlap(lasers, airPlatform);
+        // this.physics.add.overlap(bigLasers, airPlatform);
 
         gameOverImage = this.physics.add.staticGroup();
 
@@ -190,10 +190,13 @@ class Scene1 extends Phaser.Scene {
         platforms.create(800, 570, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(800, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(880, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1800, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1920, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(1920, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(2040, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2010, 390, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1950, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1950, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1880, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2070, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2070, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(2140, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
 
         platforms.create(2920, 490, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(2920, 590, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
@@ -316,7 +319,15 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxShoot.add(tutorialTextShoot);
         this.add.existing(tutorialBoxShoot);
         /******************************************************************** DRILL ********************************************************************/
-        let tutorialBoxDrill = this.add.container(2900, 125);
+        let tutorialBoxGlide = this.add.container(2500, 125);
+        let boxBackgroundGlide = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxGlide.add(boxBackgroundGlide);
+        let tutorialTextGlide = this.add.text(0, 0, "Keep ''L'' pressed while on the air and moving to <- or -> to glide.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextGlide.setOrigin(0.5, 0.5);
+        tutorialBoxGlide.add(tutorialTextGlide);
+        this.add.existing(tutorialBoxGlide);
+        /******************************************************************** DRILL ********************************************************************/
+        let tutorialBoxDrill = this.add.container(3400, 125);
         let boxBackgroundDrill = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxDrill.add(boxBackgroundDrill);
         let tutorialTextDrill = this.add.text(0, 0, "Press ''K'' to drill.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
@@ -347,17 +358,17 @@ class Scene1 extends Phaser.Scene {
             updateEnemyBehavior(enemy);
         });
 
-        if (airPlatform.x >= 2600) {
-            airPlatform.setVelocityX(0);
-            setTimeout(() => {
-                airPlatform.setVelocityX(-100);
-            }, 1000);
-        } else if (airPlatform.x <= 2200) {
-            airPlatform.setVelocityX(0);
-            setTimeout(() => {
-                airPlatform.setVelocityX(100);
-            }, 1000);
-        }
+        // if (airPlatform.x >= 2600) {
+        //     airPlatform.setVelocityX(0);
+        //     setTimeout(() => {
+        //         airPlatform.setVelocityX(-100);
+        //     }, 1000);
+        // } else if (airPlatform.x <= 2200) {
+        //     airPlatform.setVelocityX(0);
+        //     setTimeout(() => {
+        //         airPlatform.setVelocityX(100);
+        //     }, 1000);
+        // }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
@@ -421,11 +432,11 @@ class Scene1 extends Phaser.Scene {
               }
         });
 
-        bigLasers.getChildren().forEach(bigLaser => {
-            if (this.physics.overlap(bigLaser, airPlatform)) {
-                bigLaser.destroy();
-              }
-        });
+        // bigLasers.getChildren().forEach(bigLaser => {
+        //     if (this.physics.overlap(bigLaser, airPlatform)) {
+        //         bigLaser.destroy();
+        //       }
+        // });
     
         if (cursors.left.isDown || keyA.isDown) {
             player.setVelocityX(-250);
