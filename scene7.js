@@ -291,20 +291,24 @@ class Scene7 extends Phaser.Scene {
             player.setVelocityX(-250);
             if (player.anims.currentAnim.key === 'jumpBack') {
                 player.anims.play('jumpBack', true);
-            } else if (!player.body.onFloor()&& keyL.isDown) {
+            } else if (!player.body.onFloor() && keyL.isDown) {
                 player.anims.play('glideBack', true);   
+            } else if (!player.body.onFloor() && !keyL.isDown) {
+                player.anims.play('fallBack', true);
             } else {
                 player.anims.play('left', true);
-            } 
+            }
         } else if (cursors.right.isDown || keyD.isDown) {
             player.setVelocityX(250);
             if (player.anims.currentAnim.key === 'jump') {
                 player.anims.play('jump', true);
             } else if (!player.body.onFloor()&& keyL.isDown) {
                 player.anims.play('glide', true);   
+            } else if (!player.body.onFloor() && !keyL.isDown) {
+                player.anims.play('fall', true);
             } else {
                 player.anims.play('right', true);
-            }     
+            }      
         } else {
             player.setVelocityX(0);
             if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide') {
@@ -343,6 +347,8 @@ class Scene7 extends Phaser.Scene {
                 }   
                 canDoubleJump = true;
                 player.setVelocityY(-380);
+                this.physics.world.gravity.y = 600;
+                this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
                 //console.log("2")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
@@ -355,6 +361,8 @@ class Scene7 extends Phaser.Scene {
                 hasJumped = true;
                 canDoubleJump = false;
                 player.setVelocityY(-350);
+                this.physics.world.gravity.y = 600;
+                this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
                 //console.log("3")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
@@ -366,6 +374,8 @@ class Scene7 extends Phaser.Scene {
                 }   
                 hasJumped = true;
                 player.setVelocityY(-350);
+                this.physics.world.gravity.y = 600;
+                this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             }
         }
 

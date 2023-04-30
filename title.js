@@ -117,8 +117,13 @@ class Title extends Phaser.Scene {
             delay: delay1,
             callback: function() {
               player.setVelocityY(-380);
+              self1.physics.world.gravity.y = 600;
+              self1.tweens.add({ targets: self1.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jumpBack', true);
               self1.time.delayedCall(333.33, function() {
+                player.anims.play('fallBack', true);
+              }, [], this);
+              self1.time.delayedCall(666.66, function() {
                 player.anims.play('left', true);
               }, [], this);
             },
@@ -132,8 +137,13 @@ class Title extends Phaser.Scene {
             delay: delay2,
             callback: function() {
               player.setVelocityY(-380);
+              self2.physics.world.gravity.y = 600;
+              self2.tweens.add({ targets: self2.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jumpBack', true);
               self2.time.delayedCall(333.33, function() {
+                player.anims.play('fallBack', true);
+              }, [], this);
+              self2.time.delayedCall(666.66, function() {
                 player.anims.play('left', true);
               }, [], this);
             },
@@ -151,8 +161,13 @@ class Title extends Phaser.Scene {
             delay: delay3,
             callback: function() {
               player.setVelocityY(-380);
+              self3.physics.world.gravity.y = 600;
+              self3.tweens.add({ targets: self3.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jump', true);
               self3.time.delayedCall(333.33, function() {
+                player.anims.play('fall', true);
+              }, [], this);
+              self3.time.delayedCall(666.66, function() {
                 player.anims.play('right', true);
               }, [], this);
             },
@@ -166,8 +181,13 @@ class Title extends Phaser.Scene {
             delay: delay4,
             callback: function() {
               player.setVelocityY(-380);
+              self4.physics.world.gravity.y = 600;
+              self4.tweens.add({ targets: self4.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jump', true);
               self4.time.delayedCall(333.33, function() {
+                player.anims.play('fall', true);
+              }, [], this);
+              self4.time.delayedCall(666.66, function() {
                 player.anims.play('right', true);
               }, [], this);
             },
