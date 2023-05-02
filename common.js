@@ -14,7 +14,7 @@ let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
 let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick;
-let waspInterval, waspTween, healthBar, waspNestDoor, destroyed;
+let waspInterval, waspTween, healthBar, waspNestDoor, destroyed, fadeOutTriggered = false;
 
 var jumpTimer = 0;
 var jumpVelocity = -380;

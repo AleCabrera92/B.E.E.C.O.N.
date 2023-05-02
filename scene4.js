@@ -47,8 +47,8 @@ class Scene4 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
-        triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
-        triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
+        //triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
+        //triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
 
         let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
@@ -72,19 +72,19 @@ class Scene4 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
-        this.physics.add.overlap(player, triggerPlatformBack, () => {
-            this.cameras.main.fadeOut(500);
-            this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene3', { sceneBack: true });
-            });
-        });
-        this.physics.add.overlap(player, triggerPlatform, () => {
-            player.setAlpha(0);
-            this.cameras.main.fadeOut(500);
-            this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene5', { sceneBack: false });
-            });
-        });
+        // this.physics.add.overlap(player, triggerPlatformBack, () => {
+        //     this.cameras.main.fadeOut(500);
+        //     this.cameras.main.once('camerafadeoutcomplete', () => {
+        //         this.scene.start('Scene3', { sceneBack: true });
+        //     });
+        // });
+        // this.physics.add.overlap(player, triggerPlatform, () => {
+        //     player.setAlpha(0);
+        //     this.cameras.main.fadeOut(500);
+        //     this.cameras.main.once('camerafadeoutcomplete', () => {
+        //         this.scene.start('Scene5', { sceneBack: false });
+        //     });
+        // });
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 timer++;
@@ -97,8 +97,8 @@ class Scene4 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        for (let i = -2; i < 4; i++) {triggerPlatformBack.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
-        for (let i = 10; i < 20; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
+        //for (let i = -2; i < 4; i++) {triggerPlatformBack.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
+        //for (let i = 10; i < 20; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
         for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
 
@@ -186,10 +186,28 @@ class Scene4 extends Phaser.Scene {
             game.scene.stop('Pause');
             game.scene.start('Pause');
         }, this);
+
+        fadeOutTriggered = false;
     
     }
 
     update() {
+
+        if (player.x < 1000 && player.y > 790 && !fadeOutTriggered) {
+            this.cameras.main.fadeOut(500);
+            this.cameras.main.once('camerafadeoutcomplete', () => {
+                this.scene.start('Scene3', { sceneBack: true });
+            });
+            fadeOutTriggered = true;
+        }
+
+        if (player.x >= 1000 && player.y > 790 && !fadeOutTriggered) {
+                this.cameras.main.fadeOut(500);
+                this.cameras.main.once('camerafadeoutcomplete', () => {
+                    this.scene.start('Scene5', { sceneBack: false });
+                });
+            fadeOutTriggered = true;
+        }
 
         if (!game.scene.isPaused() && pauseOverlay && pauseText) {
             this.sound.resumeAll();

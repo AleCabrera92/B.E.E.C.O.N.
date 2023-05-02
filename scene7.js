@@ -36,10 +36,18 @@ class Scene7 extends Phaser.Scene {
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
-        triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
-        triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
-        triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
-        player = this.physics.add.sprite(100, -111, 'beecon_full').setScale(0.3).setDepth(0.19);
+        // triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
+        // triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
+        // triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
+
+        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
+
+        if (sceneBack === true) {
+            player = this.physics.add.sprite(900, 703, 'beecon_full').setScale(0.3).setDepth(0.19);
+        } else {
+            player = this.physics.add.sprite(100, -111, 'beecon_full').setScale(0.3).setDepth(0.19);
+        }
+
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         this.physics.add.collider(bigLasers, player);
@@ -48,7 +56,19 @@ class Scene7 extends Phaser.Scene {
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
 
-        wasp = this.physics.add.sprite(800, 400, 'wasp').setScale(0.75).setDepth(0.21);
+        if (sceneBack) {
+            player.anims.play('idleBack');
+        } else {
+            player.anims.play('idle');
+        }
+
+        if (sceneBack === true) {
+            wasp = this.physics.add.sprite(8000, 400, 'wasp').setScale(0.75).setDepth(0.21);
+            wasp.setAlpha(0);
+        } else {
+            wasp = this.physics.add.sprite(800, 400, 'wasp').setScale(0.75).setDepth(0.21);
+        }
+
         wasp.body.setSize(200, 300);
         wasp.body.setOffset(160, 270);
         wasp.setCollideWorldBounds(false);
@@ -148,30 +168,30 @@ class Scene7 extends Phaser.Scene {
 
         gameOverImage = this.physics.add.staticGroup();
 
-        this.physics.add.overlap(player, triggerPlatformDeath, () => {
-            lives = 0;
-            updateLivesUI();
-            gameOver();
-            randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-            randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
-            this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-            this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
-            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
-            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')});
-        });
+        // this.physics.add.overlap(player, triggerPlatformDeath, () => {
+        //     lives = 0;
+        //     updateLivesUI();
+        //     gameOver();
+        //     randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+        //     randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+        //     this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
+        //     this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
+        //     this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene)});
+        //     this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title')});
+        // });
 
-        this.physics.add.overlap(player, triggerPlatformBack, () => {
-            this.cameras.main.fadeOut(500);
-            this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene4');
-            });
-        });
-        this.physics.add.collider(player, triggerPlatform, () => {
-            this.cameras.main.fadeOut(500);
-            this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene6');
-            });
-        });
+        // this.physics.add.overlap(player, triggerPlatformBack, () => {
+        //     this.cameras.main.fadeOut(500);
+        //     this.cameras.main.once('camerafadeoutcomplete', () => {
+        //         this.scene.start('Scene4');
+        //     });
+        // });
+        // this.physics.add.collider(player, triggerPlatform, () => {
+        //     this.cameras.main.fadeOut(500);
+        //     this.cameras.main.once('camerafadeoutcomplete', () => {
+        //         this.scene.start('Scene6');
+        //     });
+        // });
         const self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableBranch') {
@@ -185,8 +205,8 @@ class Scene7 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        this.physics.add.overlap(player, triggerPlatformBack, function(player) {player.setAlpha(0)});
-        this.physics.add.collider(player, triggerPlatform, function(player) {player.setAlpha(0)});
+        // this.physics.add.overlap(player, triggerPlatformBack, function(player) {player.setAlpha(0)});
+        // this.physics.add.collider(player, triggerPlatform, function(player) {player.setAlpha(0)});
 
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
         for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
@@ -240,13 +260,13 @@ class Scene7 extends Phaser.Scene {
             platforms.create(i * 512, 860, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
         }
 
-        for (let i = -8; i < -1; i++) {
-            triggerPlatform.create(i * 150, -1000, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
-        }
+        // for (let i = -8; i < -1; i++) {
+        //     triggerPlatform.create(i * 150, -1000, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
+        // }
 
-        for (let i = -4; i < 10; i++) {
-            triggerPlatformBack.create(i * 150, 850, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
-        }
+        // for (let i = -4; i < 10; i++) {
+        //     triggerPlatformBack.create(i * 150, 850, 'platform').setScale(1).setAlpha(0).setDepth(0.3);
+        // }
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -308,9 +328,20 @@ class Scene7 extends Phaser.Scene {
             callbackScope: this,
         });
 
+        fadeOutTriggered = false;
+
     }
 
     update() {
+
+        if (player.x > 1250 && !fadeOutTriggered) {
+            player.setAlpha(0);
+            this.cameras.main.fadeOut(500);
+            this.cameras.main.once('camerafadeoutcomplete', () => {
+                this.scene.start('Scene8', { sceneBack: false });
+            });
+            fadeOutTriggered = true;
+        }
 
         if (!game.scene.isPaused() && pauseOverlay && pauseText) {
             this.sound.resumeAll();
@@ -321,7 +352,7 @@ class Scene7 extends Phaser.Scene {
 
         camera.scrollX = -100;
 
-        if (player.y <= 595) {
+        if (player.y <= 703) {
             camera.scrollY = player.y - 505; //605
 
             liveBG.x = 3;
@@ -331,9 +362,9 @@ class Scene7 extends Phaser.Scene {
             livesText.y = player.y-483; //583
         }
 
-        if (player.x < -200 && player.y < -200) {
-            player.setVelocityY(-300);
-        }
+        // if (player.x < -200 && player.y < -200) {
+        //     player.setVelocityY(-300);
+        // }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
