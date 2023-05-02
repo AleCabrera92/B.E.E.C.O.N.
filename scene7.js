@@ -334,6 +334,12 @@ class Scene7 extends Phaser.Scene {
 
     update() {
 
+        if (player.body.velocity.y > 1000) {
+            player.body.setBounce(0.2);
+          } else {
+            player.body.setBounce(0);
+        }
+
         if (player.x > 1250 && !fadeOutTriggered) {
             player.setAlpha(0);
             this.cameras.main.fadeOut(500);

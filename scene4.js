@@ -193,6 +193,12 @@ class Scene4 extends Phaser.Scene {
 
     update() {
 
+        if (player.body.velocity.y > 1000) {
+            player.body.setBounce(0.2);
+          } else {
+            player.body.setBounce(0);
+        }
+
         if (player.x < 1000 && player.y > 790 && !fadeOutTriggered) {
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {

@@ -410,6 +410,12 @@ class Scene3 extends Phaser.Scene {
 
     update() {
 
+        if (player.body.velocity.y > 1000) {
+            player.body.setBounce(0.2);
+          } else {
+            player.body.setBounce(0);
+        }
+
         if (player.x > 1700 && player.x < 3000 && player.y > 800 && !fadeOutTriggered) {
             lives = 0;
             updateLivesUI();
