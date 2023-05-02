@@ -330,9 +330,10 @@ class Scene5 extends Phaser.Scene {
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
-        platforms.create(1050, 565, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(850, 485, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-        for (let i = 0.48; i <= 6; i++) {platforms.create(-10 + i * 120, 400, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        platforms.create(1050, 420, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(1050, 550, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(930, 550, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        for (let i = 0.48; i <= 4; i++) {platforms.create(-10 + i * 120, 400, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 2.48; i <= 9; i++) {platforms.create(50 + i * 120, -180, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 2.48; i <= 5; i++) {platforms.create(i * 120, -487, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 6; i++) {platforms.create(240, 200 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
