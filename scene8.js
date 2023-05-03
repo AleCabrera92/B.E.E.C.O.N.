@@ -71,11 +71,9 @@ class Scene8 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
-        for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
-
+ 
         for (let i = 0; i <= 40; i++) {
-            this.add.image(0, 1200 - (i*799), 'treeTexture').setScale(1).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
-            this.add.image(799, 1200 - (i*799), 'treeTexture').setScale(1).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
+            this.add.image(580, 800 - (i*973.5), 'waspNestTexture').setScale(1.65).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
         }
 
         clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.9).setGravity(false).setAlpha(0.75);
@@ -85,40 +83,50 @@ class Scene8 extends Phaser.Scene {
         clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.9).setGravity(false).setAlpha(0.75);
         clouds3.body.setVelocityX(-22); clouds3.body.setCollideWorldBounds(false); clouds3.body.allowGravity = false;
 
-        for (let i = 0; i <= 4; i++) {this.add.image(i * 1200, 450, 'mountains').setScale(1.5).setScrollFactor(0.2).setDepth(-0.8).setTint(Phaser.Display.Color.GetColor(125, 100, 150));}
-
         for (let i = -1; i < 10; i++) {
-            if (i < 4) {
-                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
-                platforms.create(-500 + i * 120, -1040, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-            } else if (i > 4) {
-                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+            if (i < 2) {
+                platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+            } else if (i > 3) {
+                platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
             }
-            platforms.create(1250, 186 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
+            platforms.create(1250, 186 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5);
         }
 
-        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -800, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -600, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
             this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
             this.tweens.add({targets: leavesBG, y: { getStart: () => -801, getEnd: () => -799, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
-        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -500, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -300, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
             this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
             this.tweens.add({targets: leavesBG, y: { getStart: () => -501, getEnd: () => -499, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
-        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -200, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, 0, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
             this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
             this.tweens.add({targets: leavesBG, y: { getStart: () => -201, getEnd: () => -199, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+   
+        /******************************************************************************************************************************/
+        /******************************************************************************************************************************/
+        /******************************************************************************************************************************/
+        platforms.create(1050, 495, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(1050, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(930, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(50, 335, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 400, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(1050, 135, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 6.78; i <= 9; i++) {platforms.create(-10 + i * 120, 215, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(50, -50, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 30, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(1050, -230, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 6.78; i <= 9; i++) {platforms.create(-10 + i * 120, -150, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(50, -410, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, -330, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        /******************************************************************************************************************************/
+        /******************************************************************************************************************************/
+        /******************************************************************************************************************************/
 
-        platforms.create(1050, 565, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-        platforms.create(850, 485, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
-        for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 400, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 2.48; i <= 9; i++) {platforms.create(50 + i * 120, -180, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 2.48; i <= 5; i++) {platforms.create(i * 120, -487, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        if (sceneBack) {  } else { for (let i = 5.48; i <= 7; i++) {platforms.create(i * 120, -487, 'breakableBranch').setScale(0.8).refreshBody().setDepth(0.2);} }
-        for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -800, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 0.48; i <= 2; i++) {platforms.create(i * 120, -900, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 0.48; i <= 1; i++) {platforms.create(i * 120, -1000, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        /******************************************************************************************************************************/
-        /******************************************************************************************************************************/
-        /******************************************************************************************************************************/
+        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -630, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        for (let i = -0.96; i <= 13; i++) {platforms.create(-10 + i * 240, -730, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -830, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -930, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -1030, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
 
         for (let i = 0.2; i < 4; i++) {
             platforms.create(i * 512, 760, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);

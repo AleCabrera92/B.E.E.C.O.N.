@@ -43,10 +43,14 @@ class Preload extends Phaser.Scene {
         this.load.image('tree', 'assets/tree.png');
         this.load.image('treeFloor', 'assets/treeFloor.png');
         this.load.image('treeTexture', 'assets/treeTexture.png');
-        this.load.image('trunk', 'assets/trunk.png');   
+        this.load.image('trunk', 'assets/trunk.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('waspNest', 'assets/waspNest.png');
+        this.load.image('waspNestBranch', 'assets/waspNestBranch.png');
         this.load.image('waspNestDoor', 'assets/waspNestDoor.png');
+        this.load.image('waspNestPlatform', 'assets/waspNestPlatform.png');
+        this.load.image('waspNestTexture', 'assets/waspNestTexture.png');
+        this.load.image('waspNestTrunk', 'assets/waspNestTrunk.png');
         this.load.image('waspNestUnder', 'assets/waspNestUnder.png');
 
         this.load.audio('beeconF', 'assets/audio/beeconF.mp3');
