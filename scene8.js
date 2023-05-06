@@ -195,9 +195,41 @@ class Scene8 extends Phaser.Scene {
 
         fadeOutTriggered = false;
 
+        babyWaspGroup = this.add.group();
+        for (let i = -1; i < 3; i++) {
+          if (i === -1) {
+            babyWasp = this.physics.add.sprite(800, 400, 'babyWasp').setScale(0.33).setDepth(0.19);
+          } else if (i === 2) {
+            babyWasp = this.physics.add.sprite(800, -400, 'babyWasp').setScale(0.33).setDepth(0.19);
+          } else {
+            babyWasp = this.physics.add.sprite(300 + (i * 200), 200 - (i * 50), 'babyWasp').setScale(0.33).setDepth(0.19);
+          }
+          babyWasp.body.allowGravity = false;
+          babyWasp.setVelocityY(0);
+          babyWasp.setVelocityX(0);
+          babyWasp.setImmovable(true);
+          babyWasp.anims.play('babyWaspChill');
+        //   enemy.body.setSize(280, 220);
+        //   enemy.body.setOffset(30, 60);
+        //   enemy.setCollideWorldBounds(false);
+        //   this.physics.add.collider(enemy, platforms);
+          babyWaspGroup.add(babyWasp);
+        }
+
+
+        
+
     }
 
     update() {
+
+        babyWaspGroup.getChildren().forEach(babyWasp => {
+            if (player.x > babyWasp.x) {
+                babyWasp.setFlipX(true);
+            } else {
+                babyWasp.setFlipX(false);
+            }
+        });
 
         if (player.body.velocity.y > 1000) {
             player.body.setBounce(0.2);

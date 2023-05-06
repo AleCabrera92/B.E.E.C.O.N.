@@ -9,7 +9,7 @@ let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup, wasp, waspLives;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
-let throttled = false, sound_eneweeAttack;
+let throttled = false, sound_eneweeAttack, babyWasp, babyWaspGroup;
 let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
