@@ -72,7 +72,7 @@ class Scene8 extends Phaser.Scene {
 
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
  
-        for (let i = 0; i <= 40; i++) {
+        for (let i = 0; i <= 1; i++) {
             this.add.image(580, 800 - (i*973.5), 'waspNestTexture').setScale(1.65).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
         }
 
@@ -86,7 +86,7 @@ class Scene8 extends Phaser.Scene {
         for (let i = -1; i < 10; i++) {
             if (i < 2) {
                 platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
-            } else if (i > 3) {
+            } else if (i > 2) {
                 platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
             }
             platforms.create(1250, 186 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5);
@@ -108,10 +108,10 @@ class Scene8 extends Phaser.Scene {
         platforms.create(1050, 495, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         platforms.create(1050, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         platforms.create(930, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        platforms.create(50, 335, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(50, 325, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 400, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        platforms.create(1050, 135, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 6.78; i <= 9; i++) {platforms.create(-10 + i * 120, 215, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(1050, 140, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 6.78; i <= 9; i++) {platforms.create(-10 + i * 120, 220, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
         platforms.create(50, -50, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 30, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
         platforms.create(1050, -230, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
@@ -122,11 +122,7 @@ class Scene8 extends Phaser.Scene {
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/
 
-        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -630, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        for (let i = -0.96; i <= 13; i++) {platforms.create(-10 + i * 240, -730, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -830, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -930, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        for (let i = -0.48; i <= 13; i++) {platforms.create(-10 + i * 240, -1030, 'waspNestBranch').setScale(1.6).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(481, -1200, 'waspNestTexture').setScale(1.65).refreshBody().setDepth(1).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
 
         for (let i = 0.2; i < 4; i++) {
             platforms.create(i * 512, 760, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);

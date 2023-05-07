@@ -114,32 +114,50 @@ class Scene6 extends Phaser.Scene {
             this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
             this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + 301, getEnd: () => i * 50 + 299, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
         for (let i = 0; i < 10; i++) {leavesBG = this.add.image(-50 + i * 150, i * 50 + 0, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + 1, getEnd: () => i * 50 + -9, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==0) {    
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + 1, getEnd: () => i * 50 + -9, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
         for (let i = 0; i < 10; i++) {leavesBG = this.add.image(i * 150, i * 50 + -300, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -301, getEnd: () => i * 50 + -299, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==0) {        
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -301, getEnd: () => i * 50 + -299, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
         for (let i = 0; i < 10; i++) {leavesBG = this.add.image(-50 + i * 150, i * 50 + -300, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -301, getEnd: () => i * 50 + -299, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==0) {    
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -301, getEnd: () => i * 50 + -299, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
         for (let i = 0; i < 10; i++) {leavesBG = this.add.image(i * 150, i * 50 + -600, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -601, getEnd: () => i * 50 + -599, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==0) {    
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -601, getEnd: () => i * 50 + -599, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
         for (let i = 1; i < 10; i++) {leavesBG = this.add.image(-50 + i * 150, i * 50 + -900, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -901, getEnd: () => i * 50 + -899, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==1) {        
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -901, getEnd: () => i * 50 + -899, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }    
         for (let i = 2; i < 10; i++) {leavesBG = this.add.image(-50 + i * 150, i * 50 + -1200, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -1201, getEnd: () => i * 50 + -1199, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==2) {    
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -1201, getEnd: () => i * 50 + -1199, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
         for (let i = 3; i < 10; i++) {leavesBG = this.add.image(-50 + i * 150, i * 50 + -1500, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -1501, getEnd: () => i * 50 + -1499, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==3) {    
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -1501, getEnd: () => i * 50 + -1499, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
         for (let i = 4; i < 10; i++) {leavesBG = this.add.image(-50 + i * 150, i * 50 + -1800, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -1801, getEnd: () => i * 50 + -1799, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==4) {    
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -1801, getEnd: () => i * 50 + -1799, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
         for (let i = 5; i < 10; i++) {leavesBG = this.add.image(-50 + i * 150, i * 50 + -2100, 'leavesBG').setScrollFactor(1).setDepth(0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -2101, getEnd: () => i * 50 + -2099, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            if (i==5) {    
+                this.tweens.add({targets: leavesBG, angle: { getStart: () => -89, getEnd: () => -91, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
+                this.tweens.add({targets: leavesBG, y: { getStart: () => i * 50 + -2101, getEnd: () => i * 50 + -2099, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+            }
 
         /******************************************************************************************************************************/
         /******************************************************************************************************************************/

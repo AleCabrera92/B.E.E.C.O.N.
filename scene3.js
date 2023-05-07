@@ -357,7 +357,7 @@ class Scene3 extends Phaser.Scene {
         this.lastWalkSoundTime = 0;
 
         this.input.keyboard.on('keydown-P', function () {
-            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*8, this.cameras.main.height*3, 0x000000, 0.25).setDepth(1);
+            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*10, this.cameras.main.height*3, 0x000000, 0.25).setDepth(1);
             pauseText = this.add.text(0, 0, 'PAUSE', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
             pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
             this.sound.pauseAll();

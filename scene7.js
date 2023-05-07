@@ -557,14 +557,27 @@ class Scene7 extends Phaser.Scene {
 
         updateWaspBehavior(wasp);
 
-        healthBar.clear();
-        healthBar.fillStyle(0xff0000, 1);
-        //healthBar.fillRect(wasp.x - 40, wasp.y - 60, 80, 10);
-        healthBar.fillRect(game.config.width / 1.92, game.config.height / 6.89, 500, 20);
-        var remainingHealth = waspLives / 20;
-        healthBar.fillStyle(0x00ff00, 1);
-        //healthBar.fillRect(wasp.x - 40, wasp.y - 60, remainingHealth * 80, 10);
-        healthBar.fillRect(game.config.width / 1.92, game.config.height / 6.89, remainingHealth * 500, 20);
+        if (player.y <= 703) {
+            // camera.scrollY = player.y - 505; //605
+
+            // liveBG.x = 3;
+            // liveBG.y = player.y-472; //572
+    
+            // livesText.x = -78;
+            // livesText.y = player.y-483; //583
+
+            healthBar.clear();
+            healthBar.fillStyle(0xff0000, 1);
+            //healthBar.fillRect(wasp.x - 40, wasp.y - 60, 80, 10);
+            healthBar.fillRect(game.config.width / 1.92, -18, 500, 20);
+            var remainingHealth = waspLives / 20;
+            healthBar.fillStyle(0x00ff00, 1);
+            //healthBar.fillRect(wasp.x - 40, wasp.y - 60, remainingHealth * 80, 10);
+            healthBar.fillRect(game.config.width / 1.92, -18, remainingHealth * 500, 20);
+            healthBar.x = 3;
+            healthBar.y = player.y - 472; //572
+
+        }
 
         if (wasp.alpha === 0) {
             healthBar.visible = false;
