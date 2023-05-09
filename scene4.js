@@ -46,6 +46,9 @@ class Scene4 extends Phaser.Scene {
         //triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         //triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
 
+        self = this;
+        beeconFs = this.physics.add.group();
+
         let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
         if (sceneBack === true) {

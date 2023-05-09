@@ -37,6 +37,8 @@ class Scene8 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
 
+        beeconFs = this.physics.add.group();
+
         let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
         if (sceneBack === true) {
@@ -57,7 +59,7 @@ class Scene8 extends Phaser.Scene {
 
         gameOverImage = this.physics.add.staticGroup();
 
-       const self = this;
+        self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableBranch') {
                 timer++;

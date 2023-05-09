@@ -37,6 +37,8 @@ class Scene6 extends Phaser.Scene {
         // triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         // triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
 
+        beeconFs = this.physics.add.group();
+
         player = this.physics.add.sprite(1000, 603, 'beecon_full').setScale(0.3).setDepth(0.19);
 
         player.body.setSize(120, 120);
@@ -75,7 +77,7 @@ class Scene6 extends Phaser.Scene {
         //         this.scene.start('Scene7', { sceneBack: false });
         //     });
         // });
-        const self = this;
+        self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableBranch') {
                 timer++;

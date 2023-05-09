@@ -13,7 +13,7 @@ let throttled = false, sound_eneweeAttack, babyWasp, babyWaspGroup;
 let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
-let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick;
+let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick, enemyFs, eneweeFs, lilWaspFs, waspFs, beeconFs;
 let waspInterval, waspTween, healthBar, waspNestDoor, destroyed, fadeOutTriggered = false;
 
 var jumpTimer = 0;
@@ -152,6 +152,11 @@ function gameOver() {
       gameOverImage.create(player.x+320, game.config.height / 4, 'gameOver');
       gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
   }
+  let beeconF = beeconFs.create(player.x, player.y, 'beeconF');
+  beeconF.setOrigin(0.5, 0.5).setScale(0.3).setDepth(0.189);
+  beeconF.body.setSize(50, 75);
+  self.physics.add.collider(beeconF, platforms);
+  beeconF.setBounce(0.2);
 }
 
 // Function to create and animate the white overlay

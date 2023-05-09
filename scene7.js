@@ -93,6 +93,8 @@ class Scene7 extends Phaser.Scene {
 
         selfs = this;
         energyOrbs = this.physics.add.group();
+        waspFs = this.physics.add.group();
+        beeconFs = this.physics.add.group();
 
         this.physics.add.collider(player, wasp, function(player) {
             if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
@@ -148,6 +150,11 @@ class Scene7 extends Phaser.Scene {
                     selfs.physics.add.collider(energyOrb, platforms);
                     selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                 }
+                let waspF = waspFs.create(wasp.x, wasp.y, 'waspF');
+                waspF.setOrigin(0.5, 0.5).setScale(0.75).setDepth(0.189);
+                waspF.body.setSize(50, 305);
+                selfs.physics.add.collider(waspF, platforms);
+                waspF.setBounce(0.2);
             }
             laser.setVelocity(0, 0);
         });
@@ -168,6 +175,11 @@ class Scene7 extends Phaser.Scene {
                     selfs.physics.add.collider(energyOrb, platforms);
                     selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                 }
+                let waspF = waspFs.create(wasp.x, wasp.y, 'waspF');
+                waspF.setOrigin(0.5, 0.5).setScale(0.75).setDepth(0.189);
+                waspF.body.setSize(50, 305);
+                selfs.physics.add.collider(waspF, platforms);
+                waspF.setBounce(0.2);
             }
             bigLaser.destroy();
         });
@@ -198,7 +210,7 @@ class Scene7 extends Phaser.Scene {
         //         this.scene.start('Scene6');
         //     });
         // });
-        const self = this;
+        self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableBranch') {
                 timer++;

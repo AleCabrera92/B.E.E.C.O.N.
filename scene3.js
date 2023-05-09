@@ -120,6 +120,8 @@ class Scene3 extends Phaser.Scene {
 
             selfs = this;
             energyOrbs = this.physics.add.group();
+            eneweeFs = this.physics.add.group();
+            beeconFs = this.physics.add.group();
 
             this.physics.add.collider(lasers, enewee, function(enewee, laser) {
                 enewee.eneweeLives--;
@@ -138,6 +140,11 @@ class Scene3 extends Phaser.Scene {
                         selfs.physics.add.collider(energyOrb, platforms);
                         selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                     }
+                    let eneweeF = eneweeFs.create(enewee.x, enewee.y, 'eneweeF');
+                    eneweeF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                    eneweeF.body.setSize(50, 125);
+                    selfs.physics.add.collider(eneweeF, platforms);
+                    eneweeF.setBounce(0.2);
                 }
                 laser.setVelocity(0, 0);
             });
@@ -158,6 +165,11 @@ class Scene3 extends Phaser.Scene {
                         selfs.physics.add.collider(energyOrb, platforms);
                         selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                     }
+                    let eneweeF = eneweeFs.create(enewee.x, enewee.y, 'eneweeF');
+                    eneweeF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                    eneweeF.body.setSize(50, 125);
+                    selfs.physics.add.collider(eneweeF, platforms);
+                    eneweeF.setBounce(0.2);
                 }
                 bigLaser.destroy();
             });
@@ -186,7 +198,7 @@ class Scene3 extends Phaser.Scene {
         //         this.scene.start('Scene4', { sceneBack: false });
         //     });
         // });
-        const self = this;
+        self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 let timer = 0;
@@ -414,7 +426,7 @@ class Scene3 extends Phaser.Scene {
             player.body.setBounce(0);
         }
 
-        if (player.x > 1700 && player.x < 3000 && player.y > 800 && !fadeOutTriggered) {
+        if (player.x < 3000 && player.y > 800 && !fadeOutTriggered) {
             lives = 0;
             updateLivesUI();
             gameOver();

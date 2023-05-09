@@ -116,6 +116,17 @@ class Scene1 extends Phaser.Scene {
 
             self = this;
             energyOrbs = this.physics.add.group();
+            enemyFs = this.physics.add.group();
+            beeconFs = this.physics.add.group();
+
+            // if (lives <= 0) {
+            //     console.log("croqueta");
+            //     let beeconF = beeconFs.create(player.x, player.y, 'beeconF');
+            //     beeconF.setOrigin(0.5, 0.5).setScale(0.3).setDepth(0.19);
+            //     beeconF.body.setSize(50, 75);
+            //     self.physics.add.collider(beeconF, platforms);
+            //     beeconF.setBounce(0.2);
+            // }
 
             this.physics.add.collider(lasers, enemy, function(enemy, laser) {
                 if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
@@ -135,6 +146,11 @@ class Scene1 extends Phaser.Scene {
                             self.physics.add.collider(energyOrb, platforms);
                             self.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                         }
+                        let enemyF = enemyFs.create(enemy.x, enemy.y, 'enemyF');
+                        enemyF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                        enemyF.body.setSize(50, 125);
+                        self.physics.add.collider(enemyF, platforms);
+                        enemyF.setBounce(0.2);
                     }
                 }
                 laser.setVelocity(0, 0);
@@ -157,6 +173,11 @@ class Scene1 extends Phaser.Scene {
                         selfs.physics.add.collider(energyOrb, platforms);
                         selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                     }
+                    let enemyF = enemyFs.create(enemy.x, enemy.y, 'enemyF');
+                    enemyF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                    enemyF.body.setSize(50, 125);
+                    self.physics.add.collider(enemyF, platforms);
+                    enemyF.setBounce(0.2);
                 }
                 bigLaser.destroy();
             });

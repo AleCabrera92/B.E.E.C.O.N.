@@ -117,6 +117,9 @@ class Scene5 extends Phaser.Scene {
             selfs = this;
             selfss = this;
             energyOrbs = this.physics.add.group();
+            enemyFs = this.physics.add.group();
+            lilWaspFs = this.physics.add.group();
+            beeconFs = this.physics.add.group();
 
             this.physics.add.collider(lasers, enemy, function(enemy, laser) {
                 if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
@@ -136,6 +139,11 @@ class Scene5 extends Phaser.Scene {
                             selfs.physics.add.collider(energyOrb, platforms);
                             selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                         }
+                        let enemyF = enemyFs.create(enemy.x, enemy.y, 'enemyF');
+                        enemyF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                        enemyF.body.setSize(50, 125);
+                        selfs.physics.add.collider(enemyF, platforms);
+                        enemyF.setBounce(0.2);
                     }
                 }
                 laser.setVelocity(0, 0);
@@ -157,6 +165,11 @@ class Scene5 extends Phaser.Scene {
                         selfs.physics.add.collider(energyOrb, platforms);
                         selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                     }
+                    let enemyF = enemyFs.create(enemy.x, enemy.y, 'enemyF');
+                    enemyF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                    enemyF.body.setSize(50, 125);
+                    selfs.physics.add.collider(enemyF, platforms);
+                    enemyF.setBounce(0.2);
                 }
                 bigLaser.destroy();
             });
@@ -217,6 +230,11 @@ class Scene5 extends Phaser.Scene {
                             selfss.physics.add.collider(energyOrb, platforms);
                             selfss.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                         }
+                        let lilWaspF = lilWaspFs.create(lilWasp.x, lilWasp.y, 'lilWaspF');
+                        lilWaspF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                        lilWaspF.body.setSize(50, 305);
+                        selfss.physics.add.collider(lilWaspF, platforms);
+                        lilWaspF.setBounce(0.2);
                     }
                     laser.setVelocity(0, 0);
                 });
@@ -237,6 +255,11 @@ class Scene5 extends Phaser.Scene {
                             selfs.physics.add.collider(energyOrb, platforms);
                             selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                         }
+                        let lilWaspF = lilWaspFs.create(lilWasp.x, lilWasp.y, 'lilWaspF');
+                        lilWaspF.setOrigin(0.5, 0.5).setScale(0.25).setDepth(0.189);
+                        lilWaspF.body.setSize(50, 305);
+                        selfss.physics.add.collider(lilWaspF, platforms);
+                        lilWaspF.setBounce(0.2);
                     }
                     bigLaser.destroy();
                 });
@@ -267,7 +290,7 @@ class Scene5 extends Phaser.Scene {
         //         this.scene.start('Scene6', { sceneBack: false });
         //     });
         // });
-        const self = this;
+        self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableBranch') {
                 timer++;

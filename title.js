@@ -111,19 +111,19 @@ class Title extends Phaser.Scene {
       player.anims.play('left', true);
         player.setVelocityX(-250);
         let delay1 = Phaser.Math.Between(0, 4000);
-        let self1 = this;
+        let selfu1 = this;
         if (Math.random() < 0.5) {
           this.time.addEvent({
             delay: delay1,
             callback: function() {
               player.setVelocityY(-380);
-              self1.physics.world.gravity.y = 600;
-              self1.tweens.add({ targets: self1.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
+              selfu1.physics.world.gravity.y = 600;
+              selfu1.tweens.add({ targets: selfu1.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jumpBack', true);
-              self1.time.delayedCall(333.33, function() {
+              selfu1.time.delayedCall(333.33, function() {
                 player.anims.play('fallBack', true);
               }, [], this);
-              self1.time.delayedCall(666.66, function() {
+              selfu1.time.delayedCall(666.66, function() {
                 player.anims.play('left', true);
               }, [], this);
             },
@@ -131,19 +131,19 @@ class Title extends Phaser.Scene {
           });
         }
         let delay2 = Phaser.Math.Between(0, 4000);
-        let self2 = this;
+        let selfu2 = this;
         if (Math.random() < 0.5) {
           this.time.addEvent({
             delay: delay2,
             callback: function() {
               player.setVelocityY(-380);
-              self2.physics.world.gravity.y = 600;
-              self2.tweens.add({ targets: self2.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
+              selfu2.physics.world.gravity.y = 600;
+              selfu2.tweens.add({ targets: selfu2.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jumpBack', true);
-              self2.time.delayedCall(333.33, function() {
+              selfu2.time.delayedCall(333.33, function() {
                 player.anims.play('fallBack', true);
               }, [], this);
-              self2.time.delayedCall(666.66, function() {
+              selfu2.time.delayedCall(666.66, function() {
                 player.anims.play('left', true);
               }, [], this);
             },
@@ -155,19 +155,19 @@ class Title extends Phaser.Scene {
         player.anims.play('right', true);
         player.setVelocityX(250);
         let delay3 = Phaser.Math.Between(0, 4000);
-        let self3 = this;
+        let selfu3 = this;
         if (Math.random() < 0.5) {
           this.time.addEvent({
             delay: delay3,
             callback: function() {
               player.setVelocityY(-380);
-              self3.physics.world.gravity.y = 600;
-              self3.tweens.add({ targets: self3.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
+              selfu3.physics.world.gravity.y = 600;
+              selfu3.tweens.add({ targets: selfu3.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jump', true);
-              self3.time.delayedCall(333.33, function() {
+              selfu3.time.delayedCall(333.33, function() {
                 player.anims.play('fall', true);
               }, [], this);
-              self3.time.delayedCall(666.66, function() {
+              selfu3.time.delayedCall(666.66, function() {
                 player.anims.play('right', true);
               }, [], this);
             },
@@ -175,19 +175,19 @@ class Title extends Phaser.Scene {
           });
         }
         let delay4 = Phaser.Math.Between(0, 4000);
-        let self4 = this;
+        let selfu4 = this;
         if (Math.random() < 0.5) {
           this.time.addEvent({
             delay: delay4,
             callback: function() {
               player.setVelocityY(-380);
-              self4.physics.world.gravity.y = 600;
-              self4.tweens.add({ targets: self4.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
+              selfu4.physics.world.gravity.y = 600;
+              selfu4.tweens.add({ targets: selfu4.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
               player.anims.play('jump', true);
-              self4.time.delayedCall(333.33, function() {
+              selfu4.time.delayedCall(333.33, function() {
                 player.anims.play('fall', true);
               }, [], this);
-              self4.time.delayedCall(666.66, function() {
+              selfu4.time.delayedCall(666.66, function() {
                 player.anims.play('right', true);
               }, [], this);
             },

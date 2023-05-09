@@ -15,6 +15,7 @@ class Preload extends Phaser.Scene {
         this.load.spritesheet('wasp', 'assets/wasp.png', { frameWidth: 600, frameHeight: 600 });
 
         this.load.image('airPlatform', 'assets/platform.png');
+        this.load.image('beeconF', 'assets/beeconF.png');
         this.load.image('beeIcon', 'assets/beeIcon.png');
         this.load.image('bigLaser', 'assets/bigLaser.png');
         this.load.image('branch', 'assets/branch.png');
@@ -22,6 +23,8 @@ class Preload extends Phaser.Scene {
         this.load.image('breakableGround', 'assets/breakablePlatform.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
         this.load.image('clouds', 'assets/cloud.png');
+        this.load.image('enemyF', 'assets/enemyF.png');
+        this.load.image('eneweeF', 'assets/eneweeF.png');
         this.load.image('gameOver', 'assets/gameOver.png');
         this.load.image('glow', 'assets/glow.png');
         this.load.image('grass', 'assets/grass.png');
@@ -31,6 +34,7 @@ class Preload extends Phaser.Scene {
         this.load.image('leaf', 'assets/leaf.png');
         this.load.image('leavesBG', 'assets/leavesBG.png');
         this.load.image('lifeBG', 'assets/lifeBG.png');
+        this.load.image('lilWaspF', 'assets/lilWaspF.png');
         this.load.image('megaTree', 'assets/megaTree.png');
         this.load.image('megaTreeCover', 'assets/megaTreeCover.png');
         this.load.image('mountains', 'assets/mountains.png');
@@ -46,6 +50,7 @@ class Preload extends Phaser.Scene {
         this.load.image('treeTexture', 'assets/treeTexture.png');
         this.load.image('trunk', 'assets/trunk.png');
         this.load.image('wall', 'assets/wall.png');
+        this.load.image('waspF', 'assets/waspF.png');
         this.load.image('waspNest', 'assets/waspNest.png');
         this.load.image('waspNestBranch', 'assets/waspNestBranch.png');
         this.load.image('waspNestDoor', 'assets/waspNestDoor.png');

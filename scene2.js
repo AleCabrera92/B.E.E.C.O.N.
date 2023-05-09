@@ -32,6 +32,10 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
         //triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
+
+        self = this;
+        beeconFs = this.physics.add.group();
+
         player = this.physics.add.sprite(100, 0, 'beecon_full').setScale(0.3).setDepth(0.19);
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
