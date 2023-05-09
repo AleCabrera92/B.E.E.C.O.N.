@@ -17,15 +17,11 @@ class Scene2 extends Phaser.Scene {
             sound_drill.stop();
         }
 
-        sound_titleTheme.stop();
+        sound_level1Theme.stop();
 
         sound_rain.play();
         sound_rain.setVolume(0.25);
         setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.25)}, 5000);
-
-        isMusicPlaying = false;
-        this.sound.sounds.forEach(function(sound) { if (sound.key === 'levelTheme' && sound.isPlaying) { isMusicPlaying = true; } });
-        if (!isMusicPlaying) { sound_levelTheme.play(); }
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -262,10 +258,10 @@ class Scene2 extends Phaser.Scene {
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
                 //console.log("2")
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }
@@ -276,10 +272,10 @@ class Scene2 extends Phaser.Scene {
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
                 //console.log("3")
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   

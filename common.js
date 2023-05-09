@@ -1,7 +1,7 @@
 let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds, clouds2, clouds3, cursors, didPressUp, didPressW, didPressSpace, enemy, enewee, emitter, emitter2;
 let lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack, triggerPlatformDeath, treeTexture;
 let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_beeconHit, sound_rain, sound_rain2;
-let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_levelTheme, sound_enemyEnraged;
+let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_level1Theme, sound_level2Theme, sound_level3Theme, sound_level4Theme, sound_enemyEnraged;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
 let scene, gameOverImage, randomText;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
@@ -134,7 +134,10 @@ function shootBigLaser() {
 }
 
 function gameOver() {
-  sound_levelTheme.stop();
+  sound_level1Theme.stop();
+  sound_level2Theme.stop();
+  sound_level3Theme.stop();
+  sound_level4Theme.stop();
   sound_beeconF.play();
   player.alpha = 0;
   player.anims.stop();
@@ -174,9 +177,9 @@ function createOverlay() {
         lightning.fillStyle(0xffffff, 0.95);
     }
     if (scene === 1 || scene === 4) {
-        lightning.fillRect(-1000, 0, this.game.config.width * 4, this.game.config.height * 2);
+        lightning.fillRect(-1000, 0, this.game.config.width * 8, this.game.config.height * 2);
     } else if (scene === 5 || scene === 6 || scene === 7) {
-        lightning.fillRect(-1000, -10000, this.game.config.width * 4, this.game.config.height * 80);
+        lightning.fillRect(-1000, -10000, this.game.config.width * 4, this.game.config.height * 20);
     }
     lightning.setAlpha(0); // set initial alpha to 0
     if (scene === 1) {

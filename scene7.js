@@ -21,13 +21,21 @@ class Scene7 extends Phaser.Scene {
 
         sound_titleTheme.stop();
 
-        sound_rain.play();
-        sound_rain.setVolume(0.75);
-        setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.75)}, 5000);
+        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
         isMusicPlaying = false;
-        this.sound.sounds.forEach(function(sound) { if (sound.key === 'levelTheme' && sound.isPlaying) { isMusicPlaying = true; } });
-        if (!isMusicPlaying) { sound_levelTheme.play(); }
+        this.sound.sounds.forEach(function(sound) { if (sound.key === 'level4Theme' && sound.isPlaying) { isMusicPlaying = true; } });
+        if (!isMusicPlaying && !sceneBack) { sound_level4Theme.play(); }
+
+        if (!sceneBack) {
+            sound_rain.play();
+            sound_rain.setVolume(0.35);
+            setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.35)}, 5000);
+        } else {
+            sound_rain.play();
+            sound_rain.setVolume(0.75);
+            setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.75)}, 5000);
+        }
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -39,8 +47,6 @@ class Scene7 extends Phaser.Scene {
         // triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
         // triggerPlatformBack = this.physics.add.group({ immovable: true, allowGravity: false });
         // triggerPlatformDeath = this.physics.add.group({ immovable: true, allowGravity: false });
-
-        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
         if (sceneBack === true) {
             player = this.physics.add.sprite(900, 703, 'beecon_full').setScale(0.3).setDepth(0.19);
@@ -334,6 +340,10 @@ class Scene7 extends Phaser.Scene {
 
     update() {
 
+        if (waspLives <= 0) {
+            sound_level4Theme.stop();
+        }
+
         if (player.body.velocity.y > 1000) {
             player.body.setBounce(0.2);
           } else {
@@ -493,10 +503,10 @@ class Scene7 extends Phaser.Scene {
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
                 //console.log("2")
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }
@@ -507,10 +517,10 @@ class Scene7 extends Phaser.Scene {
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
                 //console.log("3")
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   

@@ -14,7 +14,7 @@ class Scene1 extends Phaser.Scene {
         scene = 1;
         sound_thunder.setVolume(0.75);
 
-        overlay = this.add.rectangle(-500, 0, this.game.config.width*2, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
+        overlay = this.add.rectangle(-600, 0, this.game.config.width*8, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
         this.time.delayedCall(1000, function() {
           this.tweens.add({
@@ -28,10 +28,11 @@ class Scene1 extends Phaser.Scene {
         }, [], this);
 
         sound_titleTheme.stop();
+        sound_level2Theme.stop();
 
         isMusicPlaying = false;
-        this.sound.sounds.forEach(function(sound) { if (sound.key === 'levelTheme' && sound.isPlaying) { isMusicPlaying = true; } });
-        if (!isMusicPlaying) { sound_levelTheme.play(); }
+        this.sound.sounds.forEach(function(sound) { if (sound.key === 'level1Theme' && sound.isPlaying) { isMusicPlaying = true; } });
+        if (!isMusicPlaying) { sound_level1Theme.play(); }
 
         sound_rain.play();
         setTimeout(() => { sound_rain2.play(); }, 5000);
@@ -285,7 +286,7 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.input.keyboard.on('keydown-P', function () {
-            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*6, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
+            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*8, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
             pauseText = this.add.text(0, 0, 'PAUSE', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
             pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
             this.sound.pauseAll();
@@ -534,10 +535,10 @@ class Scene1 extends Phaser.Scene {
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
                 //console.log("2")
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }
@@ -548,10 +549,10 @@ class Scene1 extends Phaser.Scene {
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
                 //console.log("3")
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   
