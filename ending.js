@@ -4,8 +4,7 @@ class Ending extends Phaser.Scene {
       super({ key: 'Ending' });
     }
   
-    preload() { //Assets to preload for the scene
-    }
+    preload() { /*Assets to preload for the scene*/ }
   
     create() {
 
@@ -24,7 +23,6 @@ class Ending extends Phaser.Scene {
     update() {
 
       if (Phaser.Input.Keyboard.JustDown(keyF)) { toggleFullscreen(); }
-      //if (Phaser.Input.Keyboard.JustDown(keySpace)) { this.scene.start('Title'); }
 
     }
 

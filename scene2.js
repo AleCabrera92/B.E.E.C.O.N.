@@ -4,8 +4,7 @@ class Scene2 extends Phaser.Scene {
         super({ key: 'Scene2' });
     }
 
-    preload() { //Assets to preload for the scene
-    }
+    preload() { /*Assets to preload for the scene*/ }
 
     create() {
 
@@ -31,7 +30,6 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
         this.add.image(1700, 1303, 'ground').setScale(5).setDepth(0);
-        //triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
 
         self = this;
         beeconFs = this.physics.add.group();
@@ -43,13 +41,7 @@ class Scene2 extends Phaser.Scene {
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //, fontStyle: 'bold'
-        // this.physics.add.overlap(player, triggerPlatform, () => {
-        //     this.cameras.main.fadeOut(500);
-        //     this.cameras.main.once('camerafadeoutcomplete', () => {
-        //         this.scene.start('Scene3', { sceneBack: false });
-        //     });
-        // });
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
 
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
@@ -71,8 +63,6 @@ class Scene2 extends Phaser.Scene {
         platforms.create(1200, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1500, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1500, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-
-        //for (let i = 0; i < 10; i++) {triggerPlatform.create(i * 150, 790, 'ground').setScale(1).setAlpha(0).setDepth(0.2)};
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -98,12 +88,17 @@ class Scene2 extends Phaser.Scene {
         this.lastWalkSoundTime = 0;
 
         this.input.keyboard.on('keydown-P', function () {
-            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*4, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
-            pauseText = this.add.text(0, 0, 'PAUSE', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-            pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+            camera = this.cameras.main;
+            screenWidth = camera.width;
+            screenHeight = camera.height;
+            screenCenterX = camera.scrollX + screenWidth / 2;
+            screenCenterY = camera.scrollY + screenHeight / 2;
+            pauseOverlay = this.add.rectangle(screenCenterX, screenCenterY, screenWidth, screenHeight, 0x000000, 0.25).setDepth(1);
+            pauseText = this.add.text(screenCenterX, screenCenterY, 'PAUSE', { font: '32px Arial', fill: '#fff' }).setOrigin(0.5);
+            pauseText.setShadow(2, 2, '#000000', 2).setDepth(3);
             this.sound.pauseAll();
             this.sound.mute = true;
-            game.scene.pause('Scene'+scene);
+            game.scene.pause('Scene' + scene);
             game.scene.stop('Pause');
             game.scene.start('Pause');
         }, this);
@@ -248,7 +243,6 @@ class Scene2 extends Phaser.Scene {
 
         if (didPressUp || didPressW || didPressSpace) {
             if (player.body.onFloor()) {
-                //console.log("1")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
@@ -261,7 +255,6 @@ class Scene2 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
-                //console.log("2")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
@@ -275,7 +268,6 @@ class Scene2 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
-                //console.log("3")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
@@ -309,11 +301,9 @@ class Scene2 extends Phaser.Scene {
             if (player.body.velocity.y >= 0) {
                 player.body.gravity.y = 100;
                 if (cursors.left.isDown || keyA.isDown) {
-                    //player.anims.play('glideBack');
                     player.body.velocity.y = 30;
                     player.body.velocity.x = -400;
                 } else if (cursors.right.isDown || keyD.isDown) {
-                    //player.anims.play('glide');
                     player.body.velocity.y = 30;
                     player.body.velocity.x = 400;
                 } else {

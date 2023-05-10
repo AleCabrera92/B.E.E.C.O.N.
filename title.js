@@ -4,8 +4,7 @@ class Title extends Phaser.Scene {
     super({ key: 'Title' });
   }
 
-    preload() { //Assets to preload for the scene
-    }
+  preload() { /*Assets to preload for the scene*/ }
 
   create() {
 
@@ -36,18 +35,7 @@ class Title extends Phaser.Scene {
         }
       });
     }, [], this);
-  
-    // this.sound.pauseOnBlur = false;
-    // this.sound.on('blur', function () {
-    //   bgm.setMute(true);
-    // });
-  
-    // // Unmute the audio when the tab regains focus
-    // this.sound.on('focus', function () {
-    //   bgm.setMute(false);
-    // });
-  
-    // Play the audio after a delay of 3 seconds
+
     this.time.delayedCall(850, function() {
       sound_titleTheme.play();
     }, [], this);
@@ -55,7 +43,6 @@ class Title extends Phaser.Scene {
     const randomText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
     randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
     randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
-    //this.input.keyboard.on('keydown-ENTER', () => {this.cameras.main.fadeOut(1000); this.scene.start('Scene1')});
     this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
     platforms = this.physics.add.staticGroup();
     player = this.physics.add.sprite(750, 600, 'beecon_full').setScale(0.3);
@@ -66,11 +53,11 @@ class Title extends Phaser.Scene {
 
     for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-0.4)};
 
-    clouds = this.physics.add.image(576, 100, 'clouds').setScrollFactor(0.13).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+    clouds = this.physics.add.image(576, 100, 'clouds').setScrollFactor(0.13).setDepth(-0.3).setGravity(false).setAlpha(0.75);
     clouds.body.setVelocityX(-51); clouds.body.setCollideWorldBounds(false); clouds.body.allowGravity = false;
-    clouds2 = this.physics.add.image(1500, 300, 'clouds').setScrollFactor(0.15).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+    clouds2 = this.physics.add.image(1500, 300, 'clouds').setScrollFactor(0.15).setDepth(-0.3).setGravity(false).setAlpha(0.75);
     clouds2.body.setVelocityX(-33); clouds2.body.setCollideWorldBounds(false); clouds2.body.allowGravity = false;
-    clouds3 = this.physics.add.image(803, 500, 'clouds').setScrollFactor(0.17).setDepth(-0.3).setGravity(false).setAlpha(0.75); // enable physics on the image
+    clouds3 = this.physics.add.image(803, 500, 'clouds').setScrollFactor(0.17).setDepth(-0.3).setGravity(false).setAlpha(0.75);
     clouds3.body.setVelocityX(-22); clouds3.body.setCollideWorldBounds(false); clouds3.body.allowGravity = false;
 
     for (let i = 0; i < 4; i++) {platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody()};
@@ -82,22 +69,6 @@ class Title extends Phaser.Scene {
 
     player.anims.play('left');
     player.setVelocityX(-250);
-
-    // emitter = this.add.particles('rain').setDepth(-0.11).createEmitter({
-    //   x: 0,
-    //   y: 0,
-    //   quantity: 50,
-    //   lifespan: 1600,
-    //   speedY: { min: 300, max: 500 },
-    //   speedX: { min: -5, max: 5 },
-    //   scale: { start: 0.1, end: 0.5 },
-    //   rotate: { start: 0, end: 0 },
-    //   frequency: 5,
-    //   emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width, 1) },
-    //   on: true
-    // });
-
-    // emitter.setScrollFactor(0).setScale(0.5).setAlpha(0.7);
     
   }
 

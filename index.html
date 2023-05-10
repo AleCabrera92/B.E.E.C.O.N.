@@ -6,7 +6,6 @@
         
         <meta charset="UTF-8" />
         <title>B.E.E.C.O.N. - Biome Exploration and Extraterrestrial Colonization Operating Network</title>
-        <!--<script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>-->
         <script src="//cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
         <link rel="stylesheet" type="text/css" href="styles.css">
         <link rel="shortcut icon" href="/assets/fabeecon.ico" type="image/x-icon">
@@ -15,8 +14,8 @@
 
     <body>
 
-        <script src="common.js"></script><script src="title.js"></script><script src="test.js"></script>
-        <script src="first.js"></script><script src="preload.js"></script><script src="pause.js"></script><script src="ending.js"></script>
+        <script src="common.js"></script><script src="title.js"></script><script src="first.js"></script>
+        <script src="preload.js"></script><script src="pause.js"></script><script src="ending.js"></script>
         <script src="scene1.js"></script><script src="scene2.js"></script><script src="scene3.js"></script><script src="scene4.js"></script>
         <script src="scene5.js"></script><script src="scene6.js"></script><script src="scene7.js"></script></script><script src="scene8.js"></script>
         <script>
@@ -25,7 +24,7 @@
                 physics: {default: 'arcade',
                 arcade: {fixedStep: false, gravity: { y: 1200 }, debug: false}},
                 scale: {mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH},
-                scene: [Preload, Pause, First, Title, Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Ending, Test]};
+                scene: [Preload, Pause, First, Title, Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Ending]};
             const game = new Phaser.Game(config);
         </script>
 

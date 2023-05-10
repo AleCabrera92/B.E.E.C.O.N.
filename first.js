@@ -4,8 +4,7 @@ class First extends Phaser.Scene {
       super({ key: 'First' });
     }
   
-    preload() { //Assets to preload for the scene
-    }
+    preload() { /*Assets to preload for the scene*/ }
   
     create() {
 
@@ -15,7 +14,7 @@ class First extends Phaser.Scene {
 
       clickBButton = this.add.text(this.game.config.width / 2, this.game.config.height / 1.5, 'Click on             !', { fontSize: '32px', fill: '#fff' });
       clickBButton.setOrigin(0.5, 0.5);
-      clickBButton2 = this.add.text(this.game.config.width / 2, this.game.config.height / 1.5, '         B.E.E.C.O.N. ', { fontSize: '32px', fill: '#FFBF00' } ); //fontStyle: 'bold'
+      clickBButton2 = this.add.text(this.game.config.width / 2, this.game.config.height / 1.5, '         B.E.E.C.O.N. ', { fontSize: '32px', fill: '#FFBF00' } );
       clickBButton2.setOrigin(0.5, 0.5);
   
       keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -26,7 +25,6 @@ class First extends Phaser.Scene {
     update() {
 
       if (Phaser.Input.Keyboard.JustDown(keyF)) { toggleFullscreen(); }
-      //if (Phaser.Input.Keyboard.JustDown(keySpace)) { this.scene.start('Title'); }
 
     }
 

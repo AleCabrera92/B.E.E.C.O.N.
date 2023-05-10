@@ -10,17 +10,11 @@ let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives,
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
 let isPaused = false, pauseText, pauseOverlay;
 let throttled = false, sound_eneweeAttack, babyWasp, babyWaspGroup;
-let keyL, leaves, leavesBG, sceneBack, sound_powerUp;
+let keyL, leaves, leavesBG, sceneBack, sound_powerUp, screenWidth, screenHeight, screenCenterX, screenCenterY;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
 let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick, enemyFs, eneweeFs, lilWaspFs, waspFs, beeconFs;
 let waspInterval, waspTween, healthBar, waspNestDoor, destroyed, fadeOutTriggered = false;
-
-var jumpTimer = 0;
-var jumpVelocity = -380;
-var jumpTime = 150; // milliseconds
-var jumpCount = 0;
-var maxJumps = 6;
 
 function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function increaseLives() { if (!throttled) { lives += 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 0); } }
@@ -74,7 +68,7 @@ function updateEnemyBehavior(enemy) {
 }
 
 function updatelilWaspBehavior(lilWasp) {
-  // Calculate distance between enemy and player
+
   let distanceToPlayer = Phaser.Math.Distance.Between(lilWasp.x, lilWasp.y, player.x, player.y);
 
   if (lilWasp.x >= player.x) {
@@ -88,17 +82,14 @@ function updatelilWaspBehavior(lilWasp) {
         sound_eneweeAttack.play({loop: false});
     }
     lilWasp.setData('spiky', true);
-    // Enemy is close to player, move towards player
+
     const angleToPlayer = Phaser.Math.Angle.Between(lilWasp.x, lilWasp.y, player.x, player.y);
     const speed = 3;
-  
-    //lilWasp.rotation = angleToPlayer; // Point towards player
+
     if (distanceToPlayer <= 500 && distanceToPlayer > 100 && player.alpha != 0) {
-      // If not in attack mode, move towards player
       lilWasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
       lilWasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
     } else if (distanceToPlayer <= 100 && player.alpha != 0) {
-      // Enemy is in attack mode
       lilWasp.x += Math.cos(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
       lilWasp.y += Math.sin(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
     }
@@ -159,7 +150,6 @@ function gameOver() {
   beeconF.setBounce(0.2);
 }
 
-// Function to create and animate the white overlay
 function createOverlay() {
 
     if (scene === 1) {
@@ -174,7 +164,7 @@ function createOverlay() {
       callback: createOverlay,
       callbackScope: this
     });
-    // Add a white overlay that covers the entire game world
+
     lightning = this.add.graphics();
     if (scene === 1) {
         lightning.fillStyle(0xffffff, 0.75);
@@ -186,11 +176,11 @@ function createOverlay() {
     } else if (scene === 5 || scene === 6 || scene === 7) {
         lightning.fillRect(-1000, -10000, this.game.config.width * 4, this.game.config.height * 20);
     }
-    lightning.setAlpha(0); // set initial alpha to 0
+    lightning.setAlpha(0);
     if (scene === 1) {
-        lightning.setDepth(-0.99); // set initial alpha to 0
+        lightning.setDepth(-0.99);
     } else if (scene === 4 || scene === 5 || scene === 6 || scene === 7) {
-        lightning.setDepth(-0.21); // set initial alpha to 0
+        lightning.setDepth(-0.21);
     }
   
     this.tweens.add({
@@ -200,10 +190,10 @@ function createOverlay() {
         ease: 'Power2',
         yoyo: true,
         onComplete: () => {
-            // Wait for two seconds, then play the sound_enemyF sound
-            lightning.destroy(); // remove the overlay when the animation is complete
+
+            lightning.destroy();
             this.time.addEvent({
-                delay: 1000, // Delay in milliseconds
+                delay: 1000,
                 callback: () => {
                     sound_thunder.play();
                 },
@@ -214,7 +204,7 @@ function createOverlay() {
 }
 
 function updateWaspBehavior(wasp) {
-    // Calculate distance between enemy and player
+
     let distanceToPlayer = Phaser.Math.Distance.Between(wasp.x, wasp.y, player.x, player.y);
   
     if (wasp.x >= player.x) {
@@ -228,17 +218,14 @@ function updateWaspBehavior(wasp) {
           sound_eneweeAttack.play({loop: false});
       }
       wasp.setData('spiky', true);
-      // Enemy is close to player, move towards player
+
       const angleToPlayer = Phaser.Math.Angle.Between(wasp.x, wasp.y, player.x, player.y);
       const speed = 3;
-    
-      //wasp.rotation = angleToPlayer; // Point towards player
+
       if (distanceToPlayer <= 500 && distanceToPlayer > 100 && player.alpha != 0) {
-        // If not in attack mode, move towards player
         wasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
         wasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
       } else if (distanceToPlayer <= 100 && player.alpha != 0) {
-        // Enemy is in attack mode
         wasp.x += Math.cos(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
         wasp.y += Math.sin(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
       }

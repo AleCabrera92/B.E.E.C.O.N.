@@ -4,8 +4,7 @@ class Scene1 extends Phaser.Scene {
         super({ key: 'Scene1' });
     }
 
-    preload() { //Assets to preload for the scene
-    }
+    preload() { /*Assets to preload for the scene*/ }
 
     create() {
 
@@ -37,13 +36,11 @@ class Scene1 extends Phaser.Scene {
         sound_rain.play();
         setTimeout(() => { sound_rain2.play(); }, 5000);
 
-        //platforms = this.physics.add.staticGroup({immovable: true});
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
         this.physics.add.collider(lasers, platforms, function(laser) {laser.setVelocityX(0), laser.setAcceleration(0)});
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
-        //triggerPlatform = this.physics.add.group({ immovable: true, allowGravity: false });
 
         let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
@@ -55,7 +52,7 @@ class Scene1 extends Phaser.Scene {
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10); //fontStyle: 'bold'
+        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
 
         if (sceneBack) {
             player.anims.play('idleBack');
@@ -82,13 +79,6 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.physics.add.collider(enemy, platforms);
-        // airPlatform = this.physics.add.sprite(2400, 490, 'airPlatform').setScale(0.8).refreshBody().setDepth(0.2);
-        // airPlatform.setVelocityX(-100);
-        // airPlatform.setImmovable(true);
-        // airPlatform.body.allowGravity = false;
-        // this.physics.add.collider(player, airPlatform);
-        // this.physics.add.overlap(lasers, airPlatform);
-        // this.physics.add.overlap(bigLasers, airPlatform);
 
         gameOverImage = this.physics.add.staticGroup();
 
@@ -109,7 +99,7 @@ class Scene1 extends Phaser.Scene {
                 randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
-                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK); //keyJ.enabled = false; keyK.enabled = false;
+                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
                 this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
                 this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
             }, null, this);
@@ -118,15 +108,6 @@ class Scene1 extends Phaser.Scene {
             energyOrbs = this.physics.add.group();
             enemyFs = this.physics.add.group();
             beeconFs = this.physics.add.group();
-
-            // if (lives <= 0) {
-            //     console.log("croqueta");
-            //     let beeconF = beeconFs.create(player.x, player.y, 'beeconF');
-            //     beeconF.setOrigin(0.5, 0.5).setScale(0.3).setDepth(0.19);
-            //     beeconF.body.setSize(50, 75);
-            //     self.physics.add.collider(beeconF, platforms);
-            //     beeconF.setBounce(0.2);
-            // }
 
             this.physics.add.collider(lasers, enemy, function(enemy, laser) {
                 if (enemy.anims.currentAnim.key !== 'enemyEnraged') {
@@ -185,16 +166,9 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, player);
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
-        // this.physics.add.overlap(player, triggerPlatform, () => {
-        //     this.cameras.main.fadeOut(500);
-        //     this.cameras.main.once('camerafadeoutcomplete', () => {
-        //         this.scene.start('Scene2', { sceneBack: false });
-        //     });
-        // });
         this.physics.add.collider(player, platforms, function(player, platform) {
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 timer++;
-                //console.log(timer);
                 if (timer >= 50) {
                     platform.destroy();
                 }
@@ -203,7 +177,6 @@ class Scene1 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        //for (let i = 15; i < 27; i++) {triggerPlatform.create(i * 150, 790, 'platform').setScale(1).setAlpha(0).setDepth(0.2);}
         for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
         for (let i = 0; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
 
@@ -288,8 +261,6 @@ class Scene1 extends Phaser.Scene {
             scale: { start: 0.1, end: 0.5 },
             rotate: { start: 0, end: 0 },
             frequency: 5,
-            //blendMode: 'ADD',
-            //angle: { min: 0, max: 0 },
             emitZone: { source: new Phaser.Geom.Rectangle(-this.game.config.width, 0, this.game.config.width*8, 1) },
             on: true
         });
@@ -307,12 +278,17 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.input.keyboard.on('keydown-P', function () {
-            pauseOverlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*8, this.cameras.main.height*2, 0x000000, 0.25).setDepth(1);
-            pauseText = this.add.text(0, 0, 'PAUSE', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-            pauseText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
+            camera = this.cameras.main;
+            screenWidth = camera.width;
+            screenHeight = camera.height;
+            screenCenterX = camera.scrollX + screenWidth / 2;
+            screenCenterY = camera.scrollY + screenHeight / 2;
+            pauseOverlay = this.add.rectangle(screenCenterX, screenCenterY, screenWidth, screenHeight, 0x000000, 0.25).setDepth(1);
+            pauseText = this.add.text(screenCenterX, screenCenterY, 'PAUSE', { font: '32px Arial', fill: '#fff' }).setOrigin(0.5);
+            pauseText.setShadow(2, 2, '#000000', 2).setDepth(3);
             this.sound.pauseAll();
             this.sound.mute = true;
-            game.scene.pause('Scene'+scene);
+            game.scene.pause('Scene' + scene);
             game.scene.stop('Pause');
             game.scene.start('Pause');
         }, this);
@@ -405,18 +381,6 @@ class Scene1 extends Phaser.Scene {
             updateEnemyBehavior(enemy);
         });
 
-        // if (airPlatform.x >= 2600) {
-        //     airPlatform.setVelocityX(0);
-        //     setTimeout(() => {
-        //         airPlatform.setVelocityX(-100);
-        //     }, 1000);
-        // } else if (airPlatform.x <= 2200) {
-        //     airPlatform.setVelocityX(0);
-        //     setTimeout(() => {
-        //         airPlatform.setVelocityX(100);
-        //     }, 1000);
-        // }
-
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
         if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width+50, true);}
         if (clouds3) {this.physics.world.wrap(clouds3.body, clouds3.width+50, true);}
@@ -479,11 +443,6 @@ class Scene1 extends Phaser.Scene {
               }
         });
 
-        // bigLasers.getChildren().forEach(bigLaser => {
-        //     if (this.physics.overlap(bigLaser, airPlatform)) {
-        //         bigLaser.destroy();
-        //       }
-        // });
         if (cursors.left.isDown || keyA.isDown) {
             player.setVelocityX(-250);
             if (player.anims.currentAnim.key === 'jumpBack') {
@@ -532,17 +491,8 @@ class Scene1 extends Phaser.Scene {
             hasJumped = false;
         }
 
-/*
-        if ((cursors.up.isDown || keyW.isDown || keySpace.isDown) && (player.body.touching.down || jumpCount < maxJumps)) {
-            if (jumpCount === 0) {jumpTimer = this.time.now;}
-            if (this.time.now - jumpTimer < jumpTime) {player.setVelocityY(jumpVelocity - (this.time.now - jumpTimer) / 5);}
-            if (player.body.touching.down) {jumpCount = 0;} else {jumpCount++;}
-        }   else {jumpTimer = 0;}
-*/
-
         if (didPressUp ||didPressW || didPressSpace) {
             if (player.body.onFloor()) {
-                //console.log("1")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
@@ -555,7 +505,6 @@ class Scene1 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
-                //console.log("2")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
@@ -569,7 +518,6 @@ class Scene1 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
-                //console.log("3")
                 if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
@@ -607,11 +555,9 @@ class Scene1 extends Phaser.Scene {
             if (player.body.velocity.y >= 0) {
                 player.body.gravity.y = 100;
                 if (cursors.left.isDown || keyA.isDown) {
-                    //player.anims.play('glideBack');
                     player.body.velocity.y = 30;
                     player.body.velocity.x = -400;
                 } else if (cursors.right.isDown || keyD.isDown) {
-                    //player.anims.play('glide');
                     player.body.velocity.y = 30;
                     player.body.velocity.x = 400;
                 } else {
@@ -621,26 +567,6 @@ class Scene1 extends Phaser.Scene {
         } else {
             player.body.gravity.y = 0;
         }
-
-        // if (player.body.velocity.x > 0) {
-        //     emitterSpeedX = 5;
-        // } else if (player.body.velocity.x < 0) {
-        //     emitterSpeedX = -5;
-        // } else {
-        //     emitterSpeedX = 0;
-        // }
-
-        // //emitterSpeedX = player.body.velocity.x * -0.1;
-        // //emitterSpeedX = player.body.velocity.x * 0.26;
-        // //emitter.setSpeedX({ min: emitterSpeedX - 0.52, max: emitterSpeedX + 0.52 });
-
-        // // Create the tween to update particle properties
-        // this.tweens.add({
-        //     targets: emitter.particles,
-        //     //angle: emitterSpeedX,
-        //     //ease: 'Linear',
-        //     //repeat: -1
-        // });
 
     }
 
