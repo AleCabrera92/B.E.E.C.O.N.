@@ -470,6 +470,22 @@ class Scene3 extends Phaser.Scene {
             }
         });
 
+        eneweeGroup.getChildren().forEach(enewee => {
+            if (enewee.y > 1000) {
+                enewee.setVelocityY(0);
+                enewee.y = 0;
+                this.tweens.add({
+                    targets: enewee,
+                    y: enewee.y + 150,
+                    duration: 500,
+                    ease: 'Linear'
+                });
+                enewee.setImmovable(true);
+                enewee.body.allowGravity = false;
+                enewee.setVelocityY(0);
+            }
+        });
+
         keyA.on('down', enableKeys);
         keyD.on('down', enableKeys);
         cursors.left.on('down', enableKeys);
