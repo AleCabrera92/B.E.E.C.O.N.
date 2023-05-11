@@ -18,6 +18,8 @@ class Scene2 extends Phaser.Scene {
 
         sound_level1Theme.stop();
 
+        sound_rain.stop();
+        sound_rain2.stop();
         sound_rain.play();
         sound_rain.setVolume(0.25);
         setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.25)}, 5000);
@@ -43,6 +45,8 @@ class Scene2 extends Phaser.Scene {
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
         livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
 
+        this.physics.add.collider(player, platforms);
+
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
@@ -53,10 +57,14 @@ class Scene2 extends Phaser.Scene {
             this.add.image(i * 1600, 600, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
         }
 
-        platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(600, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(600, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck = platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
+        stuck = platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
+        stuck = platforms.create(600, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
+        stuck = platforms.create(600, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
         platforms.create(900, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(900, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1200, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
@@ -102,6 +110,22 @@ class Scene2 extends Phaser.Scene {
             game.scene.stop('Pause');
             game.scene.start('Pause');
         }, this);
+
+        emitter = this.add.particles(0, 0, 'rain',{
+            x: 0,
+            y: -100,
+            quantity: 7,
+            lifespan: 1600,
+            speedY: { min: 700, max: 900 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.25, end: 0.5 },
+            rotate: { start: 0, end: 0 },
+            frequency: 5,
+            emitZone: { source: new Phaser.Geom.Rectangle(-3, 0, 303, 1) },
+            on: true
+        });
+      
+        emitter.setScrollFactor(1).setDepth(0.11);
 
         fadeOutTriggered = false;
 
@@ -255,10 +279,10 @@ class Scene2 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }
@@ -268,10 +292,10 @@ class Scene2 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   

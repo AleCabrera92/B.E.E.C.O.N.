@@ -18,6 +18,8 @@ class Scene5 extends Phaser.Scene {
             sound_drill.stop();
         }
 
+        sound_rain.stop();
+        sound_rain2.stop();
         sound_rain.play();
         sound_rain.setVolume(0.15);
         setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.15)}, 5000);
@@ -302,12 +304,17 @@ class Scene5 extends Phaser.Scene {
 
         for (let i = -1; i < 10; i++) {
             if (i < 4) {
-                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+                stuck = platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+                if (i > -2 && i < 0) {stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = false;}
+                if (i > -1 && i < 3) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;}
                 platforms.create(-500 + i * 120, -1040, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
             } else if (i > 4) {
-                platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+                stuck = platforms.create(-150, -20 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+                if (i > 4 && i < 6) {stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = false;}
+                else {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;}
             }
-            platforms.create(1250, 186 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
+            stuck = platforms.create(1250, 186 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5);
+            stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
         }
 
         for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -800, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
@@ -326,12 +333,18 @@ class Scene5 extends Phaser.Scene {
         for (let i = 0.48; i <= 4; i++) {platforms.create(-10 + i * 120, 400, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 2.48; i <= 9; i++) {platforms.create(50 + i * 120, -180, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 2.48; i <= 5; i++) {platforms.create(i * 120, -487, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 0.48; i <= 6; i++) {platforms.create(240, 200 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 0.48; i <= 6; i++) {stuck = platforms.create(240, 200 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);
+        if (i > 0 && i < 1) {stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = false;}
+        if (i > 1 && i < 4) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;}
+        if (i > 4) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = true;}}
         if (sceneBack) {  } else { for (let i = 5.48; i <= 7; i++) {platforms.create(i * 120, -487, 'breakableBranch').setScale(0.8).refreshBody().setDepth(0.2);} }
         for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -800, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 2; i++) {platforms.create(i * 120, -900, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 1; i++) {platforms.create(i * 120, -1000, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
-        for (let i = 1.48; i <= 5; i++) {platforms.create(890, -235 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 1.48; i <= 5; i++) {stuck = platforms.create(890, -235 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);
+        if (i > 1 && i < 2) {stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = false;}
+        if (i > 2 && i < 4) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;}
+        if (i > 4) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = true;}}
 
         for (let i = 0.2; i < 4; i++) {
             platforms.create(i * 512, 760, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
@@ -589,10 +602,10 @@ class Scene5 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }
@@ -602,10 +615,10 @@ class Scene5 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   

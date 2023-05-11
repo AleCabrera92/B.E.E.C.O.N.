@@ -16,6 +16,8 @@ class Scene3 extends Phaser.Scene {
             sound_drill.stop();
         }
 
+        sound_rain.stop();
+        sound_rain2.stop();
         sound_rain.play();
         sound_rain.setVolume(0.15);
         setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.15)}, 5000);
@@ -202,8 +204,10 @@ class Scene3 extends Phaser.Scene {
             this.add.image(i * 1600, 600, 'mountains').setScale(2).setScrollFactor(0.2).setDepth(0.1);
         }
 
-        platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck = platforms.create(-300, 0, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
+        stuck = platforms.create(-300, 400, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
         platforms.create(600, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(900, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(1200, -300, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
@@ -216,7 +220,8 @@ class Scene3 extends Phaser.Scene {
         platforms.create(5450, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(5750, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
         platforms.create(6050, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
-        platforms.create(6350, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck = platforms.create(6350, 190, 'wall').setScale(1.5).refreshBody().setDepth(0.2);
+        stuck.body.checkCollision.up = false;
         platforms.create(600, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(900, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
         platforms.create(1200, 650, 'platform').setScale(0.8).refreshBody().setDepth(0.2);
@@ -226,11 +231,13 @@ class Scene3 extends Phaser.Scene {
         }
 
         for (let i = 6.2; i < 8; i++) {
-            platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck = platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = true;
         }
 
         for (let i = 8.605; i < 17; i++) {
-            platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck = platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
         }
 
         for (let i = 11.2; i < 17; i++) {
@@ -238,7 +245,8 @@ class Scene3 extends Phaser.Scene {
         }
 
         for (let i = 5.2; i < 8; i++) {
-            platforms.create(i * 512, 1009, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck = platforms.create(i * 512, 1009, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
         }
 
         for (let i = 4; i < 17; i++) {
@@ -246,7 +254,8 @@ class Scene3 extends Phaser.Scene {
         }
 
         for (let i = 8.605; i < 17; i++) {
-            platforms.create(i * 512, 926, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck = platforms.create(i * 512, 926, 'ground').setScale(1).refreshBody().setDepth(0.2);
+            stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = false;
         }
 
         if (sceneBack) {  } else { platforms.create(4046, 748, 'breakableGround').setScale(1.5).refreshBody().setDepth(0.3).setTint(Phaser.Display.Color.GetColor(120, 145, 170)); }
@@ -286,6 +295,22 @@ class Scene3 extends Phaser.Scene {
         emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
             y: -100,
+            quantity: 5,
+            lifespan: 1600,
+            speedY: { min: 700, max: 900 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.25, end: 0.5 },
+            rotate: { start: 0, end: 0 },
+            frequency: 5,
+            emitZone: { source: new Phaser.Geom.Rectangle(-3, 0, 303, 1) },
+            on: true
+        });
+      
+        emitter.setScrollFactor(1).setDepth(0.11);
+
+        emitter2 = this.add.particles(0, 0, 'rain',{
+            x: 0,
+            y: -100,
             quantity: 20,
             lifespan: 1600,
             speedY: { min: 700, max: 900 },
@@ -297,12 +322,12 @@ class Scene3 extends Phaser.Scene {
             on: true
         });
       
-        emitter.setScrollFactor(1).setDepth(0.11);
+        emitter2.setScrollFactor(1).setDepth(0.11);
 
-        emitter2 = this.add.particles(0, 0, 'rain',{
+        emitter3 = this.add.particles(0, 0, 'rain',{
             x: 0,
             y: -100,
-            quantity: 5,
+            quantity: 7,
             lifespan: 1600,
             speedY: { min: 700, max: 900 },
             speedX: { min: -5, max: 5 },
@@ -313,7 +338,7 @@ class Scene3 extends Phaser.Scene {
             on: true
         });
       
-        emitter2.setScrollFactor(1).setDepth(0.11);
+        emitter3.setScrollFactor(1).setDepth(0.11);
 
         this.lastWalkSoundTime = 0;
 
@@ -603,10 +628,10 @@ class Scene3 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }
@@ -616,10 +641,10 @@ class Scene3 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   

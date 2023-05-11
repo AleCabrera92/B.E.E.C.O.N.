@@ -18,8 +18,8 @@ class Scene8 extends Phaser.Scene {
             sound_drill.stop();
         }
 
-        sound_level4Theme.stop();
-
+        sound_rain.stop();
+        sound_rain2.stop();
         sound_rain.play();
         sound_rain.setVolume(0.15);
         setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.15)}, 5000);
@@ -85,11 +85,13 @@ class Scene8 extends Phaser.Scene {
 
         for (let i = -1; i < 10; i++) {
             if (i < 2) {
-                platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
-            } else if (i > 2) {
-                platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+                stuck = platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
+                if (i > -2 && i < 0) {stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = false;}
+                if (i > -1 && i < 1) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;}
+                if (i > 0) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = true;}
             }
-            platforms.create(1250, 186 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5);
+            stuck = platforms.create(1200, 186 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5);
+            stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
         }
 
         for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -600, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
@@ -102,21 +104,21 @@ class Scene8 extends Phaser.Scene {
             this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
             this.tweens.add({targets: leavesBG, y: { getStart: () => -201, getEnd: () => -199, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
 
-        platforms.create(1050, 495, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        platforms.create(1050, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        platforms.create(930, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(1000, 495, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(1000, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(920, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         platforms.create(50, 325, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 400, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        platforms.create(1050, 140, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 6.78; i <= 9; i++) {platforms.create(-10 + i * 120, 220, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(1000, 140, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 6.78; i <= 9; i++) {platforms.create(-60 + i * 120, 220, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
         platforms.create(50, -50, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 30, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        platforms.create(1050, -230, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 6.78; i <= 9; i++) {platforms.create(-10 + i * 120, -150, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        platforms.create(1000, -230, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        for (let i = 6.78; i <= 9; i++) {platforms.create(-60 + i * 120, -150, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
         platforms.create(50, -410, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
         for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, -330, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
 
-        platforms.create(481, -1200, 'waspNestTexture').setScale(1.65).refreshBody().setDepth(1).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
+        platforms.create(431, -1200, 'waspNestTexture').setScale(1.65).refreshBody().setDepth(1).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
 
         for (let i = 0.2; i < 4; i++) {
             platforms.create(i * 512, 760, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
@@ -164,26 +166,18 @@ class Scene8 extends Phaser.Scene {
         emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
             y: -100,
-            quantity: 40,
+            quantity: 10,
             lifespan: 1600,
             speedY: { min: 700, max: 900 },
-            speedX: { min: -1000, max: -950 },
-            scale: { start: 0.25, end: 0.5 },
-            rotate: { start: 40, end: 40 },
+            speedX: { min: -5, max: 5 },
+            scale: { start: 0.1, end: 0.5 },
+            rotate: { start: 0, end: 0 },
             frequency: 5,
             emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width*2, 1) },
             on: true
         });
       
         emitter.setScrollFactor(0).setDepth(-0.11);
-
-        delayLightningFirt = Phaser.Math.RND.integerInRange(5000, 10000);
-        console.log(delayLightningFirt);
-        this.time.addEvent({
-            delay: delayLightningFirt,
-            callback: createOverlay,
-            callbackScope: this,
-        });
 
         fadeOutTriggered = false;
 
@@ -381,10 +375,10 @@ class Scene8 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if (canDoubleJump) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }
@@ -394,10 +388,10 @@ class Scene8 extends Phaser.Scene {
                 this.physics.world.gravity.y = 600;
                 this.tweens.add({ targets: this.physics.world.gravity, y: 1200, duration: 250, ease: 'Linear' });
             } else if ((!player.body.onFloor()) && (hasJumped === false)) {
-                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall') {
+                if (player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'idle' || player.anims.currentAnim.key === 'jump' || player.anims.currentAnim.key === 'fall' || player.anims.currentAnim.key === 'glide') {
                     sound_beeconJump.play();
                     player.anims.play('jump', true);
-                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack') {
+                } else if (player.anims.currentAnim.key === 'left' || player.anims.currentAnim.key === 'idleBack' || player.anims.currentAnim.key === 'jumpBack' || player.anims.currentAnim.key === 'fallBack' || player.anims.currentAnim.key === 'glideBack') {
                     sound_beeconJump.play();
                     player.anims.play('jumpBack', true);
                 }   
