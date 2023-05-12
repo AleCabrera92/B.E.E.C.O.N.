@@ -1,10 +1,11 @@
 class Title extends Phaser.Scene {
-
   constructor() {
     super({ key: 'Title' });
   }
 
-  preload() { /*Assets to preload for the scene*/ }
+  preload() {
+    // Assets to preload for the scene
+  }
 
   create() {
 
@@ -43,7 +44,6 @@ class Title extends Phaser.Scene {
     const randomText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
     randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
     randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
-    this.input.keyboard.on('keydown-ENTER', () => {this.scene.start('Scene1')});
     platforms = this.physics.add.staticGroup();
     player = this.physics.add.sprite(750, 600, 'beecon_full').setScale(0.3);
     player.body.setSize(120, 120);
@@ -63,13 +63,120 @@ class Title extends Phaser.Scene {
     for (let i = 0; i < 4; i++) {platforms.create(i * 512, 760, 'ground').setScale(1).refreshBody()};
 
     this.physics.add.collider(player, platforms);
-    this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
   
     keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
     player.anims.play('left');
     player.setVelocityX(-250);
-    
+
+    const startText = this.add.text(
+      this.game.canvas.width / 2,
+      this.game.canvas.height / 1.76,
+      'Start',
+      { font: '32px Arial', fill: '#fff' }
+    ).setOrigin(0.5).setDepth(3);
+    const optionsText = this.add.text(
+      this.game.canvas.width / 2,
+      this.game.canvas.height / 1.76 + 50,
+      'Options',
+      { font: '32px Arial', fill: '#fff' }
+    ).setOrigin(0.5).setDepth(3);
+    const extrasText = this.add.text(
+      this.game.canvas.width / 2,
+      this.game.canvas.height / 1.76 + 100,
+      'Extras',
+      { font: '32px Arial', fill: '#fff' }
+    ).setOrigin(0.5).setDepth(3);
+    const qText = this.add.text(
+      this.game.canvas.width / 2.65,
+      this.game.canvas.height / 1.76 - 20,
+      'Q (back)',
+      { font: '16px Arial', fill: '#fff' }
+    ).setOrigin(0.5).setDepth(3);
+    const eText = this.add.text(
+      this.game.canvas.width / 1.6,
+      this.game.canvas.height / 1.76 - 20,
+      'E (next)',
+      { font: '16px Arial', fill: '#fff' }
+    ).setOrigin(0.5).setDepth(3);
+    const menuItems = [startText, optionsText, extrasText];
+    menuItems.forEach((item) => item.setVisible(false));
+    qText.setAlpha(0);
+    eText.setAlpha(0);
+
+    const boxWidth = 400;
+    const boxHeight = 180;
+    const boxX = this.game.canvas.width / 2 - boxWidth / 2;
+    const boxY = this.game.canvas.height / 1.57 - boxHeight / 2;
+    const graphics = this.add.graphics();
+    graphics.fillStyle(0x000000, 0.75);
+    graphics.fillRect(boxX, boxY, boxWidth, boxHeight);
+    graphics.setDepth(2);
+    graphics.setAlpha(0);
+
+    let menuVisible = false;
+    let currentItem = 0;
+
+    this.timer = this.time.addEvent({
+      delay: 500,
+      loop: true,
+      callback: () => {
+        if (!menuVisible) {
+          randomText.visible = !randomText.visible;
+        }
+      }
+    });
+
+    this.input.keyboard.on('keydown', (event) => {
+      if (!menuVisible) {
+        if (event.code === 'Enter') {
+          randomText.setVisible(false);
+          menuItems.forEach((item) => item.setVisible(true));
+          menuItems[currentItem].setFill('#ff0');
+          menuVisible = true;
+          graphics.setAlpha(1);
+          qText.setAlpha(1);
+          eText.setAlpha(1);
+        }
+      } else {
+        switch (event.code) {
+          case 'KeyW':
+          case 'ArrowUp':
+            menuItems[currentItem].setFill('#fff');
+            currentItem = (currentItem - 1 + menuItems.length) % menuItems.length;
+            menuItems[currentItem].setFill('#ff0');
+            break;
+          case 'KeyS':
+          case 'ArrowDown':
+            menuItems[currentItem].setFill('#fff');
+            currentItem = (currentItem + 1) % menuItems.length;
+            menuItems[currentItem].setFill('#ff0');
+            break;
+          case 'KeyE':
+          case 'Enter':
+            switch (currentItem) {
+              case 0:
+                this.scene.start('Scene1');
+                break;
+              case 1:
+                //this.handleOptions();
+                break;
+              case 2:
+                break;
+            }
+            break;
+          case 'KeyQ':
+            randomText.setVisible(true);
+            menuItems.forEach((item) => item.setVisible(false));
+            menuVisible = false;
+            graphics.setAlpha(0);
+            qText.setAlpha(0);
+            eText.setAlpha(0);
+            break;
+        }
+      }
+    });
+
   }
 
   update() {
@@ -179,6 +286,43 @@ class Title extends Phaser.Scene {
 
   }
 
+  handleOptions() {
+    const volumeText = this.add.text(
+      this.game.canvas.width / 2,
+      this.game.canvas.height / 2 + 150,
+      'Volume: ON',
+      { font: '32px Arial', fill: '#fff' }
+    ).setOrigin(0.5);
+  
+    let isSoundOn = true;
+    let menuVisible = false;
+  
+    const toggleSound = () => {
+      isSoundOn = !isSoundOn;
+      if (isSoundOn) {
+        volumeText.setText('Volume: ON');
+        this.sound.resumeAll();
+      } else {
+        volumeText.setText('Volume: OFF');
+        this.sound.pauseAll();
+      }
+    };
+
+    this.input.keyboard.on('keydown', (event) => {
+      if (menuVisible) {
+        switch (event.code) {
+          case 'KeyD':
+            toggleSound();
+            break;
+          case 'KeyQ':
+            volumeText.setVisible(false);
+            menuVisible = false;
+            break;
+        }
+      }
+    });
+  }
+
   shutdown() {this.timer.remove()};
 
-}
+}  
