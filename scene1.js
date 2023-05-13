@@ -301,51 +301,114 @@ class Scene1 extends Phaser.Scene {
             game.scene.start('Pause');
         }, this);
 
+        /*
+        this.input.keyboard.on('keydown-M', function () {
+            camera = this.cameras.main;
+            screenWidth = camera.width;
+            screenHeight = camera.height;
+            screenCenterX = camera.scrollX + screenWidth / 2;
+            screenCenterY = camera.scrollY + screenHeight / 2;
+            const soundText = this.add.text( screenCenterX, screenCenterY, 'Volume ON', { font: '32px Arial', fill: '#ff0' } ).setOrigin(0.5).setDepth(3);
+            const tutorialText = this.add.text( screenCenterX, screenCenterY + 50, 'Tutorials ON', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+            const exitText = this.add.text( screenCenterX, screenCenterY + 100, 'Exit Game', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+            const qText = this.add.text( screenCenterX - 155, screenCenterY - 20, 'Q (back)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+            const menu2Items = [soundText, tutorialText, exitText];
+            menu2Items.forEach((item) => item.setVisible(true));
+        
+            const boxWidth = 400; const boxHeight = 180; const boxX = screenCenterX - boxWidth / 2; const boxY = screenCenterY - boxHeight / 4.05;
+            const graphics = this.add.graphics(); graphics.fillStyle(0x000000, 0.75); graphics.fillRect(boxX, boxY, boxWidth, boxHeight); graphics.setDepth(2); graphics.setAlpha(1);
+
+            let menu2Visible = true;
+            let current2Item = 0;
+
+            this.input.keyboard.on('keydown', (event) => {
+                if (menu2Visible) {
+                  switch (event.code) {
+                    case 'KeyW':
+                    case 'ArrowUp':
+                      menu2Items[current2Item].setFill('#fff');
+                      current2Item = (current2Item - 1 + menu2Items.length) % menu2Items.length;
+                      menu2Items[current2Item].setFill('#ff0');
+                      break;
+                    case 'KeyS':
+                    case 'ArrowDown':
+                      menu2Items[current2Item].setFill('#fff');
+                      current2Item = (current2Item + 1) % menu2Items.length;
+                      menu2Items[current2Item].setFill('#ff0');
+                      break;
+                    case 'KeyE':
+                    case 'Enter':
+                      switch (current2Item) {
+                        case 0:
+                            volume = !volume;
+                            soundText.setText(volume ? 'Volume ON' : 'Volume OFF');
+                          break;
+                        case 1:
+                            tutorial = !tutorial;
+                            tutorialText.setText(tutorial ? 'Tutorials ON' : 'Tutorials OFF');
+                          break;
+                        case 2:
+                            this.scene.start('Title', { sceneBack: false });
+                          break;
+                      }
+                      break;
+                    case 'KeyQ':
+                      menu2Items.forEach((item) => item.setVisible(false));
+                      menu2Visible = false;
+                      graphics.setAlpha(0);
+                      qText.setAlpha(0);
+                      break;
+                  }
+                }
+            });
+        }, this);
+        */
+
         /******************************************************************* OPTIONS *******************************************************************/
-        let tutorialBoxF = this.add.container(0, 125);
-        let boxBackgroundF = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxF = this.add.container(0, 125);
+        boxBackgroundF = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxF.add(boxBackgroundF);
-        let tutorialTextF = this.add.text(0, 0, "Press ''F'' to enter Fullscreen Mode and ''P'' to pause the game.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextF = this.add.text(0, 0, "Press ''F'' to enter Fullscreen Mode and ''P'' to pause the game.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextF.setOrigin(0.5, 0.5);
         tutorialBoxF.add(tutorialTextF);
         this.add.existing(tutorialBoxF);
         /******************************************************************** JUMP ********************************************************************/
-        let tutorialBoxMove = this.add.container(350, 125);
-        let boxBackgroundMove = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxMove = this.add.container(350, 125);
+        boxBackgroundMove = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxMove.add(boxBackgroundMove);
-        let tutorialTextMove = this.add.text(0, 0, "Use ''WASD'' or the ''ARROW KEYS'' to move.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextMove = this.add.text(0, 0, "Use ''WASD'' or the ''ARROW KEYS'' to move.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextMove.setOrigin(0.5, 0.5);
         tutorialBoxMove.add(tutorialTextMove);
         this.add.existing(tutorialBoxMove);
         /******************************************************************** JUMP ********************************************************************/
-        let tutorialBoxJump = this.add.container(700, 125);
-        let boxBackgroundJump = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxJump = this.add.container(700, 125);
+        boxBackgroundJump = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxJump.add(boxBackgroundJump);
-        let tutorialTextJump = this.add.text(0, 0, "Press ''SPACEBAR'' to jump... and press it again while on the air for a double jump.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextJump = this.add.text(0, 0, "Press ''SPACEBAR'' to jump... and press it again while on the air for a double jump.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextJump.setOrigin(0.5, 0.5);
         tutorialBoxJump.add(tutorialTextJump);
         this.add.existing(tutorialBoxJump);
         /******************************************************************** SHOOT ********************************************************************/
-        let tutorialBoxShoot = this.add.container(1050, 125);
-        let boxBackgroundShoot = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxShoot = this.add.container(1050, 125);
+        boxBackgroundShoot = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxShoot.add(boxBackgroundShoot);
-        let tutorialTextShoot = this.add.text(0, 0, "Press ''J'' to shoot your laser", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextShoot = this.add.text(0, 0, "Press ''J'' to shoot your laser", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextShoot.setOrigin(0.5, 0.5);
         tutorialBoxShoot.add(tutorialTextShoot);
         this.add.existing(tutorialBoxShoot);
         /******************************************************************** DRILL ********************************************************************/
-        let tutorialBoxGlide = this.add.container(2500, 125);
-        let boxBackgroundGlide = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxGlide = this.add.container(2500, 125);
+        boxBackgroundGlide = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxGlide.add(boxBackgroundGlide);
-        let tutorialTextGlide = this.add.text(0, 0, "Keep ''L'' pressed while on the air and moving to <- or -> to glide.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextGlide = this.add.text(0, 0, "Keep ''L'' pressed while on the air and moving to <- or -> to glide.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextGlide.setOrigin(0.5, 0.5);
         tutorialBoxGlide.add(tutorialTextGlide);
         this.add.existing(tutorialBoxGlide);
         /******************************************************************** DRILL ********************************************************************/
-        let tutorialBoxDrill = this.add.container(3400, 125);
-        let boxBackgroundDrill = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        tutorialBoxDrill = this.add.container(3400, 125);
+        boxBackgroundDrill = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxDrill.add(boxBackgroundDrill);
-        let tutorialTextDrill = this.add.text(0, 0, "Press ''K'' to drill.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        tutorialTextDrill = this.add.text(0, 0, "Press ''K'' to drill.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
         tutorialTextDrill.setOrigin(0.5, 0.5);
         tutorialBoxDrill.add(tutorialTextDrill);
         this.add.existing(tutorialBoxDrill);
@@ -355,6 +418,16 @@ class Scene1 extends Phaser.Scene {
     }
 
     update() {
+
+        if (!tutorial) {
+            boxBackgroundF.setAlpha(0); tutorialBoxF.setAlpha(0); tutorialTextF.setAlpha(0); tutorialBoxMove.setAlpha(0); boxBackgroundMove.setAlpha(0); tutorialTextMove.setAlpha(0);
+            tutorialBoxJump.setAlpha(0); boxBackgroundJump.setAlpha(0); tutorialTextJump.setAlpha(0); tutorialBoxShoot.setAlpha(0); boxBackgroundShoot.setAlpha(0); tutorialTextShoot.setAlpha(0);
+            tutorialBoxGlide.setAlpha(0); boxBackgroundGlide.setAlpha(0); tutorialTextGlide.setAlpha(0); tutorialBoxDrill.setAlpha(0); boxBackgroundDrill.setAlpha(0); tutorialTextDrill.setAlpha(0);
+          } else {
+            boxBackgroundF.setAlpha(1); tutorialBoxF.setAlpha(1); tutorialTextF.setAlpha(1); tutorialBoxMove.setAlpha(1); boxBackgroundMove.setAlpha(1); tutorialTextMove.setAlpha(1);
+            tutorialBoxJump.setAlpha(1); boxBackgroundJump.setAlpha(1); tutorialTextJump.setAlpha(1); tutorialBoxShoot.setAlpha(1); boxBackgroundShoot.setAlpha(1); tutorialTextShoot.setAlpha(1);
+            tutorialBoxGlide.setAlpha(1); boxBackgroundGlide.setAlpha(1); tutorialTextGlide.setAlpha(1); tutorialBoxDrill.setAlpha(1); boxBackgroundDrill.setAlpha(1); tutorialTextDrill.setAlpha(1);
+        }
 
         if (player.body.velocity.y > 1000) {
             player.body.setBounce(0.2);

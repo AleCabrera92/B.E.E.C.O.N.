@@ -8,13 +8,17 @@ let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, 
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup, wasp, waspLives;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
-let isPaused = false, pauseText, pauseOverlay, stuck;
+let isPaused = false, pauseText, pauseOverlay, stuck, pressStartText;
 let throttled = false, sound_eneweeAttack, babyWasp, babyWaspGroup;
 let keyL, leaves, leavesBG, sceneBack, sound_powerUp, screenWidth, screenHeight, screenCenterX, screenCenterY;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
 let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick, enemyFs, eneweeFs, lilWaspFs, waspFs, beeconFs;
 let waspInterval, waspTween, healthBar, waspNestDoor, destroyed, fadeOutTriggered = false;
+let volume = true, tutorial = true;
+let boxBackgroundF, tutorialBoxF, tutorialTextF, tutorialBoxMove, boxBackgroundMove, tutorialTextMove;
+let tutorialBoxJump, boxBackgroundJump, tutorialTextJump, tutorialBoxShoot, boxBackgroundShoot, tutorialTextShoot;
+let tutorialBoxGlide, boxBackgroundGlide, tutorialTextGlide, tutorialBoxDrill, boxBackgroundDrill, tutorialTextDrill;
 
 function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function increaseLives() { if (!throttled) { lives += 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 0); } }

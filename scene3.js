@@ -401,6 +401,12 @@ class Scene3 extends Phaser.Scene {
 
     update() {
 
+        if (!tutorial) {
+            tutorialBoxHoneyBeam.setAlpha(0); tutorialBoxHoneyBeam2.setAlpha(0); tutorialBoxHoneyBeam3.setAlpha(0);
+          } else {
+            tutorialBoxHoneyBeam.setAlpha(1); tutorialBoxHoneyBeam2.setAlpha(1); tutorialBoxHoneyBeam3.setAlpha(1);
+        }
+
         if (player.body.velocity.y > 1000) {
             player.body.setBounce(0.2);
           } else {

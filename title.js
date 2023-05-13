@@ -12,38 +12,11 @@ class Title extends Phaser.Scene {
     this.scale.refresh();
 
     overlay = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1002);
-
-    this.time.delayedCall(1000, function() {
-      this.tweens.add({
-        targets: overlay,
-        alpha: 0,
-        duration: 1000,
-        onComplete: function() {
-          overlay.destroy();
-        }
-      });
-    }, [], this);
-
+    this.time.delayedCall(1000, function() { this.tweens.add({ targets: overlay, alpha: 0, duration: 1000, onComplete: function() { overlay.destroy(); } }); }, [], this);
     overlay2 = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1000);
+    this.time.delayedCall(3000, function() { this.tweens.add({ targets: overlay2, alpha: 0, duration: 1000, onComplete: function() { overlay2.destroy(); } }); }, [], this);
+    this.time.delayedCall(850, function() { sound_titleTheme.play(); }, [], this);
 
-    this.time.delayedCall(3000, function() {
-      this.tweens.add({
-        targets: overlay2,
-        alpha: 0,
-        duration: 1000,
-        onComplete: function() {
-          overlay2.destroy();
-        }
-      });
-    }, [], this);
-
-    this.time.delayedCall(850, function() {
-      sound_titleTheme.play();
-    }, [], this);
-
-    const randomText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-    randomText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8);
-    randomText.setShadow(2, 2, '#000000', 2).setDepth(3);
     platforms = this.physics.add.staticGroup();
     player = this.physics.add.sprite(750, 600, 'beecon_full').setScale(0.3);
     player.body.setSize(120, 120);
@@ -69,117 +42,128 @@ class Title extends Phaser.Scene {
     player.anims.play('left');
     player.setVelocityX(-250);
 
-    const startText = this.add.text(
-      this.game.canvas.width / 2,
-      this.game.canvas.height / 1.76,
-      'Start',
-      { font: '32px Arial', fill: '#fff' }
-    ).setOrigin(0.5).setDepth(3);
-    const optionsText = this.add.text(
-      this.game.canvas.width / 2,
-      this.game.canvas.height / 1.76 + 50,
-      'Options',
-      { font: '32px Arial', fill: '#fff' }
-    ).setOrigin(0.5).setDepth(3);
-    const extrasText = this.add.text(
-      this.game.canvas.width / 2,
-      this.game.canvas.height / 1.76 + 100,
-      'Extras',
-      { font: '32px Arial', fill: '#fff' }
-    ).setOrigin(0.5).setDepth(3);
-    const qText = this.add.text(
-      this.game.canvas.width / 2.65,
-      this.game.canvas.height / 1.76 - 20,
-      'Q (back)',
-      { font: '16px Arial', fill: '#fff' }
-    ).setOrigin(0.5).setDepth(3);
-    const eText = this.add.text(
-      this.game.canvas.width / 1.6,
-      this.game.canvas.height / 1.76 - 20,
-      'E (next)',
-      { font: '16px Arial', fill: '#fff' }
-    ).setOrigin(0.5).setDepth(3);
-    const menuItems = [startText, optionsText, extrasText];
-    menuItems.forEach((item) => item.setVisible(false));
-    qText.setAlpha(0);
-    eText.setAlpha(0);
+    pressStartText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+    pressStartText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8).setShadow(2, 2, '#000000', 2).setDepth(3);
 
-    const boxWidth = 400;
-    const boxHeight = 180;
-    const boxX = this.game.canvas.width / 2 - boxWidth / 2;
-    const boxY = this.game.canvas.height / 1.57 - boxHeight / 2;
-    const graphics = this.add.graphics();
-    graphics.fillStyle(0x000000, 0.75);
-    graphics.fillRect(boxX, boxY, boxWidth, boxHeight);
-    graphics.setDepth(2);
-    graphics.setAlpha(0);
+    const startText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Start', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    const optionsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Options', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    //const extrasText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Extras', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    const qText = this.add.text( this.game.canvas.width / 2.65, this.game.canvas.height / 1.76 - 20, 'Q (back)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    //const eText = this.add.text( this.game.canvas.width / 1.6, this.game.canvas.height / 1.76 - 20, 'E (next)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    const menuItems = [startText, optionsText/*, extrasText*/];
+    menuItems.forEach((item) => item.setVisible(false)); qText.setAlpha(0); //eText.setAlpha(0);
+
+    const soundText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Volume ON', { font: '32px Arial', fill: '#ff0' } ).setOrigin(0.5).setDepth(3);
+    const tutorialText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Tutorials ON', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    const menu2Items = [soundText, tutorialText];
+    menu2Items.forEach((item) => item.setVisible(false));
+
+    const boxWidth = 400; const boxHeight = 180; const boxX = this.game.canvas.width / 2 - boxWidth / 2; const boxY = this.game.canvas.height / 1.57 - boxHeight / 2;
+    const graphics = this.add.graphics(); graphics.fillStyle(0x000000, 0.75); graphics.fillRect(boxX, boxY, boxWidth, boxHeight); graphics.setDepth(2); graphics.setAlpha(0);
 
     let menuVisible = false;
+    let menu2Visible = false;
     let currentItem = 0;
+    let current2Item = 0;
 
-    this.timer = this.time.addEvent({
-      delay: 500,
-      loop: true,
-      callback: () => {
-        if (!menuVisible) {
-          randomText.visible = !randomText.visible;
-        }
-      }
-    });
+    this.timer = this.time.addEvent({ delay: 500, loop: true, callback: () => { if (!menuVisible && !menu2Visible) { pressStartText.visible = !pressStartText.visible; } } });
 
     this.input.keyboard.on('keydown', (event) => {
-      if (!menuVisible) {
-        if (event.code === 'Enter') {
-          randomText.setVisible(false);
-          menuItems.forEach((item) => item.setVisible(true));
-          menuItems[currentItem].setFill('#ff0');
-          menuVisible = true;
-          graphics.setAlpha(1);
-          qText.setAlpha(1);
-          eText.setAlpha(1);
-        }
-      } else {
-        switch (event.code) {
-          case 'KeyW':
-          case 'ArrowUp':
-            menuItems[currentItem].setFill('#fff');
-            currentItem = (currentItem - 1 + menuItems.length) % menuItems.length;
+      if (!menuVisible && !menu2Visible) {
+          if (event.code === 'Enter') {
+            pressStartText.setVisible(false);
+            menuItems.forEach((item) => item.setVisible(true));
             menuItems[currentItem].setFill('#ff0');
-            break;
-          case 'KeyS':
-          case 'ArrowDown':
-            menuItems[currentItem].setFill('#fff');
-            currentItem = (currentItem + 1) % menuItems.length;
-            menuItems[currentItem].setFill('#ff0');
-            break;
-          case 'KeyE':
-          case 'Enter':
-            switch (currentItem) {
-              case 0:
-                this.scene.start('Scene1');
-                break;
-              case 1:
-                //this.handleOptions();
-                break;
-              case 2:
-                break;
-            }
-            break;
-          case 'KeyQ':
-            randomText.setVisible(true);
-            menuItems.forEach((item) => item.setVisible(false));
-            menuVisible = false;
-            graphics.setAlpha(0);
-            qText.setAlpha(0);
-            eText.setAlpha(0);
-            break;
+            menuVisible = true;
+            graphics.setAlpha(1);
+            qText.setAlpha(1);
+            //eText.setAlpha(1);
+          }
+      } else if (menuVisible && !menu2Visible) {
+          switch (event.code) {
+            case 'KeyW':
+            case 'ArrowUp':
+              menuItems[currentItem].setFill('#fff');
+              currentItem = (currentItem - 1 + menuItems.length) % menuItems.length;
+              menuItems[currentItem].setFill('#ff0');
+              break;
+            case 'KeyS':
+            case 'ArrowDown':
+              menuItems[currentItem].setFill('#fff');
+              currentItem = (currentItem + 1) % menuItems.length;
+              menuItems[currentItem].setFill('#ff0');
+              break;
+            case 'KeyE':
+            case 'Enter':
+              switch (currentItem) {
+                case 0:
+                  this.scene.start('Scene1');
+                  break;
+                case 1:
+                  menuItems.forEach((item) => item.setVisible(false));
+                  menuVisible = false;
+                  menu2Items.forEach((item) => item.setVisible(true));
+                  menu2Visible = true;
+                  break;
+                case 2:
+                  break;
+              }
+              break;
+            case 'KeyQ':
+              pressStartText.setVisible(true);
+              menuItems.forEach((item) => item.setVisible(false));
+              menuVisible = false;
+              graphics.setAlpha(0);
+              qText.setAlpha(0);
+              //eText.setAlpha(0);
+              break;
         }
-      }
+      }  else if (menu2Visible && !menuVisible) {
+          switch (event.code) {
+            case 'KeyW':
+            case 'ArrowUp':
+              menu2Items[current2Item].setFill('#fff');
+              current2Item = (current2Item - 1 + menu2Items.length) % menu2Items.length;
+              menu2Items[current2Item].setFill('#ff0');
+              break;
+            case 'KeyS':
+            case 'ArrowDown':
+              menu2Items[current2Item].setFill('#fff');
+              current2Item = (current2Item + 1) % menu2Items.length;
+              menu2Items[current2Item].setFill('#ff0');
+              break;
+            case 'KeyE':
+            case 'Enter':
+              switch (current2Item) {
+                case 0:
+                    volume = !volume;
+                    soundText.setText(volume ? 'Volume ON' : 'Volume OFF');
+                  break;
+                case 1:
+                    tutorial = !tutorial;
+                    tutorialText.setText(tutorial ? 'Tutorials ON' : 'Tutorials OFF');
+                  break;
+              }
+              break;
+            case 'KeyQ':
+              menu2Items.forEach((item) => item.setVisible(false));
+              menu2Visible = false;
+              menuItems.forEach((item) => item.setVisible(true));
+              menuVisible = true;
+              break;
+          }
+        }
     });
 
   }
 
   update() {
+
+    if (!volume) {
+      game.sound.mute = true;
+    } else {
+      game.sound.mute = false;
+    }
 
     if (clouds) {this.physics.world.wrap(clouds.body, clouds.width, true)};
     if (clouds2) {this.physics.world.wrap(clouds2.body, clouds2.width, true)};
