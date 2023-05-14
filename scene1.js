@@ -50,6 +50,7 @@ class Scene1 extends Phaser.Scene {
             player = this.physics.add.sprite(3800, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
         } else {
             player = this.physics.add.sprite(0, 598, 'beecon_full').setScale(0.3).setDepth(0.19);
+            honeyBeam = false;
         }
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);

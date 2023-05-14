@@ -12,6 +12,8 @@ class Scene4 extends Phaser.Scene {
 
         scene = 4;
 
+        honeyBeam = true;
+
         sound_thunder.setVolume(0.95);
 
         overlay = this.add.rectangle(-1000, 0, this.game.config.width*3.5, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
