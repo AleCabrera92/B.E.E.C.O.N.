@@ -12,7 +12,11 @@ class Ending extends Phaser.Scene {
       beeIcon.setAlpha(0.8).setScale(0.5).setOrigin(0.5).setInteractive({ useHandCursor: true }).on('pointerdown', () => { this.sound.stopAll(); lives = 99; this.scene.start('Title') });
       beeIcon.on('pointerover', () => { beeIcon.setAlpha(1) }); beeIcon.on('pointerout', () => { beeIcon.setAlpha(0.8) });
 
-      clickBButton2 = this.add.text(this.game.config.width / 2, this.game.config.height / 1.5, 'You made in to the end, congrats!', { fontSize: '32px', fill: '#FFBF00', fontStyle: 'bold' } );
+      if (language) {
+        clickBButton2 = this.add.text(this.game.config.width / 2, this.game.config.height / 1.5, 'You made in to the end, well done!', { fontSize: '32px', fill: '#FFBF00', fontStyle: 'bold' } );
+      } else {
+        clickBButton2 = this.add.text(this.game.config.width / 2, this.game.config.height / 1.5, '¡Llegaste hasta el final, bien hecho!', { fontSize: '32px', fill: '#FFBF00', fontStyle: 'bold' } );
+      }
       clickBButton2.setOrigin(0.5, 0.5);
   
       keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);

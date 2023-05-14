@@ -22,6 +22,7 @@ class Preload extends Phaser.Scene {
         this.load.image('breakableBranch', 'assets/breakableBranch.png');
         this.load.image('breakableGround', 'assets/breakablePlatform.png');
         this.load.image('chargeReady', 'assets/chargeReady.png');
+        this.load.image('chargeReadySpanish', 'assets/chargeReadySpanish.png');
         this.load.image('clouds', 'assets/cloud.png');
         this.load.image('enemyF', 'assets/enemyF.png');
         this.load.image('eneweeF', 'assets/eneweeF.png');

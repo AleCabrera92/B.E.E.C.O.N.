@@ -48,7 +48,11 @@ class Scene3 extends Phaser.Scene {
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
+        if (language) {
+            livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
+        } else {
+            livesText = this.add.text(player.x, 19, 'Energía: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
+        }
 
         if (sceneBack) {
             player.anims.play('idleBack');
@@ -106,7 +110,11 @@ class Scene3 extends Phaser.Scene {
             player.setVelocityX(knockbackDirection.x);
 
             if (lives <= 0) { gameOver();
-                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                if (language) {
+                    randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                } else {
+                    randomText = this.add.text(0, 0, 'PULSA INTRO PARA REINTENTAR, E PARA SALIR', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                }  
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
@@ -288,7 +296,11 @@ class Scene3 extends Phaser.Scene {
         camera.scrollX = game.config.width * 2;
         camera.scrollY = 0;
 
-        chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
+        if (language) {
+            chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
+        } else {
+            chargeReady = this.add.sprite(player.x, player.y, 'chargeReadySpanish').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
+        }
 
         overlay = this.add.rectangle(this.cameras.main.centerX, this.cameras.main.centerY, this.cameras.main.width*10, this.cameras.main.height*7, 0x000000, 0.5).setDepth(1);
 
@@ -367,27 +379,39 @@ class Scene3 extends Phaser.Scene {
 
         /***************************************************************** HONEY BEAM *****************************************************************/
         tutorialBoxHoneyBeam = this.add.container(4300, 703);
-        let boxBackgroundHoneyBeam = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        boxBackgroundHoneyBeam = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam.add(boxBackgroundHoneyBeam);
-        let tutorialTextHoneyBeam = this.add.text(0, 0, "Hold ''J'' to charge a Honey Beam", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextHoneyBeam = this.add.text(0, 0, "Hold ''J'' to charge a Honey Beam", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextHoneyBeam = this.add.text(0, 0, "Mantén ''J'' para cargar un 'Honey Beam'", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextHoneyBeam.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam.add(tutorialTextHoneyBeam);
         this.add.existing(tutorialBoxHoneyBeam);
         tutorialBoxHoneyBeam.setDepth(-99);
         /**************************************************************** HONEY BEAM 2 ****************************************************************/
         tutorialBoxHoneyBeam2 = this.add.container(4300, 828);
-        let boxBackgroundHoneyBeam2 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        boxBackgroundHoneyBeam2 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam2.add(boxBackgroundHoneyBeam2);
-        let tutorialTextHoneyBeam2 = this.add.text(0, 0, "You can jump on Honey Beams and use them as platforms.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextHoneyBeam2 = this.add.text(0, 0, "You can jump on Honey Beams and use them as platforms.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextHoneyBeam2 = this.add.text(0, 0, "Puedes saltar en 'Honey Beams' y usarlos como plataformas.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });  
+        }
         tutorialTextHoneyBeam2.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam2.add(tutorialTextHoneyBeam2);
         this.add.existing(tutorialBoxHoneyBeam2);
         tutorialBoxHoneyBeam2.setDepth(-99);
         /**************************************************************** HONEY BEAM 3 ****************************************************************/
         tutorialBoxHoneyBeam3 = this.add.container(4300, 953);
-        let boxBackgroundHoneyBeam3 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        boxBackgroundHoneyBeam3 = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxHoneyBeam3.add(boxBackgroundHoneyBeam3);
-        let tutorialTextHoneyBeam3 = this.add.text(0, 0, "You can only have 4 Honey Beams on screen at the same time.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextHoneyBeam3 = this.add.text(0, 0, "You can only have 4 Honey Beams on screen at the same time.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextHoneyBeam3 = this.add.text(0, 0, "Solo puedes tener 4 'Honey Beams' en pantalla al mismo tiempo.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextHoneyBeam3.setOrigin(0.5, 0.5);
         tutorialBoxHoneyBeam3.add(tutorialTextHoneyBeam3);
         this.add.existing(tutorialBoxHoneyBeam3);
@@ -417,7 +441,11 @@ class Scene3 extends Phaser.Scene {
             lives = 0;
             updateLivesUI();
             gameOver();
-            randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+            if (language) {
+                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+            } else {
+                randomText = this.add.text(0, 0, 'PULSA INTRO PARA REINTENTAR, E PARA SALIR', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+            }  
             randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
             this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
             this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);

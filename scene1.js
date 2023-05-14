@@ -54,8 +54,11 @@ class Scene1 extends Phaser.Scene {
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
-        livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
-
+        if (language) {
+            livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
+        } else {
+            livesText = this.add.text(player.x, 19, 'Energía: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
+        }
         if (sceneBack) {
             player.anims.play('idleBack');
         } else {
@@ -98,7 +101,11 @@ class Scene1 extends Phaser.Scene {
             player.setVelocityX(knockbackDirection.x);
 
             if (lives <= 0) { gameOver();
-                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                if (language) {
+                    randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                } else {
+                    randomText = this.add.text(0, 0, 'PULSA INTRO PARA REINTENTAR, E PARA SALIR', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                }   
                 randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(player.x+320, game.config.height / 2);
                 this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
                 this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
@@ -257,8 +264,12 @@ class Scene1 extends Phaser.Scene {
         camera.scrollX = game.config.width * 2;
         camera.scrollY = 0;
 
-        chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
-
+        if (language) {
+            chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
+        } else {
+            chargeReady = this.add.sprite(player.x, player.y, 'chargeReadySpanish').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
+        }
+        
         emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
             y: -100,
@@ -292,7 +303,11 @@ class Scene1 extends Phaser.Scene {
             screenCenterX = camera.scrollX + screenWidth / 2;
             screenCenterY = camera.scrollY + screenHeight / 2;
             pauseOverlay = this.add.rectangle(screenCenterX, screenCenterY, screenWidth, screenHeight, 0x000000, 0.25).setDepth(1);
-            pauseText = this.add.text(screenCenterX, screenCenterY, 'PAUSE', { font: '32px Arial', fill: '#fff' }).setOrigin(0.5);
+            if (language) {
+                pauseText = this.add.text(screenCenterX, screenCenterY, 'PAUSE', { font: '32px Arial', fill: '#fff' }).setOrigin(0.5);
+            } else {
+                pauseText = this.add.text(screenCenterX, screenCenterY, 'PAUSA', { font: '32px Arial', fill: '#fff' }).setOrigin(0.5);
+            }
             pauseText.setShadow(2, 2, '#000000', 2).setDepth(3);
             this.sound.pauseAll();
             this.sound.mute = true;
@@ -368,7 +383,11 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxF = this.add.container(0, 125);
         boxBackgroundF = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxF.add(boxBackgroundF);
-        tutorialTextF = this.add.text(0, 0, "Press ''F'' to enter Fullscreen Mode and ''P'' to pause the game.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextF = this.add.text(0, 0, "Press ''F'' to enter Fullscreen Mode and ''P'' to pause the game.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextF = this.add.text(0, 0, "Pulsa ''F'' para entrar en pantalla completa y ''P'' para pausar el juego.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextF.setOrigin(0.5, 0.5);
         tutorialBoxF.add(tutorialTextF);
         this.add.existing(tutorialBoxF);
@@ -376,7 +395,11 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxMove = this.add.container(350, 125);
         boxBackgroundMove = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxMove.add(boxBackgroundMove);
-        tutorialTextMove = this.add.text(0, 0, "Use ''WASD'' or the ''ARROW KEYS'' to move.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextMove = this.add.text(0, 0, "Use ''WASD'' or the ''ARROW KEYS'' to move.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextMove = this.add.text(0, 0, "Usa ''WASD'' o ''FLECHAS'' para desplazarte.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextMove.setOrigin(0.5, 0.5);
         tutorialBoxMove.add(tutorialTextMove);
         this.add.existing(tutorialBoxMove);
@@ -384,7 +407,11 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxJump = this.add.container(700, 125);
         boxBackgroundJump = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxJump.add(boxBackgroundJump);
-        tutorialTextJump = this.add.text(0, 0, "Press ''SPACEBAR'' to jump... and press it again while on the air for a double jump.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextJump = this.add.text(0, 0, "Press ''SPACEBAR'' to jump and press it again while on the air for a double jump.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextJump = this.add.text(0, 0, "Pulsa ''ESPACIO'' para saltar y púlsala otra vez en el aire para un doble salto.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextJump.setOrigin(0.5, 0.5);
         tutorialBoxJump.add(tutorialTextJump);
         this.add.existing(tutorialBoxJump);
@@ -392,7 +419,11 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxShoot = this.add.container(1050, 125);
         boxBackgroundShoot = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxShoot.add(boxBackgroundShoot);
-        tutorialTextShoot = this.add.text(0, 0, "Press ''J'' to shoot your laser", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextShoot = this.add.text(0, 0, "Press ''J'' to shoot your laser", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextShoot = this.add.text(0, 0, "Pulsa ''J'' para disparar tu láser", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextShoot.setOrigin(0.5, 0.5);
         tutorialBoxShoot.add(tutorialTextShoot);
         this.add.existing(tutorialBoxShoot);
@@ -400,7 +431,11 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxGlide = this.add.container(2500, 125);
         boxBackgroundGlide = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxGlide.add(boxBackgroundGlide);
-        tutorialTextGlide = this.add.text(0, 0, "Keep ''L'' pressed while on the air and moving to <- or -> to glide.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextGlide = this.add.text(0, 0, "Keep ''L'' pressed while on the air and moving to <- or -> to glide.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextGlide = this.add.text(0, 0, "Mantén ''L'' pulsado en el aire moviéndote hacia <- o -> para planear.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextGlide.setOrigin(0.5, 0.5);
         tutorialBoxGlide.add(tutorialTextGlide);
         this.add.existing(tutorialBoxGlide);
@@ -408,7 +443,11 @@ class Scene1 extends Phaser.Scene {
         tutorialBoxDrill = this.add.container(3400, 125);
         boxBackgroundDrill = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
         tutorialBoxDrill.add(boxBackgroundDrill);
-        tutorialTextDrill = this.add.text(0, 0, "Press ''K'' to drill.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        if (language) {
+            tutorialTextDrill = this.add.text(0, 0, "Press ''K'' to drill.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            tutorialTextDrill = this.add.text(0, 0, "Pulsa ''K'' para taladrar.", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        }
         tutorialTextDrill.setOrigin(0.5, 0.5);
         tutorialBoxDrill.add(tutorialTextDrill);
         this.add.existing(tutorialBoxDrill);

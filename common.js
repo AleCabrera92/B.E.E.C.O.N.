@@ -3,7 +3,7 @@ let lasers, livesText, liveBG, mountains, overlay, overlay2, platforms, player, 
 let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_beeconHit, sound_rain, sound_rain2;
 let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_level1Theme, sound_level2Theme, sound_level3Theme, sound_level4Theme, sound_enemyEnraged;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
-let scene, gameOverImage, randomText;
+let scene, gameOverImage, randomText, chargeReadySpanish;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup, wasp, waspLives;
@@ -12,17 +12,18 @@ let isPaused = false, pauseText, pauseOverlay, stuck, pressStartText;
 let throttled = false, sound_eneweeAttack, babyWasp, babyWaspGroup;
 let keyL, leaves, leavesBG, sceneBack, sound_powerUp, screenWidth, screenHeight, screenCenterX, screenCenterY;
 let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
-let tutorialBoxHoneyBeam, tutorialBoxHoneyBeam2, tutorialBoxHoneyBeam3;
+let tutorialBoxHoneyBeam, boxBackgroundHoneyBeam, tutorialTextHoneyBeam, tutorialBoxHoneyBeam2, boxBackgroundHoneyBeam2, tutorialTextHoneyBeam2, tutorialBoxHoneyBeam3, boxBackgroundHoneyBeam3, tutorialTextHoneyBeam3;
 let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick, enemyFs, eneweeFs, lilWaspFs, waspFs, beeconFs;
 let waspInterval, waspTween, healthBar, waspNestDoor, destroyed, fadeOutTriggered = false;
-let volume = true, tutorial = true;
+let volume = true, tutorial = true, language = true;
 let boxBackgroundF, tutorialBoxF, tutorialTextF, tutorialBoxMove, boxBackgroundMove, tutorialTextMove;
 let tutorialBoxJump, boxBackgroundJump, tutorialTextJump, tutorialBoxShoot, boxBackgroundShoot, tutorialTextShoot;
 let tutorialBoxGlide, boxBackgroundGlide, tutorialTextGlide, tutorialBoxDrill, boxBackgroundDrill, tutorialTextDrill;
+let startText, optionsText, qText, menuItems, soundText, tutorialText, languageText, menu2Items;
 
-function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 500); } }
-function increaseLives() { if (!throttled) { lives += 10; lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI(); throttled = true; setTimeout(() => { throttled = false; }, 0); } }
-function updateLivesUI() { livesText.setText('Energy: ' + lives); }
+function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); } }
+function increaseLives() { if (!throttled) { lives += 10; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 0); } }
+function updateLivesUI() { if (language) {livesText.setText('Energy: ' + lives);} else {livesText.setText('Energía: ' + lives);} }
 function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled = true; keySpace.enabled = true; keysDisabled = false; }
 function toggleFullscreen() { if (game.scale.isFullscreen) { game.scale.stopFullscreen(); game.scale.setGameSize(1280, 720); } else { game.scale.startFullscreen(); } }
 
@@ -57,7 +58,7 @@ function updateEnemyBehavior(enemy) {
         }
         enemy.setData('spiky', false);
         setTimeout(() => {
-            if (scene != 2 && scene != 3 && scene != 4) {
+            if (scene != 'title' && scene != 2 && scene != 3 && scene != 4) {
                 enemy.anims.play('enemyChill', true);
             } 
         }, 100);

@@ -11,6 +11,8 @@ class Title extends Phaser.Scene {
 
     this.scale.refresh();
 
+    scene = 'title';
+
     overlay = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1002);
     this.time.delayedCall(1000, function() { this.tweens.add({ targets: overlay, alpha: 0, duration: 1000, onComplete: function() { overlay.destroy(); } }); }, [], this);
     overlay2 = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1000);
@@ -42,20 +44,57 @@ class Title extends Phaser.Scene {
     player.anims.play('left');
     player.setVelocityX(-250);
 
-    pressStartText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
-    pressStartText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8).setShadow(2, 2, '#000000', 2).setDepth(3);
+    if (language) {
+      pressStartText = this.add.text(0, 0, 'PRESS ENTER TO START', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+      pressStartText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8).setShadow(2, 2, '#000000', 2).setDepth(3);
+    } else {
+      pressStartText = this.add.text(0, 0, 'PULSA INTRO PARA EMPEZAR', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+      pressStartText.setPosition(this.game.canvas.width/2, this.game.canvas.height/1.8).setShadow(2, 2, '#000000', 2).setDepth(3);
+    }
 
-    const startText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Start', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-    const optionsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Options', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-    //const extrasText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Extras', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-    const qText = this.add.text( this.game.canvas.width / 2.65, this.game.canvas.height / 1.76 - 20, 'Q (back)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-    //const eText = this.add.text( this.game.canvas.width / 1.6, this.game.canvas.height / 1.76 - 20, 'E (next)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-    const menuItems = [startText, optionsText/*, extrasText*/];
+
+    if (language) {
+      startText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Start', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      optionsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Options', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      //const extrasText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Extras', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      qText = this.add.text( this.game.canvas.width / 2.65, this.game.canvas.height / 1.76 - 20, 'Q (back)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      //const eText = this.add.text( this.game.canvas.width / 1.6, this.game.canvas.height / 1.76 - 20, 'E (next)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    } else {
+      startText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Jugar', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      optionsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Opciones', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      //const extrasText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Extras', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      qText = this.add.text( this.game.canvas.width / 2.65, this.game.canvas.height / 1.76 - 20, 'Q (volver)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      //const eText = this.add.text( this.game.canvas.width / 1.6, this.game.canvas.height / 1.76 - 20, 'E (next)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    }
+    menuItems = [startText, optionsText/*, extrasText*/];
     menuItems.forEach((item) => item.setVisible(false)); qText.setAlpha(0); //eText.setAlpha(0);
 
-    const soundText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Volume ON', { font: '32px Arial', fill: '#ff0' } ).setOrigin(0.5).setDepth(3);
-    const tutorialText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Tutorials ON', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-    const menu2Items = [soundText, tutorialText];
+    if (language) {
+      if (volume) {
+        soundText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Sound ON', { font: '32px Arial', fill: '#ff0' } ).setOrigin(0.5).setDepth(3);
+      } else {
+        soundText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Sound OFF', { font: '32px Arial', fill: '#ff0' } ).setOrigin(0.5).setDepth(3);
+      }
+      if (tutorial) {
+        tutorialText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Tutorials ON', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      } else {
+        tutorialText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Tutorials OFF', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      }
+      languageText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Language ENGLISH', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    } else {
+      if (volume) {
+        soundText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Sonido SÍ', { font: '32px Arial', fill: '#ff0' } ).setOrigin(0.5).setDepth(3);
+      } else {
+        soundText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Sonido NO', { font: '32px Arial', fill: '#ff0' } ).setOrigin(0.5).setDepth(3);
+      }
+      if (tutorial) {
+        tutorialText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Tutoriales SÍ', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      } else {
+        tutorialText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Tutoriales NO', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      }
+      languageText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Idioma ESPAÑOL', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+    }
+    menu2Items = [soundText, tutorialText, languageText];
     menu2Items.forEach((item) => item.setVisible(false));
 
     const boxWidth = 400; const boxHeight = 180; const boxX = this.game.canvas.width / 2 - boxWidth / 2; const boxY = this.game.canvas.height / 1.57 - boxHeight / 2;
@@ -137,11 +176,25 @@ class Title extends Phaser.Scene {
               switch (current2Item) {
                 case 0:
                     volume = !volume;
-                    soundText.setText(volume ? 'Volume ON' : 'Volume OFF');
+                    if (language) {soundText.setText(volume ? 'Sound ON' : 'Sound OFF');}
+                    else {soundText.setText(volume ? 'Sonido SÍ' : 'Sonido NO');}   
                   break;
                 case 1:
                     tutorial = !tutorial;
-                    tutorialText.setText(tutorial ? 'Tutorials ON' : 'Tutorials OFF');
+                    if (language) {tutorialText.setText(tutorial ? 'Tutorials ON' : 'Tutorials OFF');}
+                    else {tutorialText.setText(tutorial ? 'Tutoriales SÍ' : 'Tutoriales NO');}    
+                  break;
+                case 2:
+                    language = !language;
+                    languageText.setText(language ? 'Language ENGLISH' : 'Idioma ESPAÑOL');
+                    if (tutorial) {tutorialText.setText(language ? 'Tutorials ON' : 'Tutoriales SÍ');}
+                    else {tutorialText.setText(language ? 'Tutorials OFF' : 'Tutoriales NO');}
+                    if (volume) {soundText.setText(language ? 'Sound ON' : 'Sonido SÍ');}
+                    else {soundText.setText(language ? 'Sound OFF' : 'Sonido NO');}
+                    startText.setText(language ? 'Start' : 'Jugar');
+                    optionsText.setText(language ? 'Options' : 'Opciones');
+                    qText.setText(language ? 'Q (Back)' : 'Q (Volver)');
+                    pressStartText.setText(language ? 'PRESS ENTER TO START' : 'PULSA INTRO PARA EMPEZAR');
                   break;
               }
               break;
