@@ -17,7 +17,7 @@ class Title extends Phaser.Scene {
     this.time.delayedCall(1000, function() { this.tweens.add({ targets: overlay, alpha: 0, duration: 1000, onComplete: function() { overlay.destroy(); } }); }, [], this);
     overlay2 = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1000);
     this.time.delayedCall(3000, function() { this.tweens.add({ targets: overlay2, alpha: 0, duration: 1000, onComplete: function() { overlay2.destroy(); } }); }, [], this);
-    this.time.delayedCall(850, function() { sound_titleTheme.play(); }, [], this);
+    this.time.delayedCall(850, function() { if (!sound_titleTheme.isPlaying) { sound_titleTheme.play(); } }, [], this);
 
     platforms = this.physics.add.staticGroup();
     player = this.physics.add.sprite(750, 600, 'beecon_full').setScale(0.3);
@@ -56,17 +56,17 @@ class Title extends Phaser.Scene {
     if (language) {
       startText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Start', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
       optionsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Options', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-      //const extrasText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Extras', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      creditsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Credits', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
       qText = this.add.text( this.game.canvas.width / 2.65, this.game.canvas.height / 1.76 - 20, 'Q (back)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
       //const eText = this.add.text( this.game.canvas.width / 1.6, this.game.canvas.height / 1.76 - 20, 'E (next)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
     } else {
       startText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76, 'Jugar', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
       optionsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 50, 'Opciones', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
-      //const extrasText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Extras', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
+      creditsText = this.add.text( this.game.canvas.width / 2, this.game.canvas.height / 1.76 + 100, 'Créditos', { font: '32px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
       qText = this.add.text( this.game.canvas.width / 2.65, this.game.canvas.height / 1.76 - 20, 'Q (volver)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
       //const eText = this.add.text( this.game.canvas.width / 1.6, this.game.canvas.height / 1.76 - 20, 'E (next)', { font: '16px Arial', fill: '#fff' } ).setOrigin(0.5).setDepth(3);
     }
-    menuItems = [startText, optionsText/*, extrasText*/];
+    menuItems = [startText, optionsText, creditsText];
     menuItems.forEach((item) => item.setVisible(false)); qText.setAlpha(0); //eText.setAlpha(0);
 
     if (language) {
@@ -145,6 +145,7 @@ class Title extends Phaser.Scene {
                   menu2Visible = true;
                   break;
                 case 2:
+                  this.scene.start('Credits');
                   break;
               }
               break;
@@ -193,6 +194,7 @@ class Title extends Phaser.Scene {
                     else {soundText.setText(language ? 'Sound OFF' : 'Sonido NO');}
                     startText.setText(language ? 'Start' : 'Jugar');
                     optionsText.setText(language ? 'Options' : 'Opciones');
+                    creditsText.setText(language ? 'Credits' : 'Créditos');
                     qText.setText(language ? 'Q (Back)' : 'Q (Volver)');
                     pressStartText.setText(language ? 'PRESS ENTER TO START' : 'PULSA INTRO PARA EMPEZAR');
                   break;

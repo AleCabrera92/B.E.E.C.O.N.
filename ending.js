@@ -8,6 +8,8 @@ class Ending extends Phaser.Scene {
   
     create() {
 
+      scene = 'ending';
+
       beeIcon = this.add.image(this.game.config.width / 2, this.game.config.height / 2.5, 'beeIcon');
       beeIcon.setAlpha(0.8).setScale(0.5).setOrigin(0.5).setInteractive({ useHandCursor: true }).on('pointerdown', () => { this.sound.stopAll(); lives = 99; this.scene.start('Title') });
       beeIcon.on('pointerover', () => { beeIcon.setAlpha(1) }); beeIcon.on('pointerout', () => { beeIcon.setAlpha(0.8) });

@@ -19,7 +19,7 @@ let volume = true, tutorial = true, language = true;
 let boxBackgroundF, tutorialBoxF, tutorialTextF, tutorialBoxMove, boxBackgroundMove, tutorialTextMove;
 let tutorialBoxJump, boxBackgroundJump, tutorialTextJump, tutorialBoxShoot, boxBackgroundShoot, tutorialTextShoot;
 let tutorialBoxGlide, boxBackgroundGlide, tutorialTextGlide, tutorialBoxDrill, boxBackgroundDrill, tutorialTextDrill;
-let startText, optionsText, qText, menuItems, soundText, tutorialText, languageText, menu2Items;
+let startText, optionsText, creditsText, qText, menuItems, soundText, tutorialText, languageText, menu2Items;
 
 function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function increaseLives() { if (!throttled) { lives += 10; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 0); } }
@@ -58,7 +58,7 @@ function updateEnemyBehavior(enemy) {
         }
         enemy.setData('spiky', false);
         setTimeout(() => {
-            if (scene != 'title' && scene != 2 && scene != 3 && scene != 4) {
+            if (scene != 'title' && scene != 2 && scene != 3 && scene != 4 && scene != 6 && scene != 7 && scene != 8 && scene != 'ending') {
                 enemy.anims.play('enemyChill', true);
             } 
         }, 100);
