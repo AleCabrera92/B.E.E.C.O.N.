@@ -7,6 +7,8 @@ class Credits extends Phaser.Scene {
 
         //this.time.delayedCall(850, function() { sound_titleTheme.play(); }, [], this);
 
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
 
@@ -35,9 +37,9 @@ class Credits extends Phaser.Scene {
 
         
         if (language) {
-            var backText = this.add.text(10, 700, 'Press ENTER to exit', { fontFamily: 'Arial', fontSize: '16px', color: '#ffffff' });
+            var backText = this.add.text(10, 693.5, 'Press ENTER to exit', { fontFamily: 'Arial', fontSize: '16px', color: '#ffffff' });
         } else {
-            var backText = this.add.text(10, 700, 'Pulsa INTRO para salir', { fontFamily: 'Arial', fontSize: '16px', color: '#ffffff' });
+            var backText = this.add.text(10, 693.5, 'Pulsa INTRO para salir', { fontFamily: 'Arial', fontSize: '16px', color: '#ffffff' });
         }
         backText.setOrigin(0, 0).setAlpha(0);
 
@@ -77,5 +79,11 @@ class Credits extends Phaser.Scene {
         }, [], this);
 
     };
+
+    update() {
+
+        if (Phaser.Input.Keyboard.JustDown(keyF)) {toggleFullscreen()};
+
+    }
 
 }
