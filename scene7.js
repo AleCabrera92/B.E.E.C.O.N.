@@ -155,7 +155,7 @@ class Scene7 extends Phaser.Scene {
                     selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
                 }
                 let waspF = waspFs.create(wasp.x, wasp.y, 'waspF');
-                if (player.x <= lilWasp.x) {
+                if (player.x <= wasp.x) {
                     waspF.setOrigin(0.5, 0.5).setScale(0.75).setDepth(0.189);
                 } else {
                     waspF.setOrigin(0.5, 0.5).setScale(0.75).setDepth(0.189).setFlipX(true);
@@ -230,10 +230,11 @@ class Scene7 extends Phaser.Scene {
             stuck = platforms.create(-170, 286 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
             stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
             stuck = platforms.create(1104, 218 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.189);
-            stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
+            stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = true;
         }
 
         destroyed = platforms.create(1101, 800, 'trunk').setScale(2).refreshBody().setDepth(0.189).setAlpha(0);
+        destroyed.body.checkCollision.down = false; destroyed.body.checkCollision.up = false;
 
         this.add.image(1069, 500, 'waspNest').setScale(1.5).setScrollFactor(1).setDepth(0.2);
         waspNestDoor = this.add.image(1069, 500, 'waspNestDoor').setScale(1.5).setScrollFactor(1).setDepth(0.2);
