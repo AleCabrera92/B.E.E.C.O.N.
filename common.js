@@ -20,6 +20,8 @@ let boxBackgroundF, tutorialBoxF, tutorialTextF, tutorialBoxMove, boxBackgroundM
 let tutorialBoxJump, boxBackgroundJump, tutorialTextJump, tutorialBoxShoot, boxBackgroundShoot, tutorialTextShoot;
 let tutorialBoxGlide, boxBackgroundGlide, tutorialTextGlide, tutorialBoxDrill, boxBackgroundDrill, tutorialTextDrill;
 let startText, optionsText, creditsText, qText, menuItems, soundText, tutorialText, languageText, menu2Items;
+let ship, skyIntro1, skyIntro2, skyIntro3, skyIntro4, skyIntro5, skyIntro6, skyIntro7, skyIntro8, skyIntroSpeed = 0.25;
+let text, message, delay, index, timerEvent;
 
 function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); } }
 function increaseLives() { if (!throttled) { lives += 10; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 0); } }
@@ -236,3 +238,14 @@ function updateWaspBehavior(wasp) {
       }
     }
   }
+
+function addNextLetter() {
+    if (index < message.length) {
+        text.text += message[index];
+        index++;
+    }
+    else {
+        // All letters have been displayed, stop the animation
+        timerEvent.remove();
+    }
+}
