@@ -74,6 +74,7 @@ class Preload extends Phaser.Scene {
       this.load.audio('enemyEnraged', 'assets/audio/enemyEnraged.mp3');
       this.load.audio('energyPick', 'assets/audio/energyPick.mp3');
       this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');
+      this.load.audio('introTheme', 'assets/audio/introTheme.mp3');
       this.load.audio('laser', 'assets/audio/laser.mp3');
       this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
       this.load.audio('level1Theme', 'assets/audio/level1Theme.mp3');
@@ -104,11 +105,12 @@ class Preload extends Phaser.Scene {
 
     create() {
 
-      sound_titleTheme = this.sound.add('titleTheme', { loop: true }).setVolume(0.45);
+      sound_introTheme = this.sound.add('introTheme', { loop: true }).setVolume(0.45);
       sound_level1Theme = this.sound.add('level1Theme', { loop: true }).setVolume(0.35);
       sound_level2Theme = this.sound.add('level2Theme', { loop: true }).setVolume(0.35);
       sound_level3Theme = this.sound.add('level3Theme', { loop: true }).setVolume(0.75);
       sound_level4Theme = this.sound.add('level4Theme', { loop: true }).setVolume(0.75);
+      sound_titleTheme = this.sound.add('titleTheme', { loop: true }).setVolume(0.45);
 
       sound_beeconWalk = this.sound.add('beeconWalk').setVolume(0.25);        sound_beeconJump = this.sound.add('beeconJump'); sound_beeconJump.setVolume(0.25);
       sound_laser = this.sound.add('laser').setVolume(0.25);                  sound_bigLaser = this.sound.add('bigLaser').setVolume(0.15);

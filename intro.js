@@ -14,6 +14,9 @@ class Intro extends Phaser.Scene {
 
         scene = 'Intro';
 
+        sound_titleTheme.stop();
+        sound_introTheme.play();
+
         overlay = this.add.rectangle(-600, 0, this.game.config.width*8, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
         this.time.delayedCall(1000, function() {
@@ -102,6 +105,15 @@ class Intro extends Phaser.Scene {
                     player = this.physics.add.sprite(575, 355, 'beecon_full').setScale(0.3).setDepth(2.99);
                     player.setFlipY(true);
                     player.anims.play('drill', true);
+                    this.tweens.add({
+                        targets: sound_introTheme,
+                        volume: 0,
+                        duration: 2000,
+                        onComplete: function () {
+                          // Stop the sound once the fade out is complete
+                          sound_introTheme.stop();
+                        }
+                    });
                     this.cameras.main.fadeOut(2000);
                     this.cameras.main.once('camerafadeoutcomplete', () => {
                         this.scene.start('Scene1', { sceneBack: false });
@@ -134,6 +146,15 @@ class Intro extends Phaser.Scene {
                     player = this.physics.add.sprite(575, 355, 'beecon_full').setScale(0.3).setDepth(2.99);
                     player.setFlipY(true);
                     player.anims.play('drill', true);
+                    this.tweens.add({
+                        targets: sound_introTheme,
+                        volume: 0,
+                        duration: 2000,
+                        onComplete: function () {
+                          // Stop the sound once the fade out is complete
+                          sound_introTheme.stop();
+                        }
+                    });
                     this.cameras.main.fadeOut(2000);
                     this.cameras.main.once('camerafadeoutcomplete', () => {
                         this.scene.start('Scene1', { sceneBack: false });

@@ -137,6 +137,15 @@ class Title extends Phaser.Scene {
               switch (currentItem) {
                 case 0:
                   this.input.keyboard.enabled = false;
+                  this.tweens.add({
+                    targets: sound_titleTheme,
+                    volume: 0,
+                    duration: 2000,
+                    onComplete: function () {
+                      // Stop the sound once the fade out is complete
+                      sound_titleTheme.stop();
+                    }
+                  });
                   this.cameras.main.fadeOut(2000);
                   this.cameras.main.once('camerafadeoutcomplete', () => {
                       this.scene.start('Intro', { sceneBack: false });

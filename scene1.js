@@ -26,6 +26,7 @@ class Scene1 extends Phaser.Scene {
           });
         }, [], this);
 
+        sound_introTheme.stop();
         sound_titleTheme.stop();
         sound_level2Theme.stop();
 
