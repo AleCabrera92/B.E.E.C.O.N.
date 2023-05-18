@@ -20,20 +20,20 @@ let boxBackgroundF, tutorialBoxF, tutorialTextF, tutorialBoxMove, boxBackgroundM
 let tutorialBoxJump, boxBackgroundJump, tutorialTextJump, tutorialBoxShoot, boxBackgroundShoot, tutorialTextShoot;
 let tutorialBoxGlide, boxBackgroundGlide, tutorialTextGlide, tutorialBoxDrill, boxBackgroundDrill, tutorialTextDrill;
 let startText, optionsText, creditsText, qText, menuItems, soundText, tutorialText, languageText, menu2Items;
-let ship, skyIntro1, skyIntro2, skyIntro3, skyIntro4, skyIntro5, skyIntro6, skyIntro7, skyIntro8, skyIntroSpeed = 0.25;
-let text, message, delay, index, timerEvent, keyEnter;
+let ship, shipEngine, skyIntro1, skyIntro2, skyIntro3, skyIntro4, skyIntro5, skyIntro6, skyIntro7, skyIntro8, skyIntroSpeed = 0.25;
+let text, message, delay, index, timerEvent, keyEnter, topBar, bottomBar;
 let currentSentenceIndex = 0, currentSentenceSpanishIndex = 0;
 let sentences = [
     "HUMANITY IS DESPERATELY LOOKING FOR PLANETS TO COLONIZE.",
     "YOU ARE B.E.E.C.O.N., A DRONE CAPABLE OF RECOGNIZING AND EXPLORING ALIEN WORLDS.",
     "WELCOME TO THE UNKNOWN, WHERE ADVENTURE AWAITS.",
-    "EXPLORE STRANGE NEW WORLDS AND UNCOVER HIDDEN MYSTERIES."
+    "EXPLORE EXOTIC NEW WORLDS AND UNCOVER HIDDEN MYSTERIES."
 ];
 let sentencesSpanish = [
     "LA HUMANIDAD BUSCA DESESPERADAMENTE PLANETAS PARA COLONIZAR.",
     "ERES B.E.E.C.O.N., UN DRON CAPAZ DE RECONOCER Y EXPLORAR MUNDOS ALIENÍGENAS.",
     "BIENVENIDO A LO DESCONOCIDO, DONDE LA AVENTURA TE ESPERA.",
-    "EXPLORA NUEVOS MUNDOS EXTRAÑOS Y DESCUBRE MISTERIOS OCULTOS."
+    "EXPLORA NUEVOS MUNDOS EXÓTICOS Y DESCUBRE MISTERIOS OCULTOS."
 ];
 
 function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); } }
