@@ -136,6 +136,7 @@ class Title extends Phaser.Scene {
             case 'Enter':
               switch (currentItem) {
                 case 0:
+                  this.input.keyboard.enabled = false;
                   this.cameras.main.fadeOut(2000);
                   this.cameras.main.once('camerafadeoutcomplete', () => {
                       this.scene.start('Intro', { sceneBack: false });
