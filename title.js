@@ -136,7 +136,10 @@ class Title extends Phaser.Scene {
             case 'Enter':
               switch (currentItem) {
                 case 0:
-                  this.scene.start('Scene1');
+                  this.cameras.main.fadeOut(2000);
+                  this.cameras.main.once('camerafadeoutcomplete', () => {
+                      this.scene.start('Intro', { sceneBack: false });
+                  });
                   break;
                 case 1:
                   menuItems.forEach((item) => item.setVisible(false));
