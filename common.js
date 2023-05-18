@@ -27,13 +27,13 @@ let sentences = [
     "HUMANITY IS DESPERATELY LOOKING FOR PLANETS TO COLONIZE.",
     "YOU ARE B.E.E.C.O.N., A DRONE CAPABLE OF RECOGNIZING AND EXPLORING ALIEN WORLDS.",
     "WELCOME TO THE UNKNOWN, WHERE ADVENTURE AWAITS.",
-    "EXPLORE EXOTIC NEW WORLDS AND UNCOVER HIDDEN MYSTERIES."
+    /*"EXPLORE EXOTIC NEW WORLDS AND UNCOVER HIDDEN MYSTERIES."*/
 ];
 let sentencesSpanish = [
     "LA HUMANIDAD BUSCA DESESPERADAMENTE PLANETAS PARA COLONIZAR.",
     "ERES B.E.E.C.O.N., UN DRON CAPAZ DE RECONOCER Y EXPLORAR MUNDOS ALIENÍGENAS.",
     "BIENVENIDO A LO DESCONOCIDO, DONDE LA AVENTURA TE ESPERA.",
-    "EXPLORA NUEVOS MUNDOS EXÓTICOS Y DESCUBRE MISTERIOS OCULTOS."
+    /*"EXPLORA NUEVOS MUNDOS EXÓTICOS Y DESCUBRE MISTERIOS OCULTOS."*/
 ];
 
 function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); } }

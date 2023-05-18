@@ -16,6 +16,11 @@ class Intro extends Phaser.Scene {
 
         sound_titleTheme.stop();
         sound_introTheme.play();
+        sound_introTheme.setVolume(0.45);
+
+        currentSentenceIndex = 0;
+        currentSentenceSpanishIndex = 0;
+        //index = 0;
 
         overlay = this.add.rectangle(-600, 0, this.game.config.width*8, this.game.config.height*2, 0x000000).setOrigin(0).setDepth(1002);
 
@@ -88,6 +93,8 @@ class Intro extends Phaser.Scene {
 
         keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
+        this.input.keyboard.enabled = true;
+
         if (language) {
 
             keyEnter.on('down', function () {
@@ -102,6 +109,7 @@ class Intro extends Phaser.Scene {
                 text.setText("");
         
                 if (currentSentenceIndex >= sentences.length) {
+                    this.input.keyboard.enabled = false;
                     player = this.physics.add.sprite(575, 355, 'beecon_full').setScale(0.3).setDepth(2.99);
                     player.setFlipY(true);
                     player.anims.play('drill', true);
@@ -143,6 +151,7 @@ class Intro extends Phaser.Scene {
                 text.setText("");
         
                 if (currentSentenceSpanishIndex >= sentencesSpanish.length) {
+                    this.input.keyboard.enabled = false;
                     player = this.physics.add.sprite(575, 355, 'beecon_full').setScale(0.3).setDepth(2.99);
                     player.setFlipY(true);
                     player.anims.play('drill', true);

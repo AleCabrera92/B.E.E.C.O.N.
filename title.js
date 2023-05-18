@@ -17,7 +17,7 @@ class Title extends Phaser.Scene {
     this.time.delayedCall(1000, function() { this.tweens.add({ targets: overlay, alpha: 0, duration: 1000, onComplete: function() { overlay.destroy(); } }); }, [], this);
     overlay2 = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x000000).setOrigin(0).setDepth(1000);
     this.time.delayedCall(3000, function() { this.tweens.add({ targets: overlay2, alpha: 0, duration: 1000, onComplete: function() { overlay2.destroy(); } }); }, [], this);
-    this.time.delayedCall(850, function() { if (!sound_titleTheme.isPlaying) { sound_titleTheme.play(); } }, [], this);
+    this.time.delayedCall(850, function() { if (!sound_titleTheme.isPlaying) { sound_titleTheme.play(); sound_titleTheme.setVolume(0.45); } }, [], this);
 
     platforms = this.physics.add.staticGroup();
     player = this.physics.add.sprite(750, 600, 'beecon_full').setScale(0.3);
@@ -106,6 +106,8 @@ class Title extends Phaser.Scene {
     let current2Item = 0;
 
     this.timer = this.time.addEvent({ delay: 500, loop: true, callback: () => { if (!menuVisible && !menu2Visible) { pressStartText.visible = !pressStartText.visible; } } });
+
+    this.input.keyboard.enabled = true;
 
     this.input.keyboard.on('keydown', (event) => {
       if (!menuVisible && !menu2Visible) {
