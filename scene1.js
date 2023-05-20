@@ -132,8 +132,16 @@ class Scene1 extends Phaser.Scene {
                         enemy.disableBody(true, true);
                         if (lives < 99) { 
                             let energyOrb = energyOrbs.create(enemy.x, enemy.y, 'energyOrb');
-                            energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
-                            energyOrb.body.setSize(50, 50);
+                            energyOrb.setOrigin(0.5, 0.5).setScale(0.4).setDepth(0.25);
+                            energyOrb.body.setSize(80, 80);
+                            self.tweens.add({
+                                targets: energyOrb,
+                                alpha: 0.9,
+                                duration: 500,
+                                yoyo: true,
+                                repeat: -1,
+                                ease: 'Sine.easeOutIn',
+                            });
                             energyOrb.setVelocityY(-500);
                             self.physics.add.collider(energyOrb, platforms);
                             self.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
@@ -159,8 +167,16 @@ class Scene1 extends Phaser.Scene {
                     enemy.disableBody(true, true);
                     if (lives < 99) { 
                         let energyOrb = energyOrbs.create(enemy.x, enemy.y, 'energyOrb');
-                        energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
-                        energyOrb.body.setSize(50, 50);
+                        energyOrb.setOrigin(0.5, 0.5).setScale(0.4).setDepth(0.25);
+                        energyOrb.body.setSize(80, 80);
+                        self.tweens.add({
+                            targets: energyOrb,
+                            alpha: 0.9,
+                            duration: 500,
+                            yoyo: true,
+                            repeat: -1,
+                            ease: 'Sine.easeOutIn',
+                        });
                         energyOrb.setVelocityY(-500);
                         selfs.physics.add.collider(energyOrb, platforms);
                         selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });

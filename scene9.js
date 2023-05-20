@@ -61,7 +61,6 @@ class Scene9 extends Phaser.Scene {
         player.anims.play('idleBack');
 
         selfs = this;
-        energyOrbs = this.physics.add.group();
         beeconFs = this.physics.add.group();
 
         gameOverImage = this.physics.add.staticGroup();

@@ -143,7 +143,7 @@ class Preload extends Phaser.Scene {
       this.anims.create({key: 'waspAttack', frames: this.anims.generateFrameNumbers('wasp', { start: 3, end: 5 }), frameRate: 10, repeat: 0});
       this.anims.create({key: 'babyWaspChill', frames: this.anims.generateFrameNumbers('babyWasp', { start: 0, end: 3 }), frameRate: 10, repeat: -1});
 
-      this.scene.start('Scene3');
+      this.scene.start('First');
 
     }
 
