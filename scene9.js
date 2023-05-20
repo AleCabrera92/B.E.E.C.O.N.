@@ -10,8 +10,6 @@ class Scene9 extends Phaser.Scene {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
-        language = false;
-
         scene = 9;
 
         sound_thunder.setVolume(0.95);
