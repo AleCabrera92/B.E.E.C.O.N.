@@ -114,7 +114,7 @@ class Ending extends Phaser.Scene {
   
               indexEnd = 0;
   
-              timerEvent = this.time.addEvent({ delay: 100, callback: addNextLetterEnd, loop: true });
+              timerEvent = this.time.addEvent({ delay: 75, callback: addNextLetterEnd, loop: true });
           }, this);
 
       } else {
@@ -158,7 +158,7 @@ class Ending extends Phaser.Scene {
   
               indexEnd = 0;
   
-              timerEvent = this.time.addEvent({ delay: 100, callback: addNextLetterEnd, loop: true });
+              timerEvent = this.time.addEvent({ delay: 75, callback: addNextLetterEnd, loop: true });
           }, this);
 
       }

@@ -134,7 +134,7 @@ class Intro extends Phaser.Scene {
     
                 index = 0;
     
-                timerEvent = this.time.addEvent({ delay: 100, callback: addNextLetter, loop: true });
+                timerEvent = this.time.addEvent({ delay: 75, callback: addNextLetter, loop: true });
             }, this);
 
         } else {
@@ -176,7 +176,7 @@ class Intro extends Phaser.Scene {
     
                 index = 0;
     
-                timerEvent = this.time.addEvent({ delay: 100, callback: addNextLetter, loop: true });
+                timerEvent = this.time.addEvent({ delay: 75, callback: addNextLetter, loop: true });
             }, this);
 
         }

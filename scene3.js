@@ -195,9 +195,9 @@ class Scene3 extends Phaser.Scene {
                 bigLaser.destroy();
             });
         });
-
         self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
+            brokenGround = false;
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 let timer = 0;
                 let timerEvent = self.time.addEvent({
@@ -205,6 +205,10 @@ class Scene3 extends Phaser.Scene {
                     callback: () => {
                         timer++;
                         if (timer >= 1 && player.anims.currentAnim.key === 'drill') {
+                            if (!brokenGround) {
+                                sound_brokenGround.play();
+                            }
+                            brokenGround = true;
                             platform.destroy();
                             timerEvent.remove();
                         }

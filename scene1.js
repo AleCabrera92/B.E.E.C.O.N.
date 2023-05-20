@@ -194,9 +194,14 @@ class Scene1 extends Phaser.Scene {
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
         this.physics.add.collider(player, platforms, function(player, platform) {
+            brokenGround = false;
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableGround') {
                 timer++;
                 if (timer >= 50) {
+                    if (!brokenGround) {
+                        sound_brokenGround.play();
+                    }
+                    brokenGround = true;
                     platform.destroy();
                 }
             }

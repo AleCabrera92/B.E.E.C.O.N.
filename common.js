@@ -15,7 +15,7 @@ let desiredCameraY = 0, interpolationFactor, honeyBeam = false, powerup;
 let tutorialBoxHoneyBeam, boxBackgroundHoneyBeam, tutorialTextHoneyBeam, tutorialBoxHoneyBeam2, boxBackgroundHoneyBeam2, tutorialTextHoneyBeam2, tutorialBoxHoneyBeam3, boxBackgroundHoneyBeam3, tutorialTextHoneyBeam3;
 let energyOrb, energyOrbs, self, selfs, selfss, sound_energyPick, enemyFs, eneweeFs, lilWaspFs, waspFs, beeconFs;
 let waspInterval, waspTween, healthBar, waspNestDoor, destroyed, fadeOutTriggered = false;
-let volume = true, tutorial = true, language = true;
+let volume = true, tutorial = true, language = true, sound_brokenGround, brokenGround;
 let boxBackgroundF, tutorialBoxF, tutorialTextF, tutorialBoxMove, boxBackgroundMove, tutorialTextMove;
 let tutorialBoxJump, boxBackgroundJump, tutorialTextJump, tutorialBoxShoot, boxBackgroundShoot, tutorialTextShoot;
 let tutorialBoxGlide, boxBackgroundGlide, tutorialTextGlide, tutorialBoxDrill, boxBackgroundDrill, tutorialTextDrill;

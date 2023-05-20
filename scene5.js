@@ -316,12 +316,16 @@ class Scene5 extends Phaser.Scene {
                     bigLaser.destroy();
                 });
             });
-
         self = this;
         this.physics.add.collider(player, platforms, function(player, platform) {
+            brokenGround = false;
             if (player.anims.currentAnim.key === 'drill' && platform.texture.key === 'breakableBranch') {
                 timer++;
                 if (timer >= 50) {
+                    if (!brokenGround) {
+                        sound_brokenGround.play();
+                    }
+                    brokenGround = true;
                     platform.destroy();
                 }
             }
@@ -382,7 +386,7 @@ class Scene5 extends Phaser.Scene {
         if (i > 1 && i < 4) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;}
         if (i > 4) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = true;}}
         if (sceneBack) {  } else { for (let i = 5.48; i <= 7; i++) {platforms.create(i * 120, -487, 'breakableBranch').setScale(0.8).refreshBody().setDepth(0.2);} }
-        for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -800, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
+        for (let i = 0.48; i <= 7; i++) {platforms.create(i * 120, -802.3, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 2; i++) {platforms.create(i * 120, -900, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 0.48; i <= 1; i++) {platforms.create(i * 120, -1000, 'branch').setScale(0.8).refreshBody().setDepth(0.2);}
         for (let i = 1.48; i <= 5; i++) {stuck = platforms.create(890, -235 - (i * 120), 'trunk').setScale(0.8).refreshBody().setDepth(0.2);
