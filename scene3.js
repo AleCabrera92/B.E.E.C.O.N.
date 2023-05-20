@@ -512,7 +512,7 @@ class Scene3 extends Phaser.Scene {
         }
 
         eneweeGroup.getChildren().forEach(enewee => {
-            if (Math.abs(player.x - enewee.x) <= 75 && !enewee.body.onFloor()) {
+            if (Math.abs(player.x - enewee.x) <= 75 && !enewee.body.onFloor() && player.alpha != 0) {
                 if (enewee.anims.currentAnim.key === 'eneweeStill') {
                     enewee.anims.play('eneweeChill');
                 }
