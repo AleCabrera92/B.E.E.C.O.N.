@@ -4,7 +4,7 @@ let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLa
 let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_level1Theme, sound_level2Theme, sound_level3Theme, sound_level4Theme, sound_enemyEnraged;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
 let scene, gameOverImage, randomText, chargeReadySpanish, sound_introTheme;
-let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP;
+let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP, keyE;
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup, wasp, waspLives;
 let lightning, delayLightningFirt, delayLightning, airPlatform, laser, jumpshrooms;
@@ -23,6 +23,7 @@ let startText, optionsText, creditsText, qText, menuItems, soundText, tutorialTe
 let ship, shipEngine, skyIntro1, skyIntro2, skyIntro3, skyIntro4, skyIntro5, skyIntro6, skyIntro7, skyIntro8, skyIntroSpeed = 0.25;
 let text, message, delay, index, timerEvent, keyEnter, topBar, bottomBar;
 let currentSentenceIndex = 0, currentSentenceSpanishIndex = 0;
+let beaconBox, beaconBoxBackground, beaconText;
 let sentences = [
     "HUMANITY IS DESPERATELY LOOKING FOR PLANETS TO COLONIZE.",
     "YOU ARE B.E.E.C.O.N., A DRONE CAPABLE OF RECOGNIZING AND EXPLORING ALIEN WORLDS.",
@@ -149,6 +150,7 @@ function gameOver() {
   sound_level2Theme.stop();
   sound_level3Theme.stop();
   sound_level4Theme.stop();
+  sound_titleTheme.stop();
   sound_beeconF.play();
   player.alpha = 0;
   player.anims.stop();
@@ -159,6 +161,9 @@ function gameOver() {
   } else if (scene === 6) {
       gameOverImage.create(game.config.width / 2.35, player.y-680, 'gameOver');
       gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
+  } else if (scene === 9) {
+    gameOverImage.create(-550, 350, 'gameOver');
+    gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
   } else {
       gameOverImage.create(player.x+320, game.config.height / 4, 'gameOver');
       gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);

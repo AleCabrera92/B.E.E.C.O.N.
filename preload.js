@@ -133,6 +133,7 @@ class Preload extends Phaser.Scene {
       this.anims.create({key: 'fallBack', frames: this.anims.generateFrameNumbers('beecon_full', { start: 16, end: 17 }), frameRate: 10, repeat: -1});
       this.anims.create({key: 'fall', frames: this.anims.generateFrameNumbers('beecon_full', { start: 22, end: 23 }), frameRate: 10, repeat: -1});
       this.anims.create({key: 'drill', frames: this.anims.generateFrameNumbers('beecon_full', { start: 10, end: 11 }), frameRate: 30, repeat: -1});
+      this.anims.create({key: 'beacon', frames: this.anims.generateFrameNumbers('beecon_full', { start: 24, end: 25 }), frameRate: 10, repeat: -1});
       this.anims.create({key: 'enemyChill', frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }), frameRate: 10, repeat: -1});
       this.anims.create({key: 'enemyEnraged', frames: this.anims.generateFrameNumbers('enemy', { start: 2, end: 3 }), frameRate: 10, repeat: -1});
       this.anims.create({key: 'eneweeStill', frames: this.anims.generateFrameNumbers('enewee', { start: 0, end: 1 }), frameRate: 10, repeat: -1});

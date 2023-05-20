@@ -1,7 +1,7 @@
-class Scene8 extends Phaser.Scene {
+class Scene9 extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'Scene8' });
+        super({ key: 'Scene9' });
     }
 
     preload() { /*Assets to preload for the scene*/ }
@@ -10,23 +10,31 @@ class Scene8 extends Phaser.Scene {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
-        scene = 8;
+        scene = 9;
 
-        sound_thunder.setVolume(0.75);
+        sound_thunder.setVolume(0.95);
 
         if (sound_drill.isPlaying) {
             sound_drill.stop();
         }
 
-        sound_rain.stop();
-        sound_rain2.stop();
-        sound_rain.play();
-        sound_rain.setVolume(0.15);
-        setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.15)}, 5000);
+        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
 
         isMusicPlaying = false;
         this.sound.sounds.forEach(function(sound) { if (sound.key === 'titleTheme' && sound.isPlaying) { isMusicPlaying = true; } });
         if (!isMusicPlaying) { sound_titleTheme.play(); sound_titleTheme.setVolume(0.45); }
+
+        sound_rain.stop();
+        sound_rain2.stop();
+        if (sceneBack) {
+            sound_rain.play();
+            sound_rain.setVolume(0.15);
+            setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.15)}, 5000);
+        } else {
+            sound_rain.play();
+            sound_rain.setVolume(0.35);
+            setTimeout(() => { sound_rain2.play(); sound_rain2.setVolume(0.35)}, 5000);
+        }
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
@@ -36,15 +44,7 @@ class Scene8 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
 
-        beeconFs = this.physics.add.group();
-
-        let { sceneBack } = this.scene.settings.data || { sceneBack: false };
-
-        if (sceneBack === true) {
-            player = this.physics.add.sprite(50, -500, 'beecon_full').setScale(0.3).setDepth(0.19);
-        } else {
-            player = this.physics.add.sprite(100, 603, 'beecon_full').setScale(0.3).setDepth(0.19);
-        }
+        player = this.physics.add.sprite(900, 703, 'beecon_full').setScale(0.3).setDepth(0.19);
 
         player.body.setSize(120, 120);
         player.body.setOffset(65, 110);
@@ -58,7 +58,11 @@ class Scene8 extends Phaser.Scene {
             livesText = this.add.text(player.x, 19, 'Energía: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
         }
 
-        player.anims.play('idle');
+        player.anims.play('idleBack');
+
+        selfs = this;
+        energyOrbs = this.physics.add.group();
+        beeconFs = this.physics.add.group();
 
         gameOverImage = this.physics.add.staticGroup();
 
@@ -74,11 +78,8 @@ class Scene8 extends Phaser.Scene {
         this.physics.add.collider(bigLasers, bigLasers);
         this.physics.add.collider(bigLasers, bigLasers, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
 
-        for (let i = 0; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
- 
-        for (let i = 0; i <= 1; i++) {
-            this.add.image(580, 800 - (i*973.5), 'waspNestTexture').setScale(1.65).setScrollFactor(0.2).setDepth(0.1).setTint(Phaser.Display.Color.GetColor(100, 125, 150));
-        }
+        for (let i = -10; i < 3; i++) {this.add.image(i * 1024, 300, 'sky').setScrollFactor(0.1).setDepth(-1);}
+        for (let i = -10; i < 8; i++) {this.add.image(i * 800, 500, 'skyOverlay').setScrollFactor(0.1).setScale(2).setAlpha(1).setDepth(-1).setTint(Phaser.Display.Color.GetColor(100, 125, 250));}
 
         clouds = this.physics.add.image(576, 94, 'clouds').setScrollFactor(0.13).setDepth(-0.9).setGravity(false).setAlpha(0.75);
         clouds.body.setVelocityX(-51); clouds.body.setCollideWorldBounds(false); clouds.body.allowGravity = false;
@@ -87,45 +88,26 @@ class Scene8 extends Phaser.Scene {
         clouds3 = this.physics.add.image(803, 433, 'clouds').setScrollFactor(0.17).setDepth(-0.9).setGravity(false).setAlpha(0.75);
         clouds3.body.setVelocityX(-22); clouds3.body.setCollideWorldBounds(false); clouds3.body.allowGravity = false;
 
-        for (let i = -1; i < 10; i++) {
-            if (i < 2) {
-                stuck = platforms.create(-150, -20 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5).setFlip(true);
-                if (i > -2 && i < 0) {stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = false;}
-                if (i > -1 && i < 1) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;}
-                if (i > 0) {stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = true;}
-            }
-            stuck = platforms.create(1200, 186 - (i*300), 'waspNestTrunk').setScale(2).refreshBody().setDepth(0.5);
-            stuck.body.checkCollision.down = false; stuck.body.checkCollision.up = false;
+        for (let i = -1; i < 2; i++) {
+            stuck = platforms.create(1104, 218 - (i*300), 'trunk').setScale(2).refreshBody().setDepth(0.189);
+            stuck.body.checkCollision.down = true; stuck.body.checkCollision.up = true;
         }
 
-        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -600, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => -801, getEnd: () => -799, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
-        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, -300, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => -501, getEnd: () => -499, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
-        for (let i = -1; i < 10; i++) {leavesBG = this.add.image(i * 150, 0, 'leavesBG').setScrollFactor(0.2).setDepth(-0.18).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
-            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });
-            this.tweens.add({targets: leavesBG, y: { getStart: () => -201, getEnd: () => -199, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 150 });}
+        destroyed = platforms.create(1101, 800, 'trunk').setScale(2).refreshBody().setDepth(0.189).setAlpha(0);
+        destroyed.body.checkCollision.down = false; destroyed.body.checkCollision.up = false;
 
-        platforms.create(1000, 495, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        platforms.create(1000, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        platforms.create(920, 595, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        platforms.create(50, 325, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 400, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        platforms.create(1000, 140, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 6.78; i <= 9; i++) {platforms.create(-60 + i * 120, 220, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        platforms.create(50, -50, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, 30, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        platforms.create(1000, -230, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 6.78; i <= 9; i++) {platforms.create(-60 + i * 120, -150, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
-        platforms.create(50, -410, 'waspNestPlatform').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
-        for (let i = 0.48; i <= 3; i++) {platforms.create(-10 + i * 120, -330, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.2).setTint(Phaser.Display.Color.GetColor(210, 210, 210));}
+        this.add.image(1069, 500, 'waspNest').setScale(1.5).setScrollFactor(1).setDepth(0.2);
+        waspNestDoor = this.add.image(1069, 500, 'waspNestDoor').setScale(1.5).setScrollFactor(1).setDepth(0.2);
+        this.add.image(1069, 500, 'waspNestUnder').setScale(1.5).setScrollFactor(1).setDepth(0.189);
 
-        platforms.create(431, -1200, 'waspNestTexture').setScale(1.65).refreshBody().setDepth(1).setTint(Phaser.Display.Color.GetColor(210, 210, 210));
 
-        for (let i = 0.2; i < 4; i++) {
-            platforms.create(i * 512, 760, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
+        for (let i = -5.5; i < 10; i++) {leavesBG = this.add.image(i * 150, 820, 'leavesBG').setScrollFactor(1).setDepth(0.179).setAngle(-135).setScale(1).setTint(Phaser.Display.Color.GetColor(150, 150, 250));
+            this.tweens.add({targets: leavesBG, angle: { getStart: () => 166, getEnd: () => 164, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 450 });
+            this.tweens.add({targets: leavesBG, y: { getStart: () => 821, getEnd: () => 819, ease: 'Sine.easeInOut', yoyo: true, repeat: -1 }, duration: 450 });}
+
+
+        for (let i = -1.2; i < 3; i++) {
+            platforms.create(i * 512, 860, 'treeFloor').setScale(1).refreshBody().setDepth(0.2);
         }
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -138,12 +120,13 @@ class Scene8 extends Phaser.Scene {
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+        keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         cursors = this.input.keyboard.createCursorKeys();
 
         camera = this.cameras.main;
         camera.scrollX = game.config.width * 2;
-        camera.scrollY = 0;
+        camera.scrollY = 175;
 
         if (language) {
             chargeReady = this.add.sprite(player.x, player.y, 'chargeReady').setScale(0.5).setVisible(false).setDepth(1).setAlpha(0.5);
@@ -174,52 +157,93 @@ class Scene8 extends Phaser.Scene {
         emitter = this.add.particles(0, 0, 'rain',{
             x: 0,
             y: -100,
-            quantity: 10,
+            quantity: 20,
             lifespan: 1600,
             speedY: { min: 700, max: 900 },
             speedX: { min: -5, max: 5 },
             scale: { start: 0.1, end: 0.5 },
             rotate: { start: 0, end: 0 },
             frequency: 5,
-            emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.game.config.width*2, 1) },
+            emitZone: { source: new Phaser.Geom.Rectangle(-this.game.config.width, 0, this.game.config.width*8, 1) },
             on: true
         });
       
-        emitter.setScrollFactor(0).setDepth(-0.11);
+        emitter.setScrollFactor(0.5).setDepth(-0.11);
 
         fadeOutTriggered = false;
 
-        babyWaspGroup = this.add.group();
-        for (let i = -1; i < 3; i++) {
-          if (i === -1) {
-            babyWasp = this.physics.add.sprite(800, 400, 'babyWasp').setScale(0.33).setDepth(0.19);
-          } else if (i === 2) {
-            babyWasp = this.physics.add.sprite(800, -400, 'babyWasp').setScale(0.33).setDepth(0.19);
-          } else {
-            babyWasp = this.physics.add.sprite(300 + (i * 200), 200 - (i * 50), 'babyWasp').setScale(0.33).setDepth(0.19);
-          }
-          babyWasp.body.allowGravity = false;
-          babyWasp.setVelocityY(0);
-          babyWasp.setVelocityX(0);
-          babyWasp.setImmovable(true);
-          babyWasp.anims.play('babyWaspChill');
-          babyWaspGroup.add(babyWasp);
+        beaconBox = this.add.container(-600, 528);
+        beaconBoxBackground = this.add.rectangle(0, 0, 200, 100, 0x000000, 0.85);
+        beaconBox.add(beaconBoxBackground);
+        if (language) {
+            beaconText = this.add.text(0, 0, "Activate beacon.\n\nPRESS E", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });
+        } else {
+            beaconText = this.add.text(0, 0, "Activar baliza.\n\nPULSA E", { fontSize: '18px', fontFamily: 'Arial', color: '#ffffff', align: 'center', wordWrap: { width: 175 } });  
         }
+        beaconText.setOrigin(0.5, 0.5);
+        beaconBox.add(beaconText);
+        this.add.existing(beaconBox);
+        beaconBox.setDepth(-99);
 
-
-        
+        this.input.keyboard.enabled = true;
 
     }
 
     update() {
 
-        babyWaspGroup.getChildren().forEach(babyWasp => {
-            if (player.x > babyWasp.x) {
-                babyWasp.setFlipX(true);
+        waspNestDoor.visible = false;
+        destroyed.destroy();
+
+        if (player.x < 1000 && player.y > 1000 && !fadeOutTriggered) {
+            lives = 0;
+            updateLivesUI();
+            gameOver();
+            if (language) {
+                randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
             } else {
-                babyWasp.setFlipX(false);
+                randomText = this.add.text(0, 0, 'PULSA INTRO PARA REINTENTAR, E PARA SALIR', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+            }  
+            randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(-550, 510);
+            this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
+            this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
+            this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+            this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })});
+            fadeOutTriggered = true;
+        }
+
+        // Check player's position
+        if (player.x >= -800 && player.x <= -400) {
+            // Set the text alpha to 1
+            beaconBox.setDepth(1);
+
+            // Check if the 'e' key is pressed
+            if (Phaser.Input.Keyboard.JustDown(keyE) && player.body.onFloor() && player.body.velocity.x === 0) {
+
+                beaconBox.setAlpha(0);
+                this.input.keyboard.enabled = false;
+                player.anims.play('beacon', true);
+                this.tweens.add({
+                    targets: sound_titleTheme,
+                    volume: 0,
+                    duration: 4000,
+                    onComplete: function () {
+                        // Stop the sound once the fade out is complete
+                        sound_titleTheme.stop();
+                    }
+                });
+                this.time.delayedCall(2000, () => {
+                    this.cameras.main.fadeOut(2000);
+                });
+                this.cameras.main.once('camerafadeoutcomplete', () => {
+                    this.scene.start('Ending', { sceneBack: false });
+                });
+                return; // Exit the function to prevent further execution
+
             }
-        });
+        } else {
+            // Set the text alpha back to 0
+            beaconBox.setDepth(-99);
+        }
 
         if (player.body.velocity.y > 1000) {
             player.body.setBounce(0.2);
@@ -227,21 +251,12 @@ class Scene8 extends Phaser.Scene {
             player.body.setBounce(0);
         }
 
-        if (player.x < -150 && player.y > 800 && !fadeOutTriggered) {
+        if (player.x > 1250 && !fadeOutTriggered) {
             player.setAlpha(0);
             this.cameras.main.fadeOut(500);
             this.cameras.main.once('camerafadeoutcomplete', () => {
-                this.scene.start('Scene7', { sceneBack: true });
+                this.scene.start('Scene8', { sceneBack: true });
             });
-            fadeOutTriggered = true;
-        }
-
-        if (player.x < -150 && player.y < 0 && !fadeOutTriggered) {
-                player.setAlpha(0);
-                this.cameras.main.fadeOut(500);
-                this.cameras.main.once('camerafadeoutcomplete', () => {
-                    this.scene.start('Scene9', { sceneBack: false });
-                });
             fadeOutTriggered = true;
         }
 
@@ -254,14 +269,23 @@ class Scene8 extends Phaser.Scene {
 
         camera.scrollX = -100;
 
-        if (player.y <= 603) {
-            camera.scrollY = player.y - 505;
-
-            liveBG.x = 3;
-            liveBG.y = player.y-472;
-    
-            livesText.x = -78;
-            livesText.y = player.y-483;
+        if (player.x > 970) {
+            liveBG.x = 0;
+            liveBG.y = 205;
+            livesText.x = -80;
+            livesText.y = 194;
+        } else if (player.x <= 970 && player.x > -130) {
+            camera.scrollX = player.x - game.config.width / 1.2;
+            liveBG.x = player.x+100 - game.config.width / 1.2;
+            liveBG.y = 205;
+            livesText.x = player.x+20 - game.config.width / 1.2;
+            livesText.y = 194;
+        } else {
+            camera.scrollX = -1200;
+            liveBG.x = -1100;
+            liveBG.y = 205;
+            livesText.x = -1180;
+            livesText.y = 194;
         }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
@@ -327,7 +351,7 @@ class Scene8 extends Phaser.Scene {
                 player.anims.play('jumpBack', true);
             } else if (!player.body.onFloor() && keyL.isDown) {
                 player.anims.play('glideBack', true);   
-            } else if (!player.body.onFloor()) {
+            } else if (!player.body.onFloor() && !keyL.isDown) {
                 player.anims.play('fallBack', true);
             } else {
                 player.anims.play('left', true);
@@ -342,7 +366,7 @@ class Scene8 extends Phaser.Scene {
                 player.anims.play('fall', true);
             } else {
                 player.anims.play('right', true);
-            }       
+            }      
         } else {
             player.setVelocityX(0);
             if (player.anims.currentAnim === null || player.anims.currentAnim.key === 'right' || player.anims.currentAnim.key === 'glide' || player.anims.currentAnim.key === 'fall') {
