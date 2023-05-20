@@ -10,6 +10,8 @@ class Scene9 extends Phaser.Scene {
 
         this.scale.refresh(); this.cameras.main.fadeIn(500);
 
+        language = false;
+
         scene = 9;
 
         sound_thunder.setVolume(0.95);
@@ -234,6 +236,8 @@ class Scene9 extends Phaser.Scene {
                     this.cameras.main.fadeOut(2000);
                 });
                 this.cameras.main.once('camerafadeoutcomplete', () => {
+                    sound_rain.stop();
+                    sound_rain2.stop();
                     this.scene.start('Ending', { sceneBack: false });
                 });
                 return; // Exit the function to prevent further execution

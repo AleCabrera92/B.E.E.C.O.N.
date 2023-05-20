@@ -44,6 +44,7 @@ class Preload extends Phaser.Scene {
       this.load.image('sky', 'assets/sky.png');
       this.load.image('ship', 'assets/ship.png');
       this.load.image('shipEngine', 'assets/shipEngine.png');
+      this.load.image('skyEnding', 'assets/skyEnding.png');
       this.load.image('skyIntro', 'assets/skyIntro.png');
       this.load.image('skyOverlay', 'assets/skyOverlay.png');
       this.load.image('spaceRain', 'assets/spaceRain.png');

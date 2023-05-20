@@ -21,8 +21,9 @@ let tutorialBoxJump, boxBackgroundJump, tutorialTextJump, tutorialBoxShoot, boxB
 let tutorialBoxGlide, boxBackgroundGlide, tutorialTextGlide, tutorialBoxDrill, boxBackgroundDrill, tutorialTextDrill;
 let startText, optionsText, creditsText, qText, menuItems, soundText, tutorialText, languageText, menu2Items;
 let ship, shipEngine, skyIntro1, skyIntro2, skyIntro3, skyIntro4, skyIntro5, skyIntro6, skyIntro7, skyIntro8, skyIntroSpeed = 0.25;
-let text, message, delay, index, timerEvent, keyEnter, topBar, bottomBar;
-let currentSentenceIndex = 0, currentSentenceSpanishIndex = 0;
+let skyEnding1, skyEnding2, skyEnding3, skyEndingSpeed = 0.25;
+let text, message, delay, index, indexEnd, timerEvent, keyEnter, topBar, bottomBar;
+let currentSentenceIndex = 0, currentSentenceSpanishIndex = 0, currentSentenceEndIndex = 0, currentSentenceEndSpanishIndex = 0;
 let beaconBox, beaconBoxBackground, beaconText;
 let sentences = [
     "HUMANITY IS DESPERATELY LOOKING FOR PLANETS TO COLONIZE.",
@@ -34,6 +35,18 @@ let sentencesSpanish = [
     "LA HUMANIDAD BUSCA DESESPERADAMENTE PLANETAS PARA COLONIZAR.",
     "ERES B.E.E.C.O.N., UN DRON CAPAZ DE RECONOCER Y EXPLORAR MUNDOS ALIENÍGENAS.",
     "BIENVENIDO A LO DESCONOCIDO, DONDE LA AVENTURA TE ESPERA.",
+    /*"EXPLORA NUEVOS MUNDOS EXÓTICOS Y DESCUBRE MISTERIOS OCULTOS."*/
+];
+let sentencesEnd = [
+    "THE BEACON WAS ACTIVATED SUCCESSFULLY. HUMANITY WILL THRIVE.",
+    "ALL THANKS TO YOU, B.E.E.C.O.N.",
+    "WELL DONE!",
+    /*"EXPLORE EXOTIC NEW WORLDS AND UNCOVER HIDDEN MYSTERIES."*/
+];
+let sentencesEndSpanish = [
+    "LA BALIZA FUE ACTIVADA CON ÉXITO. LA HUMANIDAD PROSPERARÁ.",
+    "TODO GRACIAS A TI, B.E.E.C.O.N.",
+    "¡BUEN TRABAJO!",
     /*"EXPLORA NUEVOS MUNDOS EXÓTICOS Y DESCUBRE MISTERIOS OCULTOS."*/
 ];
 
@@ -261,6 +274,17 @@ function addNextLetter() {
     if (index < message.length) {
         text.text += message[index];
         index++;
+    }
+    else {
+        // All letters have been displayed, stop the animation
+        timerEvent.remove();
+    }
+}
+
+function addNextLetterEnd() {
+    if (indexEnd < message.length) {
+        text.text += message[indexEnd];
+        indexEnd++;
     }
     else {
         // All letters have been displayed, stop the animation
