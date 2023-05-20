@@ -103,6 +103,7 @@ class Ending extends Phaser.Scene {
                   });
                   this.cameras.main.fadeOut(2000);
                   this.cameras.main.once('camerafadeoutcomplete', () => {
+                    this.sound.stopAll();
                     lives = 99;
                     this.scene.start('Title', { sceneBack: false });
                   });
@@ -147,6 +148,7 @@ class Ending extends Phaser.Scene {
                   });
                   this.cameras.main.fadeOut(2000);
                   this.cameras.main.once('camerafadeoutcomplete', () => {
+                    this.sound.stopAll();
                     lives = 99;
                     this.scene.start('Title', { sceneBack: false });
                   });

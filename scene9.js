@@ -236,6 +236,7 @@ class Scene9 extends Phaser.Scene {
                 this.cameras.main.once('camerafadeoutcomplete', () => {
                     sound_rain.stop();
                     sound_rain2.stop();
+                    this.sound.stopAll();
                     this.scene.start('Ending', { sceneBack: false });
                 });
                 return; // Exit the function to prevent further execution
