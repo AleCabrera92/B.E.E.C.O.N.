@@ -360,9 +360,9 @@ class Scene3 extends Phaser.Scene {
             screenHeight = camera.height;
             screenCenterX = camera.scrollX + screenWidth / 2;
             screenCenterY = camera.scrollY + screenHeight / 2;
-            pauseOverlay = this.add.rectangle(screenCenterX, screenCenterY, screenWidth, screenHeight, 0x000000, 0.25).setDepth(1);
+            pauseOverlay = this.add.rectangle(screenCenterX, screenCenterY, screenWidth, screenHeight, 0x000000, 0.25).setDepth(333);
             pauseText = this.add.text(screenCenterX, screenCenterY, 'PAUSE', { font: '32px Arial', fill: '#fff' }).setOrigin(0.5);
-            pauseText.setShadow(2, 2, '#000000', 2).setDepth(3);
+            pauseText.setShadow(2, 2, '#000000', 2).setDepth(333);
             this.sound.pauseAll();
             this.sound.mute = true;
             game.scene.pause('Scene' + scene);
