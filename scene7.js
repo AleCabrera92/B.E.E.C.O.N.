@@ -56,6 +56,7 @@ class Scene7 extends Phaser.Scene {
         player.setBounce(0.2);
         player.setCollideWorldBounds(false);
         liveBG = this.add.image(player.x, 100, 'lifeBG').setScale(0.65).setDepth(10).setAlpha(0.9);
+        liveWaspBG = this.add.image(player.x, 100, 'lifeWaspBG').setScale(0.65).setDepth(200).setAlpha(1);
         if (language) {
             livesText = this.add.text(player.x, 19, 'Energy: ' + lives, { fontFamily: 'Arial', fontSize: 20, color: '#000000' }).setDepth(10);
         } else {
@@ -393,6 +394,10 @@ class Scene7 extends Phaser.Scene {
     
             livesText.x = -78;
             livesText.y = player.y-483;
+
+            liveWaspBG.x = 890;
+            liveWaspBG.y = player.y-472;
+
         }
 
         if (clouds) {this.physics.world.wrap(clouds.body, clouds.width+50, true);}
@@ -577,11 +582,13 @@ class Scene7 extends Phaser.Scene {
 
         if (player.y <= 703) {
             healthBar.clear();
-            healthBar.fillStyle(0xff0000, 1);
-            healthBar.fillRect(game.config.width / 1.92, -18, 500, 20);
+            //healthBar.fillStyle(0xff0000, 1);
+            healthBar.fillStyle(0x333333, 1);
+            healthBar.fillRect(game.config.width / 1.93, -18, 490, 30);
             var remainingHealth = waspLives / 20;
-            healthBar.fillStyle(0x00ff00, 1);
-            healthBar.fillRect(game.config.width / 1.92, -18, remainingHealth * 500, 20);
+            //healthBar.fillStyle(0x00ff00, 1); 
+            healthBar.fillStyle(0xffff00, 1);
+            healthBar.fillRect(game.config.width / 1.93, -18, remainingHealth * 490, 30);
             healthBar.x = 3;
             healthBar.y = player.y - 472;
         }
@@ -589,6 +596,7 @@ class Scene7 extends Phaser.Scene {
         if (wasp.alpha === 0) {
             healthBar.visible = false;
             waspNestDoor.visible = false;
+            liveWaspBG.setAlpha(0);
             destroyed.destroy();
             return;
         }

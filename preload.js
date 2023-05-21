@@ -35,6 +35,7 @@ class Preload extends Phaser.Scene {
       this.load.image('leaf', 'assets/leaf.png');
       this.load.image('leavesBG', 'assets/leavesBG.png');
       this.load.image('lifeBG', 'assets/lifeBG.png');
+      this.load.image('lifeWaspBG', 'assets/lifeWaspBG.png');
       this.load.image('lilWaspF', 'assets/lilWaspF.png');
       this.load.image('megaTree', 'assets/megaTree.png');
       this.load.image('megaTreeCover', 'assets/megaTreeCover.png');
