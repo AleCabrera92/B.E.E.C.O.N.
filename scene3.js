@@ -610,6 +610,9 @@ class Scene3 extends Phaser.Scene {
                     chargeReady.setVisible(true);
                 }
             }
+            if (player.alpha === 0) {
+                chargeReady.setVisible(false);
+            }
         }
 
         chargeReady.setPosition(player.x, player.y-50);

@@ -583,6 +583,10 @@ class Scene5 extends Phaser.Scene {
             }
         }
 
+        if (player.alpha === 0) {
+            chargeReady.setVisible(false);
+        }
+
         chargeReady.setPosition(player.x, player.y-50);
 
         lasers.getChildren().forEach(laser => {

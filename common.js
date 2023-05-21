@@ -168,7 +168,7 @@ function gameOver() {
   player.alpha = 0;
   player.anims.stop();
   player.disableBody(true, true);
-  if (scene === 5) {
+  if (scene === 5 || scene === 7) {
       gameOverImage.create(game.config.width / 2.35, player.y-330, 'gameOver');
       gameOverImage.setOrigin(0.5).setAlpha(0.9).setDepth(3);
   } else if (scene === 6) {
@@ -251,23 +251,31 @@ function updateWaspBehavior(wasp) {
       wasp.setFlip(true);
     }
   
-    if (distanceToPlayer <= 500 && player.alpha != 0) {
+    if (distanceToPlayer <= 1050 && player.alpha != 0) {
       if (!wasp.getData('spiky') && wasp.alpha !== 0) {
           sound_eneweeAttack.play({loop: false});
       }
       wasp.setData('spiky', true);
-
-      const angleToPlayer = Phaser.Math.Angle.Between(wasp.x, wasp.y, player.x, player.y);
-      const speed = 3;
-
-      if (distanceToPlayer <= 500 && distanceToPlayer > 100 && player.alpha != 0) {
-        wasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
-        wasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
-      } else if (distanceToPlayer <= 100 && player.alpha != 0) {
-        wasp.x += Math.cos(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
-        wasp.y += Math.sin(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
-      }
+      //wasp.setVelocityX(0);
+      healthBar.visible = true;
+      liveWaspBG.setAlpha(1);
     }
+
+    const angleToPlayer = Phaser.Math.Angle.Between(wasp.x, wasp.y, player.x, player.y);
+    const totalWaspLives = 100;
+    const minSpeed = 1.5;
+    const maxSpeed = 2;
+    const clampedLives = Phaser.Math.Clamp(waspLives, 1, totalWaspLives);
+    const speed = Phaser.Math.Linear(maxSpeed, minSpeed, (clampedLives - 1) / (totalWaspLives - 1));
+
+    if (distanceToPlayer <= 2000 && distanceToPlayer > 100 && player.alpha != 0) {
+    wasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
+    wasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
+    } else if (distanceToPlayer <= 100 && player.alpha != 0) {
+    wasp.x += Math.cos(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
+    wasp.y += Math.sin(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
+    }
+
   }
 
 function addNextLetter() {

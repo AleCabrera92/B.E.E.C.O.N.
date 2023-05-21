@@ -47,7 +47,7 @@ class Scene7 extends Phaser.Scene {
         if (sceneBack === true) {
             player = this.physics.add.sprite(900, 703, 'beecon_full').setScale(0.3).setDepth(0.19);
         } else {
-            player = this.physics.add.sprite(100, -111, 'beecon_full').setScale(0.3).setDepth(0.19);
+            player = this.physics.add.sprite(110, -111, 'beecon_full').setScale(0.3).setDepth(0.19);
         }
 
         player.body.setSize(120, 120);
@@ -70,10 +70,10 @@ class Scene7 extends Phaser.Scene {
         }
 
         if (sceneBack === true) {
-            wasp = this.physics.add.sprite(8000, 400, 'wasp').setScale(0.75).setDepth(0.21);
+            wasp = this.physics.add.sprite(8000, 4000, 'wasp').setScale(0.75).setDepth(0.21);
             wasp.setAlpha(0);
         } else {
-            wasp = this.physics.add.sprite(800, 400, 'wasp').setScale(0.75).setDepth(0.21);
+            wasp = this.physics.add.sprite(1400, 400, 'wasp').setScale(0.75).setDepth(0.21);
         }
 
         wasp.body.setSize(200, 300);
@@ -81,7 +81,7 @@ class Scene7 extends Phaser.Scene {
         wasp.setCollideWorldBounds(false);
         this.physics.add.collider(wasp, platforms);
 
-        waspLives = 20;
+        waspLives = 100;
 
         wasp.anims.play('waspChill');
         wasp.body.allowGravity = false;
@@ -93,7 +93,6 @@ class Scene7 extends Phaser.Scene {
         healthBar.setDepth(99);
 
         selfs = this;
-        energyOrbs = this.physics.add.group();
         waspFs = this.physics.add.group();
         beeconFs = this.physics.add.group();
 
@@ -147,22 +146,6 @@ class Scene7 extends Phaser.Scene {
                 wasp.alpha = 0;
                 wasp.anims.stop();
                 wasp.disableBody(true, true);
-                if (lives < 99) { 
-                    let energyOrb = energyOrbs.create(wasp.x, wasp.y, 'energyOrb');
-                    energyOrb.setOrigin(0.5, 0.5).setScale(0.4).setDepth(0.25);
-                    energyOrb.body.setSize(80, 80);
-                    selfs.tweens.add({
-                        targets: energyOrb,
-                        alpha: 0.9,
-                        duration: 500,
-                        yoyo: true,
-                        repeat: -1,
-                        ease: 'Sine.easeOutIn',
-                    });
-                    energyOrb.setVelocityY(-500);
-                    selfs.physics.add.collider(energyOrb, platforms);
-                    selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
-                }
                 let waspF = waspFs.create(wasp.x, wasp.y, 'waspF');
                 if (player.x <= wasp.x) {
                     waspF.setOrigin(0.5, 0.5).setScale(0.75).setDepth(0.189);
@@ -184,14 +167,6 @@ class Scene7 extends Phaser.Scene {
                 wasp.alpha = 0;
                 wasp.anims.stop();
                 wasp.disableBody(true, true);
-                if (lives < 99) { 
-                    let energyOrb = energyOrbs.create(wasp.x, wasp.y, 'energyOrb');
-                    energyOrb.setOrigin(0.5, 0.5).setScale(0.5).setDepth(2.5);
-                    energyOrb.body.setSize(50, 50);
-                    energyOrb.setVelocityY(-500);
-                    selfs.physics.add.collider(energyOrb, platforms);
-                    selfs.physics.add.overlap(player, energyOrb, function() { increaseLives(); sound_energyPick.play(); energyOrb.destroy(); });
-                }
                 let waspF = waspFs.create(wasp.x, wasp.y, 'waspF');
                 if (player.x <= wasp.x) {
                     waspF.setOrigin(0.5, 0.5).setScale(0.75).setDepth(0.189);
@@ -354,6 +329,18 @@ class Scene7 extends Phaser.Scene {
 
         fadeOutTriggered = false;
 
+        platforms.create(-55, 430, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(-30, 500, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(-5, 570, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(25, 640, 'branch').setScale(0.8).refreshBody().setDepth(0.2);
+        platforms.create(975, 430, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.18);
+        platforms.create(950, 500, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.18);
+        platforms.create(925, 570, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.18);
+        platforms.create(900, 640, 'waspNestBranch').setScale(0.8).refreshBody().setDepth(0.18);
+
+        healthBar.visible = false;
+        liveWaspBG.setAlpha(0);
+
     }
 
     update() {
@@ -446,6 +433,10 @@ class Scene7 extends Phaser.Scene {
             if (holdTime > 750) {
                 chargeReady.setVisible(true);
             }
+        }
+
+        if (player.alpha === 0) {
+            chargeReady.setVisible(false);
         }
 
         chargeReady.setPosition(player.x, player.y-50);
@@ -585,7 +576,7 @@ class Scene7 extends Phaser.Scene {
             //healthBar.fillStyle(0xff0000, 1);
             healthBar.fillStyle(0x333333, 1);
             healthBar.fillRect(game.config.width / 1.93, -18, 490, 30);
-            var remainingHealth = waspLives / 20;
+            var remainingHealth = waspLives / 100;
             //healthBar.fillStyle(0x00ff00, 1); 
             healthBar.fillStyle(0xffff00, 1);
             healthBar.fillRect(game.config.width / 1.93, -18, remainingHealth * 490, 30);
