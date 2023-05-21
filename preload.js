@@ -32,6 +32,7 @@ class Preload extends Phaser.Scene {
       this.load.image('ground', 'assets/ground.png');
       this.load.image('jumpshrooms', 'assets/jumpshrooms.png');
       this.load.image('laser', 'assets/laser.png');
+      this.load.image('laserWasp', 'assets/laserWasp.png');
       this.load.image('leaf', 'assets/leaf.png');
       this.load.image('leavesBG', 'assets/leavesBG.png');
       this.load.image('lifeBG', 'assets/lifeBG.png');
@@ -79,6 +80,7 @@ class Preload extends Phaser.Scene {
       this.load.audio('eneweeAttack', 'assets/audio/eneweeAttack.mp3');
       this.load.audio('introTheme', 'assets/audio/introTheme.mp3');
       this.load.audio('laser', 'assets/audio/laser.mp3');
+      this.load.audio('laserWasp', 'assets/audio/laserWasp.mp3');
       this.load.audio('laserHit', 'assets/audio/laserHit.mp3');
       this.load.audio('level1Theme', 'assets/audio/level1Theme.mp3');
       this.load.audio('level2Theme', 'assets/audio/level2Theme.mp3');
@@ -123,7 +125,8 @@ class Preload extends Phaser.Scene {
       sound_beeconHit = this.sound.add('beeconHit').setVolume(0.25);          sound_thunder = this.sound.add('thunder').setVolume(0.75);  
       sound_mushroomJump = this.sound.add('mushroomJump').setVolume(0.25);    sound_enemyEnraged = this.sound.add('enemyEnraged').setVolume(0.25);
       sound_eneweeAttack = this.sound.add('eneweeAttack').setVolume(0.15);    sound_powerUp = this.sound.add('powerUp').setVolume(0.25);
-      sound_energyPick = this.sound.add('energyPick').setVolume(0.25);        sound_brokenGround = this.sound.add('brokenGround').setVolume(0.35); 
+      sound_energyPick = this.sound.add('energyPick').setVolume(0.25);        sound_brokenGround = this.sound.add('brokenGround').setVolume(0.35);
+      sound_laserWasp = this.sound.add('laserWasp').setVolume(0.45);  
 
       this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('beecon_full', { start: 8, end: 9 }), frameRate: 10, repeat: -1});
       this.anims.create({key: 'left', frames: this.anims.generateFrameNumbers('beecon_full', { start: 1, end: 0 }), frameRate: 10, repeat: -1});

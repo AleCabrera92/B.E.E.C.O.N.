@@ -1,9 +1,9 @@
 let beeIcon, bigLasers, camera, chargeReady, clickBButton, clickBButton2, clouds, clouds2, clouds3, cursors, didPressUp, didPressW, didPressSpace, enemy, enewee, emitter, emitter2, emitter3;
-let lasers, livesText, liveBG, liveWaspBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack, triggerPlatformDeath, treeTexture;
+let lasers, lasersWasp, livesText, liveBG, liveWaspBG, mountains, overlay, overlay2, platforms, player, triggerPlatform, triggerPlatformBack, triggerPlatformDeath, treeTexture;
 let isMusicPlaying, sound_beeconWalk, sound_beeconJump, sound_laser, sound_bigLaser, sound_drill, sound_enemyF, sound_beeconF, sound_beeconHit, sound_rain, sound_rain2;
 let sound_thunder, sound_laserHit, sound_mushroomJump, sound_titleTheme, sound_level1Theme, sound_level2Theme, sound_level3Theme, sound_level4Theme, sound_enemyEnraged;
 let canDoubleJump = true, isDrilling = false, jKeyDownTime = 0, lives = 99, timer = 0, hasJumped = true;
-let scene, gameOverImage, randomText, chargeReadySpanish, sound_introTheme;
+let scene, gameOverImage, randomText, chargeReadySpanish, sound_introTheme, sound_laserWasp;
 let damageTint, startColor, endColor,keyA, keyD, keyJ, keyF, keyK, keyW, keyUP, keySpace, keyP, keyE;
 let knockbackForce = 500, knockbackDirection, megaTree, megaTreeCover;
 let enemyLives, eneweeLives = 3, enemyGroup, eneweeGroup, lilWasp, lilWaspLives, lilWaspGroup, wasp, waspLives;
@@ -50,7 +50,8 @@ let sentencesEndSpanish = [
     /*"EXPLORA NUEVOS MUNDOS EXÓTICOS Y DESCUBRE MISTERIOS OCULTOS."*/
 ];
 
-function decreaseLives() { if (!throttled) { if (scene === 7) { lives -= 20} else { lives -= 10 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); } }
+function decreaseLives() { if (!throttled) { lives -= 10 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); }
+function decreaseLivesWasp() { if (!throttled) { lives -= 20 }; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 500); }
 function increaseLives() { if (!throttled) { lives += 10; if (language) {lives <= -1 ? livesText.setText('Energy: ' + 0) : updateLivesUI()} else {lives <= -1 ? livesText.setText('Energía: ' + 0) : updateLivesUI()}; throttled = true; setTimeout(() => { throttled = false; }, 0); } }
 function updateLivesUI() { if (language) {livesText.setText('Energy: ' + lives);} else {livesText.setText('Energía: ' + lives);} }
 function enableKeys() { keyJ.enabled = true; keyW.enabled = true; keyUP.enabled = true; keySpace.enabled = true; keysDisabled = false; }
@@ -299,3 +300,21 @@ function addNextLetterEnd() {
         timerEvent.remove();
     }
 }
+
+function shootLaserWasp() {
+
+    let distanceToPlayer = Phaser.Math.Distance.Between(wasp.x, wasp.y, player.x, player.y);
+
+    if (wasp.alpha != 0 && player.alpha != 0 && distanceToPlayer <= 850) {
+        if (wasp.x >= player.x) {
+            laserWasp = lasersWasp.create(wasp.x-115, wasp.y+45, 'laserWasp').setDepth(0.21).setScale(1.5);
+            sound_laserWasp.play();
+        } else {
+            laserWasp = lasersWasp.create(wasp.x+115, wasp.y+45, 'laserWasp').setDepth(0.21).setScale(1.5);
+            sound_laserWasp.play();
+        }
+    } else {
+        return;
+    }
+    this.physics.moveTo(laserWasp, player.x, player.y, 777);
+  }

@@ -38,8 +38,11 @@ class Scene7 extends Phaser.Scene {
 
         platforms = this.physics.add.staticGroup();
         lasers = this.physics.add.group({allowGravity: false});
+        lasersWasp = this.physics.add.group({allowGravity: false});
         this.physics.add.collider(lasers, platforms);
+        this.physics.add.collider(lasersWasp, platforms);
         this.physics.add.collider(lasers, platforms, function(laser) {laser.setVelocityX(0), laser.setAcceleration(0)});
+        this.physics.add.collider(lasersWasp, platforms, function(laserWasp) {laserWasp.setVelocityX(0), laserWasp.setVelocityY(0), laserWasp.setAcceleration(0)});
         bigLasers = this.physics.add.group({immovable: true, allowGravity: false});
         this.physics.add.collider(bigLasers, platforms, function(bigLaser) {bigLaser.setVelocityX(0), bigLaser.setAcceleration(0)});
         this.physics.add.collider(bigLasers, platforms);
@@ -96,13 +99,38 @@ class Scene7 extends Phaser.Scene {
         waspFs = this.physics.add.group();
         beeconFs = this.physics.add.group();
 
-        this.physics.add.collider(player, wasp, function(player) {
+        this.physics.add.overlap(player, lasersWasp, function(player) {
             if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
             damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
             this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
                 onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
                 onComplete: () => { player.setTint(endColor.color); } });
             decreaseLives();
+
+            // knockbackDirection = new Phaser.Math.Vector2(player.x - lasersWasp.x, player.y - lasersWasp.y).normalize().scale(knockbackForce);
+            // player.setVelocityY(knockbackDirection.y);
+            // player.setVelocityX(knockbackDirection.x); 
+            laserWasp.destroy();
+            if (lives <= 0) { gameOver();
+                if (language) {
+                    randomText = this.add.text(0, 0, 'PRESS ENTER TO RESTART, E TO EXIT', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                } else {
+                    randomText = this.add.text(0, 0, 'PULSA INTRO PARA REINTENTAR, E PARA SALIR', {font: '32px Arial', fill: '#fff'}).setOrigin(0.5);
+                }  
+                randomText.setShadow(2, 2, '#000000', 2).setDepth(3).setPosition(game.config.width / 2.35, player.y-150,);
+                this.timer = this.time.addEvent({delay: 500, loop: true, callback: () => {randomText.visible = !randomText.visible}});
+                this.input.keyboard.removeKey(keyJ); this.input.keyboard.removeKey(keyK);
+                this.input.keyboard.on('keydown-ENTER', () => {this.sound.stopAll(); lives = 99; this.scene.start('Scene'+scene, { sceneBack: false })});
+                this.input.keyboard.on('keydown-E', () => {this.sound.stopAll(); lives = 99; this.scene.start('Title', { sceneBack: false })}); }
+        }, null, this);
+
+        this.physics.add.collider(player, wasp, function(player) {
+            if (!sound_beeconHit.isPlaying) { sound_beeconHit.play(); }
+            damageTint = "0xff0000"; player.setTint(damageTint); startColor = Phaser.Display.Color.HexStringToColor(damageTint); endColor = Phaser.Display.Color.HexStringToColor("#ffffff");
+            this.tweens.add({ targets: player, duration: 150, tint: startColor.color, 
+                onUpdate: () => { player.setTint(startColor.color); }, onUpdateParams: [startColor], 
+                onComplete: () => { player.setTint(endColor.color); } });
+            decreaseLivesWasp();
 
             knockbackDirection = new Phaser.Math.Vector2(player.x - wasp.x, player.y - wasp.y).normalize().scale(knockbackForce);
             player.setVelocityY(knockbackDirection.y);
@@ -341,6 +369,14 @@ class Scene7 extends Phaser.Scene {
         healthBar.visible = false;
         liveWaspBG.setAlpha(0);
 
+        // Repeat this process at a desired interval
+        this.time.addEvent({
+            delay: 2750, // Adjust the delay between shots as needed
+            callback: shootLaserWasp,
+            callbackScope: this,
+            loop: true
+        });
+
     }
 
     update() {
@@ -445,6 +481,13 @@ class Scene7 extends Phaser.Scene {
             if (this.physics.overlap(laser, airPlatform) || laser.body.velocity.x === 0) {
                 sound_laserHit.play();
                 laser.destroy();
+              }
+        });
+
+        lasersWasp.getChildren().forEach(laserWasp => {
+            if (this.physics.overlap(laserWasp, airPlatform) || laserWasp.body.velocity.x === 0 || laserWasp.body.velocity.y === 0) {
+                sound_laserHit.play();
+                laserWasp.destroy();
               }
         });
     
