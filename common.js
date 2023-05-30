@@ -25,7 +25,6 @@ let skyEnding1, skyEnding2, skyEnding3, skyEndingSpeed = 0.25;
 let text, message, delay, index, indexEnd, timerEvent, keyEnter, topBar, bottomBar;
 let currentSentenceIndex = 0, currentSentenceSpanishIndex = 0, currentSentenceEndIndex = 0, currentSentenceEndSpanishIndex = 0;
 let beaconBox, beaconBoxBackground, beaconText;
-const currentTime = this.time.now;
 let sentences = [
     "HUMANITY IS DESPERATELY LOOKING FOR PLANETS TO COLONIZE.",
     "YOU ARE B.E.E.C.O.N., A DRONE CAPABLE OF RECOGNIZING AND EXPLORING ALIEN WORLDS.",
