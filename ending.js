@@ -232,8 +232,9 @@ class Ending extends Phaser.Scene {
         credits.setScale(0.637);
         this.tweens.add({ targets: credits, y: - 325, ease: 'Linear', duration: 44000, delay: 4000 });
       } else {
-        var creditsEsp = this.add.image(centerX, 2500, 'creditsEsp');
+        var creditsEsp = this.add.image(centerX, 1800, 'creditsEsp');
         this.tweens.add({ targets: creditsEsp, y: - 325, ease: 'Linear', duration: 44000, delay: 4000 });
+        creditsEsp.setScale(0.637);
       }
 
   }
