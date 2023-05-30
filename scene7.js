@@ -79,8 +79,8 @@ class Scene7 extends Phaser.Scene {
             wasp = this.physics.add.sprite(1400, 400, 'wasp').setScale(0.75).setDepth(0.21);
         }
 
-        wasp.body.setSize(200, 300);
-        wasp.body.setOffset(160, 270);
+        wasp.body.setSize(170, 250);
+        wasp.body.setOffset(170, 290);
         wasp.setCollideWorldBounds(false);
         this.physics.add.collider(wasp, platforms);
 
@@ -107,9 +107,6 @@ class Scene7 extends Phaser.Scene {
                 onComplete: () => { player.setTint(endColor.color); } });
             decreaseLives();
 
-            // knockbackDirection = new Phaser.Math.Vector2(player.x - lasersWasp.x, player.y - lasersWasp.y).normalize().scale(knockbackForce);
-            // player.setVelocityY(knockbackDirection.y);
-            // player.setVelocityX(knockbackDirection.x); 
             laserWasp.destroy();
             if (lives <= 0) { gameOver();
                 if (language) {
@@ -135,10 +132,10 @@ class Scene7 extends Phaser.Scene {
             knockbackDirection = new Phaser.Math.Vector2(player.x - wasp.x, player.y - wasp.y).normalize().scale(knockbackForce);
             player.setVelocityY(knockbackDirection.y);
             player.setVelocityX(knockbackDirection.x);
-            if (wasp.x >= player.x) {
+            if (wasp.x > player.x) {
                 this.tweens.add({
                   targets: wasp,
-                  x: wasp.x + 150,
+                  x: wasp.x + 300,
                   y: wasp.y - 200,
                   duration: 250,
                   ease: 'Linear'
@@ -146,7 +143,7 @@ class Scene7 extends Phaser.Scene {
             } else {
                 this.tweens.add({
                   targets: wasp,
-                  x: wasp.x - 150,
+                  x: wasp.x - 300,
                   y: wasp.y - 200,
                   duration: 250,
                   ease: 'Linear'
@@ -369,9 +366,8 @@ class Scene7 extends Phaser.Scene {
         healthBar.visible = false;
         liveWaspBG.setAlpha(0);
 
-        // Repeat this process at a desired interval
         this.time.addEvent({
-            delay: 2750, // Adjust the delay between shots as needed
+            delay: 2750,
             callback: shootLaserWasp,
             callbackScope: this,
             loop: true
@@ -616,11 +612,9 @@ class Scene7 extends Phaser.Scene {
 
         if (player.y <= 703) {
             healthBar.clear();
-            //healthBar.fillStyle(0xff0000, 1);
             healthBar.fillStyle(0x333333, 1);
             healthBar.fillRect(game.config.width / 1.93, -18, 490, 30);
             var remainingHealth = waspLives / 100;
-            //healthBar.fillStyle(0x00ff00, 1); 
             healthBar.fillStyle(0xffff00, 1);
             healthBar.fillRect(game.config.width / 1.93, -18, remainingHealth * 490, 30);
             healthBar.x = 3;
@@ -633,6 +627,12 @@ class Scene7 extends Phaser.Scene {
             liveWaspBG.setAlpha(0);
             destroyed.destroy();
             return;
+        }
+
+        if (player.x <= wasp.x) {
+            wasp.body.setOffset(170, 290);
+        } else {
+            wasp.body.setOffset(260, 290);
         }
 
     }

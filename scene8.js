@@ -206,8 +206,30 @@ class Scene8 extends Phaser.Scene {
           babyWaspGroup.add(babyWasp);
         }
 
-
-        
+        babyWaspGroup.getChildren().forEach(babyWasp => {
+            this.physics.add.overlap(lasers, babyWasp, function(babyWasp) {
+                if (!babyWasp.tween || !babyWasp.tween.isPlaying()) {
+                    sound_enemyF.play();
+                    babyWasp.tween = self.tweens.add({
+                        targets: babyWasp,
+                        scaleX: -babyWasp.scaleX,
+                        duration: 200,
+                        yoyo: true,
+                    });
+                }
+            });
+            this.physics.add.overlap(bigLasers, babyWasp, function(babyWasp) {
+                if (!babyWasp.tween || !babyWasp.tween.isPlaying()) {
+                    sound_enemyF.play();
+                    babyWasp.tween = self.tweens.add({
+                        targets: babyWasp,
+                        scaleX: -babyWasp.scaleX,
+                        duration: 200,
+                        yoyo: true,
+                    });
+                }
+            });            
+        });
 
     }
 

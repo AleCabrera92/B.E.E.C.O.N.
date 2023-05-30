@@ -24,6 +24,8 @@ class Preload extends Phaser.Scene {
       this.load.image('chargeReady', 'assets/chargeReady.png');
       this.load.image('chargeReadySpanish', 'assets/chargeReadySpanish.png');
       this.load.image('clouds', 'assets/cloud.png');
+      this.load.image('credits', 'assets/credits.png');
+      this.load.image('creditsEsp', 'assets/creditsEsp.png');
       this.load.image('enemyF', 'assets/enemyF.png');
       this.load.image('eneweeF', 'assets/eneweeF.png');
       this.load.image('gameOver', 'assets/gameOver.png');
@@ -92,20 +94,6 @@ class Preload extends Phaser.Scene {
       this.load.audio('rain2', 'assets/audio/rain2.mp3');
       this.load.audio('titleTheme', 'assets/audio/titleTheme.mp3');
 
-      // // Display loading progress
-      // const progress = this.add.graphics();
-      // this.load.on('progress', value => {
-      //   progress.clear();
-      //   progress.fillStyle(0xffffff, 1);
-      //   progress.fillRect(0, this.game.config.height / 2, this.game.config.width * value, 50);
-      // });
-
-      // // Load complete
-      // this.load.on('complete', () => {
-      //   progress.destroy();
-      //   this.scene.start('First');
-      // });
-
     }
 
     create() {
@@ -152,8 +140,6 @@ class Preload extends Phaser.Scene {
 
     }
 
-    update() {
-      // Update the scene here
-    }
+    update() { /* Update the scene here */ }
 
   }

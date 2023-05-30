@@ -25,6 +25,7 @@ let skyEnding1, skyEnding2, skyEnding3, skyEndingSpeed = 0.25;
 let text, message, delay, index, indexEnd, timerEvent, keyEnter, topBar, bottomBar;
 let currentSentenceIndex = 0, currentSentenceSpanishIndex = 0, currentSentenceEndIndex = 0, currentSentenceEndSpanishIndex = 0;
 let beaconBox, beaconBoxBackground, beaconText;
+const currentTime = this.time.now;
 let sentences = [
     "HUMANITY IS DESPERATELY LOOKING FOR PLANETS TO COLONIZE.",
     "YOU ARE B.E.E.C.O.N., A DRONE CAPABLE OF RECOGNIZING AND EXPLORING ALIEN WORLDS.",
@@ -269,12 +270,9 @@ function updateWaspBehavior(wasp) {
     const clampedLives = Phaser.Math.Clamp(waspLives, 1, totalWaspLives);
     const speed = Phaser.Math.Linear(maxSpeed, minSpeed, (clampedLives - 1) / (totalWaspLives - 1));
 
-    if (distanceToPlayer <= 2000 && distanceToPlayer > 100 && player.alpha != 0) {
-    wasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
-    wasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
-    } else if (distanceToPlayer <= 100 && player.alpha != 0) {
-    wasp.x += Math.cos(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
-    wasp.y += Math.sin(angleToPlayer) * speed * 35 * (game.loop.delta / 100);
+    if (distanceToPlayer <= 2000 && player.alpha != 0) {
+        wasp.x += Math.cos(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
+        wasp.y += Math.sin(angleToPlayer) * speed * 7 * (game.loop.delta / 100);
     }
 
   }
